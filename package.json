@@ -1,5 +1,8 @@
 {
   "name": "slint-docs-cn",
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild", "sharp"]
+  },
   "type": "module",
   "version": "0.0.1",
   "description": "Slint文档中文版",

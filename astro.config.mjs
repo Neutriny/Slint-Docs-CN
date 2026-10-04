@@ -56,7 +56,7 @@ export default defineConfig({
           href: 'https://github.com/Neutriny/Slint-Docs-CN',
         },
         {
-          icon: '.public/favicon.svg',
+          icon: 'open-book',
           label: 'Slint',
           href: 'https://docs.slint.dev/latest/docs/slint/',
         },
@@ -73,40 +73,36 @@ export default defineConfig({
               {
                 label: '开发',
                 collapsed: true,
-                items: [
-                  { autogenerate: { directory: 'guide/development' } },
-                ],
+                items: [{ autogenerate: { directory: 'guide/development' } }],
               },
               {
                 label: '平台',
                 collapsed: true,
-                items: [
-                  { autogenerate: { directory: 'guide/platforms' } },
-                ],
+                items: [{ autogenerate: { directory: 'guide/platforms' } }],
               },
               {
                 label: '工具',
                 collapsed: true,
                 items: [
-                  "guide/tooling/vscode",
-                  "guide/tooling/manual-setup",
+                  'guide/tooling/vscode',
+                  'guide/tooling/manual-setup',
                   {
-                    label: "其他编辑器",
+                    label: '其他编辑器',
                     collapsed: true,
                     items: [
-                      "guide/tooling/kate",
-                      "guide/tooling/qt-creator",
-                      "guide/tooling/helix",
-                      "guide/tooling/neo-vim",
-                      "guide/tooling/sublime-text",
-                      "guide/tooling/jetbrains-ide",
-                      "guide/tooling/zed",
+                      'guide/tooling/kate',
+                      'guide/tooling/qt-creator',
+                      'guide/tooling/helix',
+                      'guide/tooling/neo-vim',
+                      'guide/tooling/sublime-text',
+                      'guide/tooling/jetbrains-ide',
+                      'guide/tooling/zed',
                     ],
                   },
-                  "guide/tooling/live-preview",
-                  "guide/tooling/slint-viewer",
-                  "guide/tooling/figma-inspector",
-                  "guide/tooling/ai-coding-assistants",
+                  'guide/tooling/live-preview',
+                  'guide/tooling/slint-viewer',
+                  'guide/tooling/figma-inspector',
+                  'guide/tooling/ai-coding-assistants',
                 ],
               },
               {
@@ -134,7 +130,9 @@ export default defineConfig({
                 label: '后端与渲染器',
                 collapsed: true,
                 items: [
-                  { autogenerate: { directory: 'guide/backends-and-renderers' } },
+                  {
+                    autogenerate: { directory: 'guide/backends-and-renderers' },
+                  },
                 ],
               },
             ],
@@ -270,7 +268,10 @@ export default defineConfig({
                   'reference/global-namespaces/font-weight',
                 ],
               },
-              { label: '全局函数', slug: 'reference/global-functions/builtinfunctions' },
+              {
+                label: '全局函数',
+                slug: 'reference/global-functions/builtinfunctions',
+              },
               {
                 label: '标准组件',
                 collapsed: true,
@@ -279,23 +280,53 @@ export default defineConfig({
                   'reference/std-widgets/style',
                   {
                     label: '全局',
-                    items: [{ autogenerate: { directory: 'reference/std-widgets/globals' } }],
+                    items: [
+                      {
+                        autogenerate: {
+                          directory: 'reference/std-widgets/globals',
+                        },
+                      },
+                    ],
                   },
                   {
                     label: '基础组件',
-                    items: [{ autogenerate: { directory: 'reference/std-widgets/basic-widgets' } }],
+                    items: [
+                      {
+                        autogenerate: {
+                          directory: 'reference/std-widgets/basic-widgets',
+                        },
+                      },
+                    ],
                   },
                   {
                     label: '视图',
-                    items: [{ autogenerate: { directory: 'reference/std-widgets/views' } }],
+                    items: [
+                      {
+                        autogenerate: {
+                          directory: 'reference/std-widgets/views',
+                        },
+                      },
+                    ],
                   },
                   {
                     label: '组件布局',
-                    items: [{ autogenerate: { directory: 'reference/std-widgets/layouts' } }],
+                    items: [
+                      {
+                        autogenerate: {
+                          directory: 'reference/std-widgets/layouts',
+                        },
+                      },
+                    ],
                   },
                   {
                     label: '杂项',
-                    items: [{ autogenerate: { directory: 'reference/std-widgets/misc' } }],
+                    items: [
+                      {
+                        autogenerate: {
+                          directory: 'reference/std-widgets/misc',
+                        },
+                      },
+                    ],
                   },
                 ],
               },
@@ -330,7 +361,9 @@ export default defineConfig({
               },
               {
                 label: 'Rust ↗',
-                link: sidebarHref('https://docs.slint.dev/latest/docs/rust/slint/'),
+                link: sidebarHref(
+                  'https://docs.slint.dev/latest/docs/rust/slint/',
+                ),
                 attrs: { target: '_blank' },
               },
               {

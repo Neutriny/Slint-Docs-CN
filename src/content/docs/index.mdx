@@ -1,0 +1,135 @@
+---
+title: 总览
+type: overview
+sidebar:
+  order: 1
+hero:
+  title: 欢迎使用 Slint
+  tagline: 为嵌入式、桌面与移动设备无缝构建优雅的 GUI
+---
+
+import {
+  LinkButton,
+  LinkCard,
+  Card,
+  CardGrid,
+} from '@astrojs/starlight/components';
+import { Image } from 'astro:assets';
+import FourCardGrid from '../../components/FourCardGrid.astro';
+import mattermostLogoLight from '/src/assets/mattermost-logo-dark.svg';
+import mattermostLogoDark from '/src/assets/mattermost-logo-light.svg';
+import BannerImage from '/src/assets/banner.webp';
+import LanguageHint from '/src/assets/getting-started/language-hint.webp';
+import RunInSlintPad from '/src/assets/getting-started/run-in-slintpad.webp';
+import CopySnippet from '/src/assets/getting-started/copy-snippet.webp';
+import LineHighlight from '/src/assets/getting-started/line-highlight.webp';
+
+<div style="display: flex; justify-content: center;">
+  <Image
+    src={BannerImage}
+    style={{ width: '700px' }}
+    width="1200px"
+    alt="Slint 示例在不同设备上运行"
+  />
+</div>
+
+<div style="display: flex; justify-content: center; margin: 1.5rem 0;">
+  <LinkButton
+    href={`${import.meta.env.BASE_URL}guide/getting-started/`}
+    icon="right-arrow"
+  >
+    开始使用
+  </LinkButton>
+</div>
+
+文档分为以下几个部分：
+
+<CardGrid>
+<LinkCard
+  title="指南"
+  description="配置 Slint 开发的工具链，包括通过 Slint 语言服务器(LSP)接入 IDE，以及使用 Slint Viewer 实时预览界面。
+  <br/><br/>
+  学习 Slint 的全部关键概念，理解并使用 Slint 语言。"
+  href={`${import.meta.env.BASE_URL}`}
+>
+</LinkCard>
+
+<LinkCard
+  title="参考"
+  description="浏览 Slint 语言的 API 参考：元素、属性、函数、回调、命名空间，以及
+用于构建桌面应用的跨平台 std-widgets 组件库。"
+  href={`${import.meta.env.BASE_URL}/reference/overview`}
+></LinkCard>
+
+<LinkCard
+  title="教程"
+  description="通过示例学习，跟着分步教程一步步搭建一个简单的记忆游戏示例应用。"
+  href={`${import.meta.env.BASE_URL}/tutorial/quickstart/`}
+></LinkCard>
+
+<LinkCard
+  title="语言集成"
+  description="Slint 在 Rust、C++、JavaScript 与 Python 版本下的 API 参考。"
+  href={`${import.meta.env.BASE_URL}/language-integrations/`}
+>
+</LinkCard>
+</CardGrid>
+
+### 文档特性
+
+文档中包含大量代码片段。语言提示会标明片段使用的语言。
+
+<div style="display: flex; justify-content: left;">
+  <Image
+    src={LanguageHint}
+    style={{ width: '500px' }}
+    alt="文档中语言提示的截图"
+  />
+</div>
+
+部分 Slint 代码片段是交互式的。可点击`run`按钮，在名为 [SlintPad](https://slintpad.com) 的网页端实时编辑工具中运行片段。
+
+<div style="display: flex; justify-content: left;">
+  <Image
+    src={RunInSlintPad}
+    style={{ width: '500px' }}
+    alt="显示 run 按钮的截图"
+  />
+</div>
+
+可以使用复制按钮轻松复制片段内容。
+
+<div style="display: flex; justify-content: left;">
+  <Image
+    src={CopySnippet}
+    style={{ width: '500px' }}
+    alt="显示复制按钮的截图"
+  />
+</div>
+
+为了让示例聚焦代码的特定部分，会出现高亮。这是文档所独有的特性，你在自己写的代码里不会看到这类高亮。
+
+<div style="display: flex; justify-content: left;">
+  <Image
+    src={LineHighlight}
+    style={{ width: '500px' }}
+    alt="显示文本高亮的截图"
+  />
+</div>
+
+### 联系我们
+
+<FourCardGrid>
+  <LinkCard title="聊天" href="https://chat.slint.dev/" target="_blank" />
+  <LinkCard
+    title="讨论区"
+    href="https://github.com/slint-ui/slint/discussions"
+    target="_blank"
+  />
+  <LinkCard
+    title="反馈 Bug"
+    href="https://github.com/slint-ui/slint/issues"
+    target="_blank"
+  />
+  <LinkCard title="邮件" href="mailto:info@slint.dev" target="_blank" />
+</FourCardGrid>

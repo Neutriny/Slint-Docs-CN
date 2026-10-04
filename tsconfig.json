@@ -1,0 +1,15 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "include": [".astro/types.d.ts", "**/*"],
+  "exclude": ["dist", "packages"],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "./*": ["./packages/common-files/src/*"],
+      "@slint/common-files/src/*": ["./packages/common-files/src/*"]
+    },
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "module": "esnext"
+  }
+}

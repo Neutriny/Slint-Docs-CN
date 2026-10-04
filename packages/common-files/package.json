@@ -1,0 +1,22 @@
+{
+  "name": ".",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./package.json": "./package.json",
+    "./src/*": "./src/*"
+  },
+  "scripts": {
+    "test": "node --experimental-strip-types --test tests/markdown-endpoint.test.ts"
+  },
+  "dependencies": {
+    "@expressive-code/core": "^0.44.2",
+    "@expressive-code/plugin-line-numbers": "^0.44.2",
+    "rehype-external-links": "^3.0.0"
+  },
+  "peerDependencies": {
+    "@astrojs/starlight": "^0.42.0",
+    "astro": "^7.2.10"
+  }
+}

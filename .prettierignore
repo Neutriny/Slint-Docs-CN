@@ -1,0 +1,21 @@
+# generated
+.astro/
+dist/
+node_modules/
+packages/
+public/
+src/assets/
+
+# tooling
+.git/
+.gitignore
+.husky/
+.editorconfig
+.eslintignore
+.prettierignore
+
+# editor
+.zed/
+
+# lockfile
+pnpm-lock.yaml

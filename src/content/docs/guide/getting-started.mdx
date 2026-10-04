@@ -1,0 +1,227 @@
+---
+title: 开始使用
+description: 配置编辑器与 AI 助手，安装所用语言的依赖项，从模板创建第一个项目。
+---
+
+import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
+import {
+  CPP_BASE_URL,
+  RUST_SLINT_CRATE_URL,
+  NODEJS_BASE_URL,
+  PYTHON_BASE_URL,
+} from '@slint/common-files/src/utils/site-config';
+
+一个 Slint 应用程序由写在 `.slint` 文件中的用户界面
+和用 Rust、C++、JavaScript 或 Python 编写的业务逻辑构成。
+本节让你的机器为这种开发做好准备：一个能理解 `.slint` 的编辑器、
+对应语言的工具链，以及一个可作为起点的项目。
+
+:::tip[Slint 新手？]
+[tutorial](/tutorial/quickstart/) 从零搭建一个小型的记忆牌游戏，是上手这门语言的最快途径。
+:::
+
+## 配置工具链
+
+### 编辑器
+
+Slint 提供了一个能帮助你编写 `.slint` 代码的编辑器扩展。
+它会提供语法高亮、补全、诊断，以及一边输入一边对界面进行实时预览。
+
+安装 [Slint 的 Visual Studio Code 扩展](/guide/tooling/vscode/)，
+其他编辑器见 [手动安装](/guide/tooling/manual-setup/)。
+
+### AI 编程助手（可选）
+
+如果你已经在使用 AI 编程代理，
+Slint skill 可以教会它 `.slint` 语言，并让它检查你正在运行的应用程序。
+各种工具的安装命令见 [AI 编程助手](/guide/tooling/ai-coding-assistants/)。
+
+## 安装依赖项
+
+选择你打算用来编写业务逻辑的语言。
+
+<Tabs syncKey="dev-language">
+<TabItem label="Rust" icon="seti:rust">
+
+按照 [Rust 入门指南](https://www.rust-lang.org/learn/get-started) 安装 Rust。
+Slint 需要 Rust 1.95 或更高版本；用 `rustc --version` 检查版本。
+
+Slint crate 作为你项目的一部分一起构建，单独安装 Slint 的步骤是不必要的。
+
+<a href={RUST_SLINT_CRATE_URL}>Rust API 文档</a>介绍了如何把它加入已有项目。
+
+我们还推荐在你的编辑器里安装 [rust-analyzer](https://rust-analyzer.github.io) 以获得 Rust 支持。
+
+</TabItem>
+<TabItem label="C++" icon="seti:cpp">
+
+- 一款支持 C++20 的 C++ 编译器。
+- [CMake](https://cmake.org/download/) 3.21 或更高版本。
+- [Rust](https://www.rust-lang.org/learn/get-started) 1.95 或更高版本，用于从源码构建 Slint。
+  以下的模板会通过 CMake 的 `FetchContent` 自动完成这一步。
+
+C++ 文档有一份独立的 <a href={`${CPP_BASE_URL}cmake/`}>配置开发环境</a>页面。
+它涵盖了 Linux 与 Windows x86-64 上的 Slint 预构建包（不需要 Rust），
+以及如何在已有 CMake 项目里使用 Slint。
+
+</TabItem>
+<TabItem label="NodeJS" icon="node">
+
+安装 [Node.js](https://nodejs.org/download/release/) 20 或更高版本，它自带 `npm`。
+
+`slint-ui` 包提供 macOS、Windows 与 Linux 上的预构建二进制。
+某些平台需要从源码构建，相关说明见 <a href={NODEJS_BASE_URL}>Node.js 文档</a>。
+
+</TabItem>
+<TabItem label="Python" icon="seti:python">
+
+- [Python](https://python.org/) 3.12 或更高版本。
+- [uv](https://docs.astral.sh/uv/)，用来管理项目和它的依赖项。
+
+`slint` 包提供 macOS、Windows 与 Linux 上的预构建二进制。
+某些平台需要从源码构建，相关说明见 <a href={PYTHON_BASE_URL}>Python 文档</a>。
+
+</TabItem>
+</Tabs>
+
+## 从模板创建项目
+
+每种语言都有一个模板仓库，提供按推荐工程结构组织的最小应用。
+
+在 Visual Studio Code 中打开命令面板，运行 **Slint: Create New Project from Template**。
+它会把你所用语言的模板下载到你选择的文件夹。
+带截图的完整流程见 [Visual Studio Code](/guide/tooling/vscode/#setting-up-vs-code)。
+
+如果不用 VS Code，可以手动下载模板：
+
+<Tabs syncKey="dev-language">
+<TabItem label="Rust" icon="seti:rust">
+
+<Steps>
+
+1. 下载并解压 [Rust 模板](https://github.com/slint-ui/slint-rust-template) 的 [ZIP 压缩包](https://github.com/slint-ui/slint-rust-template/archive/refs/heads/main.zip)。
+
+2. 重命名解压目录并进入该目录：
+
+   ```sh
+   mv slint-rust-template-main my-project
+   cd my-project
+   ```
+
+3. 构建并运行：
+
+   ```sh
+   cargo run
+   ```
+
+</Steps>
+
+把 `Cargo.toml` 里的 `name` 字段改为你项目的名称。
+
+</TabItem>
+<TabItem label="C++" icon="seti:cpp">
+
+<Steps>
+
+1. 下载并解压 [C++ 模板](https://github.com/slint-ui/slint-cpp-template) 的 [ZIP 压缩包](https://github.com/slint-ui/slint-cpp-template/archive/refs/heads/main.zip)。
+
+2. 重命名解压目录并进入该目录：
+
+   ```sh
+   mv slint-cpp-template-main my-project
+   cd my-project
+   ```
+
+3. 使用 CMake 配置并构建：
+
+   ```sh
+   cmake -B build
+   cmake --build build
+   ```
+
+   第一次配置会从源码拉取并构建 Slint，需要数分钟。
+
+4. 在 Linux 或 macOS 上运行应用：
+
+   ```sh
+   ./build/my_application
+   ```
+
+   或者在 Windows 上：
+
+   ```sh
+   build\my_application.exe
+   ```
+
+</Steps>
+
+</TabItem>
+<TabItem label="NodeJS" icon="node">
+
+<Steps>
+
+1. 下载并解压 [Node.js 模板](https://github.com/slint-ui/slint-nodejs-template) 的 [ZIP 压缩包](https://github.com/slint-ui/slint-nodejs-template/archive/refs/heads/main.zip)。
+
+2. 重命名解压目录并进入该目录：
+
+   ```sh
+   mv slint-nodejs-template-main my-project
+   cd my-project
+   ```
+
+3. 安装依赖并运行：
+
+   ```sh
+   npm install
+   npm start
+   ```
+
+</Steps>
+
+</TabItem>
+<TabItem label="Python" icon="seti:python">
+
+<Steps>
+
+1. 下载并解压 [Python 模板](https://github.com/slint-ui/slint-python-template) 的 [ZIP 压缩包](https://github.com/slint-ui/slint-python-template/archive/refs/heads/main.zip)。
+
+2. 重命名解压目录并进入该目录：
+
+   ```sh
+   mv slint-python-template-main my-project
+   cd my-project
+   ```
+
+3. 安装依赖并运行：
+
+   ```sh
+   uv run main.py
+   ```
+
+</Steps>
+
+</TabItem>
+</Tabs>
+
+一个带有计数器和按钮的窗口会出现。
+界面部分位于 `ui/app-window.slint`；与之并列的文件（位于 `src/` 或 `main.py`）保存应用逻辑。
+
+## 移动端与嵌入式
+
+上述模板构建的是桌面应用。
+Slint 也能运行在手机与嵌入式设备上：
+
+- **Android：** 适用于 Rust 或 C++ 的 [工程配置](/guide/platforms/mobile/android/#project-setup)。
+- **iOS：** [在已有 Rust 应用中加入 iOS 支持](/guide/platforms/mobile/ios/#adding-ios-support-to-an-existing-rust-application)。
+- **嵌入式 Linux 与微控制器：** [嵌入式指南](/guide/platforms/embedded/) 展示如何在开发板上运行 demo，
+  以及如何为微控制器搭建项目。
+  API 文档中还有更多关于在 <a href={`${RUST_SLINT_CRATE_URL}docs/mcu/index.html`}>Rust</a>
+  与 <a href={`${CPP_BASE_URL}mcu/intro/`}>C++</a> 端基于 ESP-IDF 或 STM32 的微控制器内容。
+
+## 下一步
+
+- 在编辑器里打开 `ui/app-window.slint`，启动 [live preview](/guide/tooling/live-preview/)。
+  文件的修改会在预览中即时反映出来，不需要重新构建。
+- 跟随 [tutorial](/tutorial/quickstart/) 搭建一个完整的应用。
+- 阅读 [Slint 语言](/guide/language/concepts/slint-language/) 及其 [reactivity model](/guide/language/concepts/reactivity/)。
+- 浏览 [language integrations](/language-integrations/) 查看所用语言的 API。

@@ -70,7 +70,7 @@ export async function getEnumContent(enumName: string | undefined) {
  * Built-in Structs page, which is where a struct type otherwise links to.
  */
 export function isStdWidgetStruct(structName: string | undefined): boolean {
-  const baseStruct = structName?.replace(/[\[\]]/g, '');
+  const baseStruct = structName?.replace(/[[\]]/g, '');
   return baseStruct === 'Time' || baseStruct === 'Date';
 }
 
@@ -80,7 +80,7 @@ export async function getStructContent(
   if (structName === undefined) {
     return '';
   }
-  const baseStruct = structName.replace(/[\[\]]/g, '');
+  const baseStruct = structName.replace(/[[\]]/g, '');
 
   if (isStdWidgetStruct(baseStruct)) {
     const load = findGlobLoader(

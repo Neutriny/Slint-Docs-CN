@@ -3,6 +3,7 @@ import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import eslintPluginAstro from 'eslint-plugin-astro';
 import eslintConfigPrettier from 'eslint-config-prettier/flat';
+import globals from 'globals';
 
 export default [
   {
@@ -26,6 +27,14 @@ export default [
     languageOptions: {
       parserOptions: {
         parser: tseslint.parser,
+      },
+    },
+  },
+  {
+    files: ['**/*.js'],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
       },
     },
   },

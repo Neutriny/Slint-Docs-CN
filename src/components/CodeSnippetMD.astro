@@ -19,8 +19,8 @@ const {
   imageAlt,
   skip,
   needsBackground,
-  imageWidth: _imageWidth,
-  imageHeight: _imageHeight,
+  imageWidth: _imageWidth, // eslint-disable-line @typescript-eslint/no-unused-vars
+  imageHeight: _imageHeight, // eslint-disable-line @typescript-eslint/no-unused-vars
 } = Astro.props as Props;
 const images = import.meta.glob<{ default: ImageMetadata }>(
   '/src/assets/generated/*.{jpeg,jpg,png,gif}',

@@ -282,16 +282,11 @@
           out.textContent = text;
         }
       };
-      let wn: number;
-      let zeta: number;
-      let durationMarker: number | null = null;
-
       const duration = get('duration');
       const bounce = get('bounce');
-      ({ wn, zeta } = durationBounceToWnZeta(duration, bounce));
+      const { wn, zeta } = durationBounceToWnZeta(duration, bounce);
       setOut('duration', `${Math.round(duration * 1000)} ms`);
       setOut('bounce', bounce.toFixed(2));
-      durationMarker = duration;
 
       // Start at 0, target at 1: x_rel(0) = start - target = -1.
       const x0 = -1;

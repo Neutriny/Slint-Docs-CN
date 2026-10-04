@@ -75,7 +75,7 @@ const defaultValues: Partial<Record<KnownType, string>> = {
 
 // `link-data.json` keys the documentation of a type by the type's own name.
 export function getTypeInfo(typeName: KnownType): TypeInfo {
-  const baseType = typeName.replace(/[\[\]]/g, '') as KnownType;
+  const baseType = typeName.replace(/[[\]]/g, '') as KnownType;
   const defaultValue = defaultValues[baseType];
   if (defaultValue === undefined || !(baseType in linkMap)) {
     console.error('Unknown type: ', typeName);

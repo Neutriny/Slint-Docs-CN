@@ -33,9 +33,7 @@ jobs:
           cache: pnpm
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-        env:
-          PNPM_ALLOW_BUILD: '*'
+        run: pnpm config set onlyBuiltDependencies esbuild sharp --location project && pnpm install --frozen-lockfile
 
       - name: Build
         run: pnpm build

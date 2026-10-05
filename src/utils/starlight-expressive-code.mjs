@@ -1,9 +1,13 @@
 // Copyright © SixtyFPS GmbH <info@slint.dev>
 // SPDX-License-Identifier: MIT
+import fs from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import { definePlugin } from '@expressive-code/core';
 import { h } from '@expressive-code/core/hast';
 import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers';
-import slintGrammar from './slint.tmLanguage.json';
+
+const __dirname = fileURLToPath(new URL('.', import.meta.url));
+const slintGrammar = JSON.parse(fs.readFileSync(new URL('./slint.tmLanguage.json', import.meta.url), 'utf-8'));
 
 function sideBorder() {
   return definePlugin({

@@ -4,6 +4,7 @@
   "version": "0.0.1",
   "description": "Slint文档中文版",
   "author": "Neutriny <neutriny@yeah.net> (https://github.com/Neutriny)",
+  "license": "MIT",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",

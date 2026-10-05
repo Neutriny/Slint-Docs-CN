@@ -29,11 +29,15 @@ const images = import.meta.glob<{ default: ImageMetadata }>(
 let imageMeta: ImageMetadata | undefined = undefined;
 if (imagePath.length > 0) {
     if (!images[imagePath]) {
-        throw new Error(
-            `"${imagePath}" does not exist in glob: "src/assets/generated/*.{jpeg,jpg,png,gif}"`,
+        // The screenshots under src/assets/generated are produced by the
+        // Slint doc generator and are not checked into this port. Render the
+        // code block on its own instead of failing the whole build.
+        console.warn(
+            `[CodeSnippetMD] "${imagePath}" does not exist in glob: "src/assets/generated/*.{jpeg,jpg,png,gif}"; skipping screenshot.`,
         );
+    } else {
+        imageMeta = (await images[imagePath]()).default;
     }
-    imageMeta = (await images[imagePath]()).default;
 }
 const imageCSS = `image-block ${needsBackground ? "screenshot-container" : ""}`;
 ---

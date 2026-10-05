@@ -3,6 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import starlightSidebarTopics from 'starlight-sidebar-topics';
 
 import {
   BASE_PATH,
@@ -60,200 +61,203 @@ export default defineConfig({
           href: 'https://docs.slint.dev/latest/docs/slint/',
         },
       ],
-      plugins: [],
-      sidebar: [
-        {
-          label: '指南',
-          link: '',
-          items: [
-            { label: '总览', slug: 'index' },
-            'guide/getting-started',
-            {
-              label: '开发',
-              collapsed: true,
-              items: [{ autogenerate: { directory: 'guide/development' } }],
-            },
-            {
-              label: '平台',
-              collapsed: true,
-              items: [{ autogenerate: { directory: 'guide/platforms' } }],
-            },
-            {
-              label: '工具',
-              collapsed: true,
-              items: [
-                'guide/tooling/vscode',
-                'guide/tooling/manual-setup',
-                {
-                  label: '其他编辑器',
-                  collapsed: true,
-                  items: [
-                    'guide/tooling/kate',
-                    'guide/tooling/qt-creator',
-                    'guide/tooling/helix',
-                    'guide/tooling/neo-vim',
-                    'guide/tooling/sublime-text',
-                    'guide/tooling/jetbrains-ide',
-                    'guide/tooling/zed',
-                  ],
-                },
-                'guide/tooling/live-preview',
-                'guide/tooling/slint-viewer',
-                'guide/tooling/figma-inspector',
-                'guide/tooling/ai-coding-assistants',
-              ],
-            },
-            {
-              label: '语言概念',
-              collapsed: true,
-              items: [
-                {
-                  autogenerate: {
-                    directory: 'guide/language/concepts',
+      plugins: [
+        starlightSidebarTopics([
+          {
+            label: '指南',
+            link: '',
+            icon: 'open-book',
+            items: [
+              { label: '总览', slug: 'index' },
+              'guide/getting-started',
+              {
+                label: '开发',
+                collapsed: true,
+                items: [{ autogenerate: { directory: 'guide/development' } }],
+              },
+              {
+                label: '平台',
+                collapsed: true,
+                items: [{ autogenerate: { directory: 'guide/platforms' } }],
+              },
+              {
+                label: '工具',
+                collapsed: true,
+                items: [
+                  'guide/tooling/vscode',
+                  'guide/tooling/manual-setup',
+                  {
+                    label: '其他编辑器',
+                    collapsed: true,
+                    items: [
+                      'guide/tooling/kate',
+                      'guide/tooling/qt-creator',
+                      'guide/tooling/helix',
+                      'guide/tooling/neo-vim',
+                      'guide/tooling/sublime-text',
+                      'guide/tooling/jetbrains-ide',
+                      'guide/tooling/zed',
+                    ],
                   },
-                },
-                {
-                  autogenerate: {
-                    directory: 'guide/language/coding',
+                  'guide/tooling/live-preview',
+                  'guide/tooling/slint-viewer',
+                  'guide/tooling/figma-inspector',
+                  'guide/tooling/ai-coding-assistants',
+                ],
+              },
+              {
+                label: '语言概念',
+                collapsed: true,
+                items: [
+                  {
+                    autogenerate: {
+                      directory: 'guide/language/concepts',
+                    },
+                  },
+                  {
+                    autogenerate: {
+                      directory: 'guide/language/coding',
+                    },
                   },
                 ],
               },
-            },
-            {
-              label: '实验性功能',
-              collapsed: true,
-              items: [{ autogenerate: { directory: 'guide/experimental' } }],
-            },
-            {
-              label: '后端与渲染器',
-              collapsed: true,
-              items: [
-                {
-                  autogenerate: { directory: 'guide/backends-and-renderers' },
+              {
+                label: '实验性功能',
+                collapsed: true,
+                items: [{ autogenerate: { directory: 'guide/experimental' } }],
+              },
+              {
+                label: '后端与渲染器',
+                collapsed: true,
+                items: [
+                  {
+                    autogenerate: { directory: 'guide/backends-and-renderers' },
+                  },
                 ],
               },
-            },
-          ],
-        },
-        {
-          label: '参考',
-          link: 'reference/overview',
-          items: [
-            'reference/overview',
-            {
-              label: '语言规范',
-              collapsed: true,
-              items: [
-                'reference/language',
-                'reference/language/source-files',
-                'reference/language/lexical-structure',
-                'reference/language/file-structure',
-                'reference/language/name-resolution',
-                'reference/language/imports',
-                'reference/language/exports',
-                'reference/language/properties',
-                'reference/language/bindings',
-                'reference/language/two-way-bindings',
-                'reference/language/expressions',
-                'reference/language/operators',
-                'reference/language/type-conversions',
-                'reference/language/statements',
-                'reference/language/functions',
-                'reference/language/callbacks',
-                'reference/language/deprecation',
-                'reference/language/evaluation-and-purity',
-                'reference/language/structs-and-enums',
-                'reference/language/globals',
-                'reference/language/repetition-and-conditional-elements',
-                'reference/language/container-components',
-                'reference/language/animations',
-                'reference/language/states-and-transitions',
-                'reference/language/geometry',
-              ],
-            },
-            {
-              label: '类型',
-              collapsed: true,
-              items: [
-                'reference/property-types',
-                'reference/property-types/numeric-types',
-                'reference/property-types/strings',
-                'reference/property-types/colors-and-brushes',
-                'reference/property-types/images',
-                'reference/property-types/builtin-structs',
-                'reference/property-types/builtin-enums',
-                'reference/property-types/arrays-and-models',
-                'reference/property-types/other-types',
-              ],
-            },
-            {
-              label: '元素',
-              collapsed: true,
-              items: [
-                'reference/common',
-                {
-                  label: '基础可视化元素',
-                  items: [
-                    {
-                      autogenerate: {
-                        directory: 'generated/reference/elements',
+            ],
+          },
+          {
+            label: '参考',
+            link: 'reference/overview',
+            icon: 'information',
+            items: [
+              'reference/overview',
+              {
+                label: '语言规范',
+                collapsed: true,
+                items: [
+                  'reference/language',
+                  'reference/language/source-files',
+                  'reference/language/lexical-structure',
+                  'reference/language/file-structure',
+                  'reference/language/name-resolution',
+                  'reference/language/imports',
+                  'reference/language/exports',
+                  'reference/language/properties',
+                  'reference/language/bindings',
+                  'reference/language/two-way-bindings',
+                  'reference/language/expressions',
+                  'reference/language/operators',
+                  'reference/language/type-conversions',
+                  'reference/language/statements',
+                  'reference/language/functions',
+                  'reference/language/callbacks',
+                  'reference/language/deprecation',
+                  'reference/language/evaluation-and-purity',
+                  'reference/language/structs-and-enums',
+                  'reference/language/globals',
+                  'reference/language/repetition-and-conditional-elements',
+                  'reference/language/container-components',
+                  'reference/language/animations',
+                  'reference/language/states-and-transitions',
+                  'reference/language/geometry',
+                ],
+              },
+              {
+                label: '类型',
+                collapsed: true,
+                items: [
+                  'reference/property-types',
+                  'reference/property-types/numeric-types',
+                  'reference/property-types/strings',
+                  'reference/property-types/colors-and-brushes',
+                  'reference/property-types/images',
+                  'reference/property-types/builtin-structs',
+                  'reference/property-types/builtin-enums',
+                  'reference/property-types/arrays-and-models',
+                  'reference/property-types/other-types',
+                ],
+              },
+              {
+                label: '元素',
+                collapsed: true,
+                items: [
+                  'reference/common',
+                  {
+                    label: '基础可视化元素',
+                    items: [
+                      {
+                        autogenerate: {
+                          directory: 'generated/reference/elements',
+                        },
                       },
-                    },
-                  ],
-                },
-              },
-              {
-                label: '手势',
-                items: [
+                    ],
+                  },
                   {
-                    autogenerate: {
-                      directory: 'generated/reference/gestures',
-                    },
+                    label: '手势',
+                    items: [
+                      {
+                        autogenerate: {
+                          directory: 'generated/reference/gestures',
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    label: '拖放',
+                    items: [
+                      {
+                        autogenerate: {
+                          directory: 'generated/reference/drag-and-drop',
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    label: '键盘输入',
+                    items: [
+                      'reference/keyboard-input/overview',
+                      'reference/keyboard-input/focusscope',
+                      'reference/keyboard-input/textinput',
+                      'reference/keyboard-input/textinputinterface',
+                    ],
+                  },
+                  {
+                    label: '基础布局',
+                    items: [
+                      'reference/layouts/overview',
+                      'reference/layouts/gridlayout',
+                      'reference/layouts/horizontallayout',
+                      'reference/layouts/verticallayout',
+                      'reference/layouts/flexboxlayout',
+                    ],
+                  },
+                  {
+                    label: 'Window',
+                    items: [
+                      {
+                        autogenerate: {
+                          directory: 'generated/reference/window',
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    label: '非可视化元素',
+                    items: [{ label: 'Timer', slug: 'reference/timer' }],
                   },
                 ],
-              },
-              {
-                label: '拖放',
-                items: [
-                  {
-                    autogenerate: {
-                      directory: 'generated/reference/drag-and-drop',
-                    },
-                  },
-                ],
-              },
-              {
-                label: '键盘输入',
-                items: [
-                  'reference/keyboard-input/overview',
-                  'reference/keyboard-input/focusscope',
-                  'reference/keyboard-input/textinput',
-                  'reference/keyboard-input/textinputinterface',
-                ],
-              },
-              {
-                label: '基础布局',
-                items: [
-                  'reference/layouts/overview',
-                  'reference/layouts/gridlayout',
-                  'reference/layouts/horizontallayout',
-                  'reference/layouts/verticallayout',
-                  'reference/layouts/flexboxlayout',
-                ],
-              },
-              {
-                label: 'Window',
-                items: [
-                  {
-                    autogenerate: {
-                      directory: 'generated/reference/window',
-                    },
-                  },
-                ],
-              },
-              {
-                label: '非可视化元素',
-                items: [{ label: 'Timer', slug: 'reference/timer' }],
               },
               {
                 label: '命名空间',
@@ -327,54 +331,56 @@ export default defineConfig({
                 ],
               },
             ],
-          ],
-        },
-        {
-          label: '教程',
-          link: 'tutorial/quickstart',
-          items: [
-            'tutorial/quickstart',
-            'tutorial/getting_started',
-            'tutorial/memory_tile',
-            'tutorial/polishing_the_tile',
-            'tutorial/from_one_to_multiple_tiles',
-            'tutorial/creating_the_tiles',
-            'tutorial/game_logic',
-            'tutorial/running_in_a_browser',
-            'tutorial/ideas_for_the_reader',
-            'tutorial/conclusion',
-          ],
-        },
-        {
-          label: '语言集成',
-          link: 'language-integrations',
-          items: [
-            {
-              label: 'C++ ↗',
-              link: sidebarHref(CPP_BASE_URL),
-              attrs: { target: '_blank' },
-            },
-            {
-              label: 'Rust ↗',
-              link: sidebarHref(
-                'https://docs.slint.dev/latest/docs/rust/slint/',
-              ),
-              attrs: { target: '_blank' },
-            },
-            {
-              label: 'TypeScript ↗',
-              badge: { text: 'beta', variant: 'caution' },
-              link: sidebarHref(NODEJS_BASE_URL),
-              attrs: { target: '_blank' },
-            },
-            {
-              label: 'Python ↗',
-              badge: { text: 'beta', variant: 'caution' },
-              link: sidebarHref(PYTHON_BASE_URL),
-              attrs: { target: '_blank' },
-            },
-          ],
-        },
+          },
+          {
+            label: '教程',
+            link: 'tutorial/quickstart',
+            icon: 'seti:todo',
+            items: [
+              'tutorial/quickstart',
+              'tutorial/getting_started',
+              'tutorial/memory_tile',
+              'tutorial/polishing_the_tile',
+              'tutorial/from_one_to_multiple_tiles',
+              'tutorial/creating_the_tiles',
+              'tutorial/game_logic',
+              'tutorial/running_in_a_browser',
+              'tutorial/ideas_for_the_reader',
+              'tutorial/conclusion',
+            ],
+          },
+          {
+            label: '语言集成',
+            link: 'language-integrations',
+            icon: 'seti:html',
+            items: [
+              {
+                label: 'C++ ↗',
+                link: sidebarHref(CPP_BASE_URL),
+                attrs: { target: '_blank' },
+              },
+              {
+                label: 'Rust ↗',
+                link: sidebarHref(
+                  'https://docs.slint.dev/latest/docs/rust/slint/',
+                ),
+                attrs: { target: '_blank' },
+              },
+              {
+                label: 'TypeScript ↗',
+                badge: { text: 'beta', variant: 'caution' },
+                link: sidebarHref(NODEJS_BASE_URL),
+                attrs: { target: '_blank' },
+              },
+              {
+                label: 'Python ↗',
+                badge: { text: 'beta', variant: 'caution' },
+                link: sidebarHref(PYTHON_BASE_URL),
+                attrs: { target: '_blank' },
+              },
+            ],
+          },
+        ]),
       ],
     }),
   ],

@@ -33,7 +33,10 @@ jobs:
           cache: pnpm
 
       - name: Install dependencies
-        run: pnpm config set onlyBuiltDependencies esbuild sharp --location project && pnpm install --frozen-lockfile
+        run: |
+          echo "onlyBuiltDependencies[]=esbuild" >> .npmrc
+          echo "onlyBuiltDependencies[]=sharp" >> .npmrc
+          pnpm install --frozen-lockfile
 
       - name: Build
         run: pnpm build

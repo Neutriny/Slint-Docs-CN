@@ -1,6 +1,6 @@
 ---
 title: 颜色与画刷
-description: Color literals, the Colors namespace, color functions, and gradients.
+description: 颜色字面量、Colors 命名空间、颜色函数和渐变。
 SC: true
 ---
 
@@ -14,7 +14,7 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
 import LangRefLink from '../../../../components/LangRefLink.astro';
 import NotInSC from '../../../../components/NotInSC.astro';
 
-Color literals follow the syntax of CSS:
+颜色字面量遵循 CSS 语法：
 
 ```slint
 export component Example inherits Window {
@@ -24,47 +24,46 @@ export component Example inherits Window {
 }
 ```
 
-In addition to plain colors, many elements have properties that are of type `brush` instead of `color`.
-A brush is a type that can be either a color or gradient. The brush is then used to fill an element or
-draw the outline.
+除了纯色之外，许多元素具有 `brush` 类型而非 `color` 类型的属性。
+画刷是一种可以是颜色或渐变的类型。然后使用画刷填充元素或
+绘制轮廓。
 
-CSS color names are in scope wherever a `color` or `brush` value is expected, including struct
-fields, array elements and function arguments. Elsewhere, access colors from the `Colors` namespace.
+在任何需要 `color` 或 `brush` 值的地方，CSS 颜色名称都在作用域内，包括结构体
+字段、数组元素和函数参数。在其他地方，从 `Colors` 命名空间访问颜色。
 
 <SC>
 
-## Types
+## 类型
 
-A `color` is a color with red, green, blue, and alpha channels.
-The default `color` is transparent. \{#sls.type.color}
+`color` 是具有红、绿、蓝和 alpha 通道的颜色。
+默认 `color` 是 transparent。 \{#sls.type.color}
 
-The alpha channel is the color's opacity: it decides how much of the content
-underneath shows through where the color is painted, from 0 for a fully
-transparent color to 255 for a fully opaque one. \{#sls.type.color.alpha}
+alpha 通道是颜色的不透明度：它决定在绘制颜色的位置下方内容
+透出多少，从 0 表示完全透明的颜色到 255 表示完全不透明的颜色。 \{#sls.type.color.alpha}
 
-A `brush` defines the content that an element is filled with.
-The default `brush` is transparent. \{#sls.type.brush}
+`brush` 定义用于填充元素的内容。
+默认 `brush` 是 transparent。 \{#sls.type.brush}
 
-A `color` converts to a `brush`: the brush that fills with that single color. \{#sls.type.convert.color-to-brush}
+`color` 可以转换为 `brush`：即用该单一颜色填充的画刷。 \{#sls.type.convert.color-to-brush}
 
 ### brush
 
 <SlintProperty propName="brush" typeName="brush" defaultValue='transparent'>
 <NotInSC>
-A brush is a special type that can be either initialized from a `color` or a `gradient`.
+画刷是一种特殊类型，可以从 `color` 或 `gradient` 初始化。
 
 <Tabs syncKey="dev-language">
 <TabItem label="Rust" icon="seti:rust">
-In Rust, properties or struct fields of the brush type are mapped to <LangRefLink lang="rust-slint" relpath="enum.Brush.html">`slint::Brush`</LangRefLink>.
+在 Rust 中，brush 类型的属性或结构体字段映射到 <LangRefLink lang="rust-slint" relpath="enum.Brush.html">`slint::Brush`</LangRefLink>。
 </TabItem>
 <TabItem label="C++" icon="seti:cpp">
-In C++, properties or struct fields of the brush type are mapped to <LangRefLink lang="cpp" relpath="api/slint/brush/">`slint::Brush`</LangRefLink>.
+在 C++ 中，brush 类型的属性或结构体字段映射到 <LangRefLink lang="cpp" relpath="api/slint/brush/">`slint::Brush`</LangRefLink>。
 </TabItem>
 <TabItem label="NodeJS" icon="node">
-In JavaScript, properties or struct fields of the brush type are mapped to an object that implements the <LangRefLink lang="nodejs" relpath="api/interfaces/brush/">Brush interface</LangRefLink>.
+在 JavaScript 中，brush 类型的属性或结构体字段映射到实现 <LangRefLink lang="nodejs" relpath="api/interfaces/brush/">Brush 接口</LangRefLink> 的对象。
 </TabItem>
 <TabItem label="Python" icon="seti:python">
-In Python, properties or struct fields of the brush type are mapped to <LangRefLink lang="python" relpath="api/classes/brush/">`Brush`</LangRefLink>.
+在 Python 中，brush 类型的属性或结构体字段映射到 <LangRefLink lang="python" relpath="api/classes/brush/">`Brush`</LangRefLink>。
 </TabItem>
 </Tabs>
 </NotInSC>
@@ -74,29 +73,29 @@ In Python, properties or struct fields of the brush type are mapped to <LangRefL
 
 <SlintProperty propName="color" typeName="color" defaultValue='transparent'>
 <NotInSC>
-RGB color with an alpha channel, with 8 bit precision for each channel. CSS color names as well as the hexadecimal color encodings are supported, such as #RRGGBBAA or #RGB.
+具有 alpha 通道的 RGB 颜色，每个通道 8 位精度。支持 CSS 颜色名称以及十六进制颜色编码，例如 #RRGGBBAA 或 #RGB。
 
 <Tabs syncKey="dev-language">
 <TabItem label="Rust" icon="seti:rust">
-In Rust, properties or struct fields of the color type are mapped to <LangRefLink lang="rust-slint" relpath="struct.Color.html">`slint::Color`</LangRefLink>.
+在 Rust 中，color 类型的属性或结构体字段映射到 <LangRefLink lang="rust-slint" relpath="struct.Color.html">`slint::Color`</LangRefLink>。
 </TabItem>
 <TabItem label="C++" icon="seti:cpp">
-In C++, properties or struct fields of the color type are mapped to <LangRefLink lang="cpp" relpath="api/slint/color/">`slint::Color`</LangRefLink>.
+在 C++ 中，color 类型的属性或结构体字段映射到 <LangRefLink lang="cpp" relpath="api/slint/color/">`slint::Color`</LangRefLink>。
 </TabItem>
 <TabItem label="NodeJS" icon="node">
-In JavaScript, properties or struct fields of the color type are mapped to an object that implements the <LangRefLink lang="nodejs" relpath="api/interfaces/rgbacolor/">RgbaColor interface</LangRefLink>.
+在 JavaScript 中，color 类型的属性或结构体字段映射到实现 <LangRefLink lang="nodejs" relpath="api/interfaces/rgbacolor/">RgbaColor 接口</LangRefLink> 的对象。
 </TabItem>
 <TabItem label="Python" icon="seti:python">
-In Python, properties or struct fields of the color type are mapped to <LangRefLink lang="python" relpath="api/classes/color/">`Color`</LangRefLink>.
+在 Python 中，color 类型的属性或结构体字段映射到 <LangRefLink lang="python" relpath="api/classes/color/">`Color`</LangRefLink>。
 </TabItem>
 </Tabs>
 </NotInSC>
 </SlintProperty>
 </SC>
 
-## Color Properties
+## 颜色属性
 
-The following properties are exposed:
+公开以下属性：
 
 ### red
 
@@ -106,12 +105,12 @@ The following properties are exposed:
 
 ### alpha
 
-These properties are in the range 0-255.
+这些属性的范围为 0-255。
 
-Use the colors namespace to select colors by their name. For example you can use `Colors.aquamarine` or `Colors.bisque`.
-The entire list of names is very long. You can find a complete list in the [CSS Specification](https://www.w3.org/TR/css-color-3/#svg-color).
+使用 colors 命名空间按名称选择颜色。例如可以使用 `Colors.aquamarine` 或 `Colors.bisque`。
+名称的完整列表非常长。你可以在 [CSS 规范](https://www.w3.org/TR/css-color-3/#svg-color) 中找到完整列表。
 
-These color names are available in scope of `color` and `brush` expressions, as well as in the `Colors` namespace.
+这些颜色名称在 `color` 和 `brush` 表达式的作用域中可用，也在 `Colors` 命名空间中可用。
 
 ```slint no-test
 // Using the Colors namespace
@@ -121,102 +120,102 @@ background: Colors.aquamarine;
 background: aquamarine;
 ```
 
-## Global Color Functions
+## 全局颜色函数
 
 ### rgb(int, int, int) -> color
 
 ### rgba(int, int, int, float) -> color
 
-Return the color as in CSS. Like in CSS, these two functions are actually aliases that can take
-three or four parameters.
+像 CSS 中那样返回颜色。与 CSS 一样，这两个函数实际上是别名，可以接受
+三个或四个参数。
 
-The first 3 parameters can be either number between 0 and 255, or a percentage with a `%` unit.
-The fourth value, if present, is an alpha value between 0 and 1.
+前 3 个参数可以是 0 到 255 之间的数字，或带 `%` 单位的百分比。
+第四个值（如果存在）是 0 到 1 之间的 alpha 值。
 
-Unlike in CSS, the commas are mandatory.
+与 CSS 不同，逗号是必需的。
 
 ### hsv(h: float, s: float, v: float) -> color
 
 ### hsv(h: float, s: float, v: float, a: float) -> color
 
-Returns a color using HSV (Hue, Saturation, Value) coordinates. The hue parameter is a float
-representing degrees (0-360) and wraps around (e.g., 480 becomes 120).
-The saturation, value, and optional alpha parameter are expected to be within the range of 0 and 1.
+使用 HSV（色相、饱和度、明度）坐标返回颜色。色相参数是表示度数的
+浮点数（0-360），并且会环绕（例如 480 变为 120）。
+饱和度、明度和可选的 alpha 参数预计在 0 到 1 的范围内。
 
 ### oklch(l: float, c: float, h: float) -> color
 
 ### oklch(l: float, c: float, h: float, a: float) -> color
 
-Returns a color using the [Oklch color space](https://en.wikipedia.org/wiki/Oklab_color_space) (a perceptually uniform color space).
+使用 [Oklch 颜色空间](https://en.wikipedia.org/wiki/Oklab_color_space)（一种感知均匀的颜色空间）返回颜色。
 
-- `l` (lightness): 0 (black) to 1 (white), or 0% to 100%
-- `c` (chroma): 0 (grayscale) to ~0.4 (vivid), or 0% to 100% (where 100% = 0.4)
-- `h` (hue): 0-360 degrees, or as an angle (e.g., `180deg`, `0.5turn`)
-- `a` (alpha): 0-1, defaults to 1
+- `l`（明度）：0（黑）到 1（白），或 0% 到 100%
+- `c`（色度）：0（灰度）到约 0.4（鲜艳），或 0% 到 100%（其中 100% = 0.4）
+- `h`（色相）：0-360 度，或作为角度（例如 `180deg`、`0.5turn`）
+- `a`（alpha）：0-1，默认为 1
 
-## Color Methods
+## 颜色方法
 
-All colors and brushes define the following methods:
+所有颜色和画刷都定义以下方法：
 
 ### brighter(factor: float) -> brush
 
-Returns a new color derived from this color but has its brightness increased by the specified factor.
-This is done by converting the color to the HSV color space and multiplying the brightness (value) with (1 + factor).
-For example if the factor is 0.5 (or for example 50%) the returned color is 50% brighter. Negative factors
-decrease the brightness.
+返回从此颜色派生的新颜色，但其亮度增加了指定的因子。
+这是通过将颜色转换为 HSV 颜色空间并将亮度（value）乘以 (1 + factor) 来完成的。
+例如，如果因子为 0.5（或例如 50%），返回的颜色亮度提高 50%。负的因子
+会降低亮度。
 
 ### darker(factor: float) -> brush
 
-Returns a new color derived from this color but has its brightness decreased by the specified factor.
-This is done by converting the color to the HSV color space and dividing the brightness (value) by (1 + factor).
-For example if the factor is .5 (or for example 50%) the returned color is 50% darker. Negative factors
-increase the brightness.
+返回从此颜色派生的新颜色，但其亮度减少了指定的因子。
+这是通过将颜色转换为 HSV 颜色空间并将亮度（value）除以 (1 + factor) 来完成的。
+例如，如果因子为 .5（或例如 50%），返回的颜色亮度降低 50%。负的因子
+会提高亮度。
 
 ### mix(other: brush, factor: float) -> brush
 
-Returns a new color that is a mix of this color and `other`. The specified factor is
-clamped to be between `0.0` and `1.0` and then applied to this color, while `1.0 - factor`
-is applied to `other`. For example `red.mix(green, 70%)` will have a stronger tone of red, while
-`red.mix(green, 30%)` will have a stronger tone of green.
+返回一个新颜色，它是此颜色与 `other` 的混合。指定的因子
+被限制在 `0.0` 和 `1.0` 之间，然后应用于此颜色，而 `1.0 - factor`
+应用于 `other`。例如 `red.mix(green, 70%)` 会有更强的红色调，而
+`red.mix(green, 30%)` 会有更强的绿色调。
 
 ### transparentize(factor: float) -> brush
 
-Returns a new color with the opacity decreased by `factor`.
-The transparency is obtained by multiplying the alpha channel by `(1 - factor)`.
+返回一个新颜色，其不透明度减少了 `factor`。
+透明度通过将 alpha 通道乘以 `(1 - factor)` 获得。
 
 ### with-alpha(alpha: float) -> brush
 
-Returns a new color with the alpha value set to `alpha` (between 0 and 1)
+返回一个新颜色，其 alpha 值设置为 `alpha`（介于 0 和 1 之间）
 
 ### to-hsv() -> \{ hue: float, saturation: float, value: float, alpha: float }
 
-Converts this color to the HSV color space and returns a struct with the `hue`, `saturation`, `value`,
-and `alpha` fields. `hue` is between 0 and 360 while `saturation`, `value`, and `alpha` are between 0 and 1.
+将此颜色转换为 HSV 颜色空间，并返回带有 `hue`、`saturation`、`value`
+和 `alpha` 字段的结构体。`hue` 介于 0 和 360 之间，而 `saturation`、`value` 和 `alpha` 介于 0 和 1 之间。
 
 ### to-oklch() -> \{ lightness: float, chroma: float, hue: float, alpha: float }
 
-Converts this color to the [Oklch color space](https://en.wikipedia.org/wiki/Oklab_color_space) and returns a struct with the `lightness`, `chroma`, `hue`,
-and `alpha` fields. `lightness` is between 0 and 1, `chroma` is typically between 0 and ~0.4,
-`hue` is between 0 and 360, and `alpha` is between 0 and 1.
+将此颜色转换为 [Oklch 颜色空间](https://en.wikipedia.org/wiki/Oklab_color_space)，并返回带有 `lightness`、`chroma`、`hue`
+和 `alpha` 字段的结构体。`lightness` 介于 0 和 1 之间，`chroma` 通常在 0 到约 0.4 之间，
+`hue` 介于 0 和 360 之间，`alpha` 介于 0 和 1 之间。
 
-## Linear Gradients
+## 线性渐变
 
-Linear gradients describe smooth, colorful surfaces. They're specified using an angle and a series of
-color stops. The colors will be linearly interpolated between the stops, aligned to an imaginary line
-that is rotated by the specified angle. This is called a linear gradient and is specified using the
-`@linear-gradient` macro with the following signature:
+线性渐变描述平滑、多彩的表面。它们使用一个角度和一系列
+色标来指定。颜色将在色标之间线性插值，对齐到一条由指定角度
+旋转的假想线。这称为线性渐变，使用
+`@linear-gradient` 宏指定，签名如下：
 
 ### @linear-gradient(angle, color percentage, color percentage, ...)
 
-The first parameter to the macro is an angle (see <Link type="Types"/>). The gradient line's starting point
-will be rotated by the specified value.
+宏的第一个参数是一个角度（参见 <Link type="Types"/>）。渐变线的起点
+将按指定的值旋转。
 
-Following the initial angle is one or multiple color stops, describe as a space separated pair of a
-`color` value and a `percentage`. The color specifies which value the linear color interpolation should
-reach at the specified percentage along the axis of the gradient.
+初始角度之后是一个或多个色标，描述为由空格分隔的
+`color` 值和 `percentage` 组成的对。颜色指定线性颜色插值在
+渐变的轴上到达指定百分比时应达到的值。
 
-The following example shows a rectangle that's filled with a linear gradient that starts with a light blue
-color, interpolates to a very light shade in the center and finishes with an orange tone:
+以下示例显示一个矩形，它填充了线性渐变，从浅蓝色
+开始，在中心插值到非常浅的色调，最后以橙色结束：
 
 <CodeSnippetMD imagePath="/src/assets/generated/gradients-linear.png" scale="3" imageWidth="200" imageHeight="200" imageAlt='Linear Gradient Example'>
 ```slint
@@ -233,24 +232,24 @@ export component Example inherits Window {
 ````
 </CodeSnippetMD>
 
-## Radial Gradients
+## 径向渐变
 
-Radial gradients are like linear gradients but the colors are interpolated circularly instead of
-along a line. To describe a radial gradient, use the `@radial-gradient` macro with the following signature:
+径向渐变类似线性渐变，但颜色沿圆周插值，而不是
+沿一条线。要描述径向渐变，请使用 `@radial-gradient` 宏，签名如下：
 
 ### @radial-gradient(circle [radius] [at x y], color percentage, color percentage, ...)
 
-The first parameter to the macro is always `circle` because only circular gradients are supported.
-The optional `radius` value sets the circle radius in the element's local coordinate space.
-The `radius` value is a length expression.
-If omitted, the radius is half of the element's bounding box diagonal.
+宏的第一个参数始终是 `circle`，因为只支持圆形渐变。
+可选的 `radius` 值在元素的本地坐标空间中设置圆半径。
+`radius` 值是长度表达式。
+如果省略，半径是元素边界框对角线的一半。
 
-The optional `at` parameter sets the gradient center in the element's local coordinate space.
-The `x` and `y` values are length expressions.
-If omitted, the gradient is centered in the element's bounding box.
-You can use a radius without `at` to keep the default center with an explicit radius.
+可选的 `at` 参数在元素的本地坐标空间中设置渐变中心。
+`x` 和 `y` 值是长度表达式。
+如果省略，渐变居中于元素的边界框。
+你可以使用不带 `at` 的 radius，以显式半径保持默认中心。
 
-Example:
+示例：
 
 <CodeSnippetMD imagePath="/src/assets/generated/gradients-radial.png" scale="3" imageWidth="200" imageHeight="200" imageAlt='Radial Gradient Example'>
 ```slint
@@ -265,7 +264,7 @@ export component Example inherits Window {
 
 </CodeSnippetMD>
 
-You can set a center and radius explicitly:
+你可以显式设置中心和半径：
 
 ```slint
 export component Example inherits Rectangle {
@@ -273,26 +272,26 @@ export component Example inherits Rectangle {
 }
 ```
 
-## Conic Gradients
+## 锥形渐变
 
-Conic gradients are gradients where the color transitions rotate around a center point (like the angle on a color wheel).
-To describe a conic gradient, use the `@conic-gradient` macro with the following signature:
+锥形渐变是颜色过渡围绕中心点旋转的渐变（就像色轮上的角度）。
+要描述锥形渐变，请使用 `@conic-gradient` 宏，签名如下：
 
 ### @conic-gradient([from angle] [at x y], color angle, color angle, ...)
 
-The conic gradient is described by a series of color stops, each consisting of a color and an angle.
-The angle specifies where the color is placed along the circular sweep (0deg to 360deg).
-Colors are interpolated between the stops along the circular path.
+锥形渐变由一系列色标描述，每个色标由一种颜色和一个角度组成。
+角度指定颜色沿圆周扫描放置的位置（0deg 到 360deg）。
+颜色沿圆周路径在色标之间插值。
 
-The optional `from` parameter specifies the starting angle of the gradient rotation.
-If omitted, the gradient starts at 0deg (pointing upward). For example, `from 90deg` rotates
-the entire gradient 90 degrees clockwise.
+可选的 `from` 参数指定渐变旋转的起始角度。
+如果省略，渐变从 0deg 开始（指向正上方）。例如，`from 90deg` 将
+整个渐变顺时针旋转 90 度。
 
-The optional `at` parameter sets the gradient center in the element's local coordinate space.
-The `x` and `y` values are length expressions.
-If omitted, the gradient is centered in the element's bounding box.
+可选的 `at` 参数在元素的本地坐标空间中设置渐变中心。
+`x` 和 `y` 值是长度表达式。
+如果省略，渐变居中于元素的边界框。
 
-Example:
+示例：
 
 <CodeSnippetMD imagePath="/src/assets/generated/gradients-conic.png" scale="3" imageWidth="200" imageHeight="200" imageAlt='Conic Gradient Example'>
 ```slint
@@ -306,9 +305,9 @@ export component Example inherits Window {
 ```
 </CodeSnippetMD>
 
-This creates a color wheel effect with red at the top (0deg/360deg), green at 120 degrees, and blue at 240 degrees.
+这会创建一个色轮效果，红色在顶部（0deg/360deg），绿色在 120 度，蓝色在 240 度。
 
-You can also rotate the gradient using the `from` parameter:
+你也可以使用 `from` 参数旋转渐变：
 
 <CodeSnippetMD imagePath="/src/assets/generated/gradients-conic-rotated.png" scale="3" imageWidth="200" imageHeight="200" imageAlt='Rotated Conic Gradient Example'>
 ```slint
@@ -322,9 +321,9 @@ export component Example inherits Window {
 ```
 </CodeSnippetMD>
 
-This rotates the same color wheel 90 degrees clockwise, so red starts at the right (90deg) instead of the top.
+这将同一个色轮顺时针旋转 90 度，因此红色从右侧（90deg）开始，而不是顶部。
 
-You can set the center explicitly:
+你可以显式设置中心：
 
 ```slint
 export component Example inherits Rectangle {
@@ -332,11 +331,11 @@ export component Example inherits Rectangle {
 }
 ```
 
-:::note[Known Limitation]
-Negative angles cannot be used directly in conic gradients (e.g., `#ff0000 -90deg`).
-Instead, use one of these workarounds:
+:::note[已知限制]
+负角度不能直接用于锥形渐变（例如 `#ff0000 -90deg`）。
+请改用以下变通方法之一：
 
-- Convert to positive angles: `-90deg` → `270deg`
-- Use variables: `property <angle> start: -90deg;` then use `start` in the gradient
-- Use explicit subtraction: `#ff0000 0deg - 90deg`
+- 转换为正角度：`-90deg` → `270deg`
+- 使用变量：`property <angle> start: -90deg;` 然后在渐变中使用 `start`
+- 使用显式减法：`#ff0000 0deg - 90deg`
   :::

@@ -9,165 +9,163 @@ import Link from '@slint/common-files/src/components/Link.astro';
 import LangRefLink from '@slint/common-files/src/components/LangRefLink.astro';
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-In Slint, a backend is the module that encapsulates the interaction with the operating system,
-in particular the windowing sub-system. Multiple backends can be compiled into Slint and one
-backend is selected for use at run-time on application start-up. You can configure Slint without
-any built-in backends, and instead develop your own backend by implementing Slint's platform
-abstraction and window adapter interfaces.
+在 Slint 中，后端（backend）是封装与操作系统（尤其是窗口子系统）交互的模块。
+多个后端可以编译进 Slint，并在应用程序启动时在运行时选择使用其中一个。
+你可以配置 Slint 不包含任何内置后端，而是通过实现 Slint 的平台抽象和窗口适配器接口来开发你自己的后端。
 
-The backend is selected as follows:
+后端的选择方式如下：
 
-1. The developer provides their own backend and sets it programmatically.
-2. Else, the backend is selected by the value of the `SLINT_BACKEND` environment variable, if it is set.
-3. Else, backends are tried for initialization in the following order:
+1. 开发者提供自己的后端并以编程方式设置它。
+2. 否则，如果设置了 `SLINT_BACKEND` 环境变量，则由它的值来选择后端。
+3. 否则，按以下顺序尝试初始化各个后端：
    1. qt
    2. winit
    3. linuxkms
 
-The following table provides an overview over the built-in backends. For more information about the backend's
-capabilities and their configuration options, see the respective sub-pages.
+下表概述了内置后端。有关后端能力及其配置选项的更多信息，请参见各自
+的子页面。
 
-| Backend Name | Description                                                                                             | Built-in by Default         |
-| ------------ | ------------------------------------------------------------------------------------------------------- | --------------------------- |
-| qt           | The Qt library is used for windowing system integration, rendering, and native widget styling.          | On Linux if Qt is installed |
-| winit        | The [winit](https://docs.rs/winit/latest/winit/) library is used to interact with the windowing system. | Yes                         |
-| linuxkms     | Linux's KMS/DRI infrastructure is used for rendering. No windowing system or compositor is required.    | No                          |
+| 后端名称 | 描述                                                                 | 默认内置                   |
+| -------- | -------------------------------------------------------------------- | -------------------------- |
+| qt       | 使用 Qt 库进行窗口系统集成、渲染和原生控件样式。                     | 在 Linux 上，如果安装了 Qt |
+| winit    | 使用 [winit](https://docs.rs/winit/latest/winit/) 库与窗口系统交互。 | 是                         |
+| linuxkms | 使用 Linux 的 KMS/DRI 基础设施进行渲染。不需要窗口系统或合成器。     | 否                         |
 
-A backend is also responsible for selecting a renderer. See the [Renderers](#renderers) section
-for an overview. Override the choice of renderer by adding the name to the `SLINT_BACKEND` environment variable, separated by a dash.
-For example if you want to choose the `winit` backend in combination with the `software` renderer, set `SLINT_BACKEND=winit-software`.
-Similarly, `SLINT_BACKEND=linuxkms-skia` chooses the `linuxkms` backend and then instructs the LinuxKMS backend to use Skia for rendering.
+后端还负责选择渲染器。有关概述请参见[渲染器](#renderers)一节。通过在 `SLINT_BACKEND` 环境变量中追加名称（用短横线分隔）来覆盖渲染器的选择。
+例如，如果你想选择 `winit` 后端并结合 `software` 渲染器，请设置 `SLINT_BACKEND=winit-software`。
+类似地，`SLINT_BACKEND=linuxkms-skia` 选择 `linuxkms` 后端，然后指示 LinuxKMS 后端使用 Skia 进行渲染。
 
-## Renderers
+<a id="renderers"></a>
 
-Slint comes with different renderers that use different techniques and libraries to turn
-your scene of elements into pixels. Slint picks a renderer based on your choice of backend
-as well as the features you've selected at Slint compilation time.
+## 渲染器
+
+Slint 自带不同的渲染器，它们使用不同的技术和库将你的元素场景转换为像素。
+Slint 会根据你对后端的选择以及你在 Slint 编译时选择的 feature 来挑选渲染器。
 
 <Tabs syncKey="dev-language">
   <TabItem label="Rust" icon="seti:rust">
-    With Rust, enable one of the{' '}
+    使用 Rust 时，启用其中一个{' '}
     <LangRefLink lang="rust-slint" relpath="docs/cargo_features/">
       `renderer-*`
     </LangRefLink>{' '}
-    features.
+    feature。
   </TabItem>
   <TabItem label="C++" icon="seti:cpp">
-    When building Slint from source, check the{' '}
+    从源代码构建 Slint 时，请查看{' '}
     <LangRefLink lang="cpp" relpath="cmake/#features">
       `SLINT_FEATURE_RENDERER_*`
     </LangRefLink>{' '}
-    cmake options to enable one of the available renderers.
+    cmake 选项，以启用某个可用的渲染器。
   </TabItem>
   <TabItem label="NodeJS" icon="node">
-    With Node.js, all renderers are built into the packages.
+    使用 Node.js 时，所有渲染器都已内置在包中。
   </TabItem>
   <TabItem label="Python" icon="seti:python">
-    With Python, all renderers are built into the packages.
+    使用 Python 时，所有渲染器都已内置在包中。
   </TabItem>
 </Tabs>
 
-### Qt Renderer
+### Qt 渲染器
 
-The Qt renderer comes with the <Link type="QtBackend" label="Qt backend" /> and renders using QPainter:
+Qt 渲染器随 <Link type="QtBackend" label="Qt 后端" /> 一起提供，并使用 QPainter 渲染：
 
-- Software rendering, no GPU acceleration.
-- Available only in the Qt backend.
+- 软件渲染，无 GPU 加速。
+- 仅在 Qt 后端中可用。
 
-### Software Renderer
+### 软件渲染器
 
-- Runs anywhere, highly portable, and lightweight.
-- Software rendering, no GPU acceleration.
-- Supports partial rendering.
-- Supports line-by-line rendering (Rust only).
-- Suitable for Microcontrollers.
-- Some features haven't been implemented yet:
-  - No support for rotations or scaling.
-  - No support for `drop-shadow-*` properties.
-  - No support for `border-radius` in combination with `clip: true`.
-  - No text stroking/outlining.
-- Text rendering currently limited to western scripts.
-- `Path` elements in `no_std` environments requires enabling the `software-renderer-path` feature.
-- Available in `no_std` environments as well as in the <Link type="WinitBackend" label="Winit backend" /> and <Link type="LinuxkmsBackend" label="LinuxKMS backend" />.
-- Public <LangRefLink lang="rust-slint" relpath="platform/software_renderer/">Rust</LangRefLink> and <LangRefLink lang="cpp" relpath="api/slint/platform/softwarerenderer/">C++</LangRefLink> API.
+- 可在任何地方运行，可移植性高且轻量。
+- 软件渲染，无 GPU 加速。
+- 支持局部渲染。
+- 支持逐行渲染（仅 Rust）。
+- 适用于微控制器。
+- 有些特性尚未实现：
+  - 不支持旋转或缩放。
+  - 不支持 `drop-shadow-*` 属性。
+  - 不支持 `border-radius` 与 `clip: true` 组合使用。
+  - 不支持文本描边/轮廓。
+- 文本渲染目前限于西方文字。
+- 在 `no_std` 环境中的 `Path` 元素需要启用 `software-renderer-path` feature。
+- 可在 `no_std` 环境中使用，也可在 <Link type="WinitBackend" label="Winit 后端" /> 和 <Link type="LinuxkmsBackend" label="LinuxKMS 后端" /> 中使用。
+- 公开的 <LangRefLink lang="rust-slint" relpath="platform/software_renderer/">Rust</LangRefLink> 和 <LangRefLink lang="cpp" relpath="api/slint/platform/softwarerenderer/">C++</LangRefLink> API。
 
-### FemtoVG Renderer
+### FemtoVG 渲染器
 
-- Highly portable.
-- GPU acceleration with OpenGL (required). When selected as `renderer-femtovg-wgpu`, GPU acceleration with Metal, Vulkan, and Direct3D.
-- Text and path rendering quality sometimes sub-optimal.
-- Available in the <Link type="WinitBackend" label="Winit backend" /> and <Link type="LinuxkmsBackend" label="LinuxKMS backend" />.
-- Public <LangRefLink lang="rust-slint" relpath="platform/femtovg_renderer/">Rust</LangRefLink> API.
+- 可移植性高。
+- 使用 OpenGL 的 GPU 加速（必需）。当选择为 `renderer-femtovg-wgpu` 时，使用 Metal、Vulkan 和 Direct3D 的 GPU 加速。
+- 文本和路径渲染质量有时不够理想。
+- 可在 <Link type="WinitBackend" label="Winit 后端" /> 和 <Link type="LinuxkmsBackend" label="LinuxKMS 后端" /> 中使用。
+- 公开的 <LangRefLink lang="rust-slint" relpath="platform/femtovg_renderer/">Rust</LangRefLink> API。
 
-### Vello Renderer
+### Vello 渲染器
 
-- GPU acceleration with Metal, Vulkan, and Direct3D, through [Vello](https://github.com/linebender/vello)'s compute pipelines on WGPU.
-- Experimental: it's never selected automatically, not even when it's the only renderer compiled in.
-  Select it by setting `SLINT_BACKEND=winit-vello` or `SLINT_BACKEND=linuxkms-vello`.
-- Requires a GPU that supports compute shaders. There's no software fallback.
-- Available in the <Link type="WinitBackend" label="Winit backend" /> and <Link type="LinuxkmsBackend" label="LinuxKMS backend" />.
+- 通过 [Vello](https://github.com/linebender/vello) 在 WGPU 上的计算管线，实现使用 Metal、Vulkan 和 Direct3D 的 GPU 加速。
+- 实验性：它从不会被自动选中，即使它是唯一编译进来的渲染器时也是如此。
+  通过设置 `SLINT_BACKEND=winit-vello` 或 `SLINT_BACKEND=linuxkms-vello` 来选择它。
+- 需要支持计算着色器的 GPU。没有软件回退。
+- 可在 <Link type="WinitBackend" label="Winit 后端" /> 和 <Link type="LinuxkmsBackend" label="LinuxKMS 后端" /> 中使用。
 
-### Skia Renderer
+### Skia 渲染器
 
-- Sophisticated GPU acceleration with OpenGL, Metal, Vulkan, and Direct3D.
-- Heavy disk-footprint compared to other renderers.
-- Available in the <Link type="WinitBackend" label="Winit backend" /> and <Link type="LinuxkmsBackend" label="LinuxKMS backend" />.
-- Public <LangRefLink lang="cpp" relpath="api/slint/platform/skiarenderer/">C++</LangRefLink> API.
+- 使用 OpenGL、Metal、Vulkan 和 Direct3D 的精巧 GPU 加速。
+- 与其他渲染器相比，磁盘占用较大。
+- 可在 <Link type="WinitBackend" label="Winit 后端" /> 和 <Link type="LinuxkmsBackend" label="LinuxKMS 后端" /> 中使用。
+- 公开的 <LangRefLink lang="cpp" relpath="api/slint/platform/skiarenderer/">C++</LangRefLink> API。
 
-#### Troubleshooting Skia
+#### Skia 故障排除
 
-You may run into compile issues when enabling the Skia renderer. The following sections track
-issues we're aware of and how to resolve them.
+启用 Skia 渲染器时，你可能会遇到编译问题。以下各节记录了我们
+已知的问题以及如何解决它们。
 
-##### Compilation error on Windows with messages about multiple source files and unused linker input
+##### 在 Windows 上编译出错，消息涉及多个源文件和未使用的链接器输入
 
-You may see compile errors that contain this error and warning from clang-cl:
+你可能会看到包含来自 clang-cl 的以下错误和警告的编译错误：
 
 ```
  clang-cl: error: cannot specify '/Foobj/src/fonts/fontmgr_win.SkFontMgr_indirect.obj' when compiling multiple source files
  clang-cl: warning: Hausmann/.cargo/registry/src/index.crates.io-6f17d22bba15001f/skia-bindings-0.66.0/skia: 'linker' input unused [-Wunused-command-line-argument]
 ```
 
-The Skia sources are checked out in a path that's managed by Cargo, the Rust package manager.
-The error happens when that path contains spaces. By default that's in `%HOMEPATH%\.cargo`,
-which contains spaces if the login name contains spaces. To resolve this issue, set the `CARGO_HOME`
-environment variable to a path without spaces, such as `c:\cargo_home`.
+Skia 源代码被检出到由 Rust 包管理器 Cargo 管理的路径中。
+当该路径包含空格时就会发生这个错误。默认情况下它位于 `%HOMEPATH%\.cargo`，
+如果登录名包含空格，该路径就会包含空格。要解决这个问题，请把 `CARGO_HOME`
+环境变量设置为一个不含空格的路径，例如 `c:\cargo_home`。
 
-##### Compilation error on Windows about a file name that's too long
+##### 在 Windows 上编译出错，文件名称过长
 
-You may see this error when Skia is built from source:
+当从源代码构建 Skia 时，你可能会看到这个错误：
 
 ```
  GetFullPathNameA(../../../../../../../../cargo/registry/src/index.crates.io-1949cf8c6b5b557f/skia-bindings-0.99.0/skia/third_party/externals/harfbuzz/src/...): The filename or extension is too long.
  ninja: build stopped: subcommand failed.
 ```
 
-The Skia build resolves the include paths that the compiler reports with a Windows API that's
-limited to 260 characters, and it resolves them relative to the build directory. Deep paths for
-the Cargo target directory or for `CARGO_HOME` exceed that limit. To resolve this issue, move both
-close to the root of the drive, by setting the `CARGO_TARGET_DIR` environment variable to `c:\t`
-and the `CARGO_HOME` environment variable to `c:\cargo_home`.
+Skia 构建使用一个限制为 260 个字符的 Windows API 来解析编译器报告的 include 路径，
+并且是相对于构建目录来解析它们。Cargo 目标目录或 `CARGO_HOME` 的深层路径
+超出了该限制。要解决这个问题，请把两者都移动到
+接近驱动器根目录的位置：将 `CARGO_TARGET_DIR` 环境变量设置为 `c:\t`，
+并将 `CARGO_HOME` 环境变量设置为 `c:\cargo_home`。
 
-##### Compilation error when compiling for ARMv7 with hardware floating-point support
+##### 为带硬件浮点支持的 ARMv7 编译时出错
 
-You may see compiler errors that contain this message:
+你可能会看到包含以下消息的编译错误：
 
 ```
  Unable to generate bindings: ClangDiagnostic("/home/runner/work/slint/yocto-sdk/sysroots/cortexa15t2hf-neon-poky-linux-gnueabi/usr/include/gnu/stubs-32.h:7:11: fatal error: 'gnu/stubs-soft.h' file not found\n")
 ```
 
-The Skia build invokes Clang in multiple occasions and is sensitive to compiler flags
-that affect the floating point abi (such as `-mfloat-abi=hard`), as they affect header file lookups.
+Skia 构建会在多处调用 Clang，并且对影响浮点 ABI 的编译器标志
+（例如 `-mfloat-abi=hard`）很敏感，因为它们会影响头文件查找。
 
-The solve this, set the `BINDGEN_EXTRA_CLANG_ARGS` environment variable to contain the same
-flags that your build environment also passes to the C++ compiler.
+要解决这个问题，请设置 `BINDGEN_EXTRA_CLANG_ARGS` 环境变量，使其包含与你的构建环境
+传给 C++ 编译器的相同标志。
 
-For example, if you're building against a Yocto SDK, then you can find these flags in the
-`OECORE_TUNE_CCARGS` environment variable.
+例如，如果你针对 Yocto SDK 构建，那么可以在
+`OECORE_TUNE_CCARGS` 环境变量中找到这些标志。
 
-##### Compilation error when linking on Windows
+##### 在 Windows 上链接时出错
 
-You may see compiler errors that contain this message:
+你可能会看到包含以下消息的编译错误：
 
 ```
  error: linking with `link.exe` failed: exit code: 1120
@@ -178,44 +176,44 @@ You may see compiler errors that contain this message:
   skia.lib(skia.SkNWayCanvas.obj) : error LNK2001: unresolved external symbol __std_find_trivial_8
 ```
 
-The Skia build requires the use of Microsoft Visual Studio 2022 as compiler. Make sure to have the latest patches
-to the compiler installed.
+Skia 构建要求使用 Microsoft Visual Studio 2022 作为编译器。请确保安装了编译器的
+最新补丁。
 
-##### Compilation error on macOS:
+##### 在 macOS 上编译出错：
 
-The build fails and somewhere in the log output you see this message:
+构建失败，并且在日志输出的某处你会看到这条消息：
 
 ```
 cargo:warning=xcrun: error: unable to lookup item 'PlatformVersion' from command line tools installation
 cargo:warning=xcrun: error: unable to lookup item 'PlatformVersion' in SDK '/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk'
 ```
 
-This is due the build process calling `xcrun --show-sdk-platform-version` to determine the SDK version, and that's unfortunately not
-supported by the Xcode command line tools. To solve this issue, run the following command once:
+这是因为构建过程调用了 `xcrun --show-sdk-platform-version` 来确定 SDK 版本，而遗憾的是
+Xcode 命令行工具并不支持这一点。要解决这个问题，请运行以下命令一次：
 
 ```
 sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer
 ```
 
-##### Compilation error when cross-compiling with Yocto:
+##### 使用 Yocto 交叉编译时出错：
 
-The build fails and you see this message in the logs:
+构建失败，并且你在日志中看到这条消息：
 
 ```
     error occurred: unknown target `arm-org-linux-gnueabi`
 ```
 
-This is caused by an unfortunate combination of updates of the `cc` crate and the way the Skia Rust bindings
-use it. We anticipate solving this in a future release. In the meantime, you can work around this by downgrading
-the `cc` crate in your `Cargo.lock` file:
+这是由 `cc` crate 的更新与 Skia Rust 绑定使用它的方式之间的一个不幸组合造成的。
+我们预计会在未来的版本中解决这个问题。在此期间，你可以通过在你的 `Cargo.lock` 文件中
+降级 `cc` crate 来绕过它：
 
 ```
 cargo update -p cc --precise 1.1.31
 ```
 
-##### The application doesn't start on Windows but exits immediately
+##### 应用程序在 Windows 上无法启动，而是立即退出
 
-The build succeeds, but running the `.exe` on Windows terminates immediately without an error message.
+构建成功，但在 Windows 上运行 `.exe` 会立即终止，且没有错误消息。
 
-This might be caused by missing MSVC runtime libraries. To solve this install the
+这可能是由缺少 MSVC 运行时库引起的。要解决这个问题，请安装
 [Microsoft Visual C++ Redistributable package](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist)

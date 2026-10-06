@@ -1,6 +1,6 @@
 ---
 title: StandardListView
-description: StandardListView api.
+description: StandardListView API。
 ---
 
 import SlintProperty from '@slint/common-files/src/components/SlintProperty.astro';
@@ -28,20 +28,20 @@ export component Example inherits Window {
 ````
 </CodeSnippetMD>
 
-Like ListView, but with a default delegate, and a `model` property.
+类似 ListView，但带有默认委托和一个 `model` 属性。
 
-## Properties
+## 属性
 
-Same as <Link type="ListView" />, and in addition:
+与 <Link type="ListView" /> 相同，另外还有：
 
 ### current-item
 <SlintProperty typeName="int" propName="current-item" defaultValue="-1" propertyVisibility="in-out">
-The index of the currently active item. -1 mean none is selected, which is the default
+当前活动项的索引。-1 表示未选中任何项，这是默认值
 </SlintProperty>
 
 ### model
 <SlintProperty typeName="struct" structName="StandardListViewItem" propName="model" defaultValue="[]">
-The model.
+模型。
 
 ```slint 'model: [{ text: "Blue" }, { text: "Red" }, { text: "Green" }];'
 StandardListView {
@@ -51,17 +51,17 @@ StandardListView {
 
 </SlintProperty>
 
-## Functions
+## 函数
 
 ### set-current-item(int)
 
-Sets the current item by the specified index and brings it into view.
+通过指定的索引设置当前项，并将其滚动到可见区域。
 
-## Callbacks
+## 回调
 
 ### current-item-changed(int)
 
-Emitted when the current item has changed because the user modified it
+当当前项因用户修改而发生变化时发出
 
 ```slint {3-5}
 StandardListView {
@@ -74,4 +74,4 @@ StandardListView {
 
 ### item-pointer-event(int, PointerEvent, Point)
 
-Emitted on any mouse pointer event similar to `TouchArea`. Arguments are item index associated with the event, the `PointerEvent` itself and the mouse position within the listview.
+在任何鼠标指针事件上发出，类似于 `TouchArea`。参数为与该事件关联的项索引、`PointerEvent` 本身以及 listview 内的鼠标位置。

@@ -1,6 +1,6 @@
 ---
 title: Spinner
-description: Spinner api.
+description: Spinner API。
 ---
 
 import SlintProperty from '@slint/common-files/src/components/SlintProperty.astro';
@@ -22,22 +22,22 @@ export component Example inherits Window {
 
 </CodeSnippetMD>
 
-The `Spinner` informs the user about the status of an on-going operation, such as loading data from the network. It provides the same properties as
+`Spinner` 向用户告知正在进行操作的进度状态，例如从网络加载数据。它提供与
 
-<Link type="ProgressIndicator" /> but differs in shape.
+<Link type="ProgressIndicator" /> 相同的属性，但形状不同。
 
-## Properties
+## 属性
 
 ## indeterminate
 
 <SlintProperty typeName="bool" propName="indeterminate" defaultValue="false">
-  Set to true if the progress of the operation cannot be determined by value.
+  如果无法通过值确定操作的进度，则设置为 true。
 </SlintProperty>
 
 ## progress
 
 <SlintProperty typeName="float" propName="progress" defaultValue="0" >
-Percentage of completion, as value between 0 and 1. Values less than 0 or greater than 1 are capped.
+完成百分比，为 0 到 1 之间的值。小于 0 或大于 1 的值将被限制。
 
 ```slint "progress: 0.5;"
 Spinner {

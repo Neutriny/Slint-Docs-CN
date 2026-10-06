@@ -10,36 +10,38 @@ import Link from '@slint/common-files/src/components/Link.astro';
 import { Image } from 'astro:assets';
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-Slint supports building Android applications in both Rust and C++.
-See also <LangRefLink lang="rust-slint" relpath="android/">android module</LangRefLink> in the Rust API documentation.
+Slint 支持用 Rust 和 C++ 构建 Android 应用程序。
+另请参见 Rust API 文档中的 <LangRefLink lang="rust-slint" relpath="android/">android 模块</LangRefLink>。
 
-## Project Setup
+<a id="project-setup"></a>
+
+## 项目设置
 
 <Tabs syncKey="dev-language">
 <TabItem label="Rust" icon="seti:rust">
 
-Slint uses the [android-activity crate](https://github.com/rust-mobile/android-activity) as the interface to
-the operating system, which is re-exported as `slint::android::android_activity`.
+Slint 使用 [android-activity crate](https://github.com/rust-mobile/android-activity) 作为与
+操作系统交互的接口，它以 `slint::android::android_activity` 的形式重新导出。
 
-To get started, follow these steps:
+要开始，请遵循以下步骤：
 
-First, your project needs to be a library crate. Add the following to your `Cargo.toml`:
+首先，你的项目需要是一个 library crate。将以下内容添加到你的 `Cargo.toml`：
 
 ```toml
 [lib]
 crate_type = ["cdylib"]
 ```
 
-Select the version of android-activity you want to use:
+选择你想使用的 android-activity 版本：
 
 ```toml
 [dependencies]
 slint = { version = "1.18.0", features = ["backend-android-activity-06"] }
 ```
 
-It is safe to enable this feature unconditionally.
+无条件启用这个 feature 是安全的。
 
-Then, in your `lib.rs`, add this function:
+然后，在你的 `lib.rs` 中添加这个函数：
 
 ```rs
 #[cfg(target_os = "android")]
@@ -51,18 +53,19 @@ fn android_main(app: slint::android::AndroidApp) {
 }
 ```
 
-You can also add an Android event
-([`android_activity::PollEvent`](https://docs.rs/android-activity/latest/android_activity/enum.PollEvent.html))
-listener by replacing the call to `slint::android::init` with `slint::android::init_with_event_listener`.
+你还可以通过把对 `slint::android::init` 的调用替换为 `slint::android::init_with_event_listener`，
+来添加一个 Android 事件
+（[`android_activity::PollEvent`](https://docs.rs/android-activity/latest/android_activity/enum.PollEvent.html)）
+监听器。
 
-Next, we're going to set up the environment to build the project.
+接下来，我们将设置用于构建项目的环境。
 
 </TabItem>
 <TabItem label="C++" icon="seti:cpp">
 
-A Slint C++ Android application is a standard CMake project (see the <Link type="getting_started" label="getting started tutorial" />) with an Android-specific Gradle wrapper.
-The C++ code lives at the project root and works for both desktop and Android builds.
-The only Android-specific difference in CMake is building a shared library instead of an executable:
+一个 Slint C++ Android 应用程序是一个标准 CMake 项目（参见 <Link type="getting_started" label="入门教程" />），外加一个 Android 专用的 Gradle wrapper。
+C++ 代码位于项目根目录，同时适用于桌面和 Android 构建。
+CMake 中唯一 Android 特有的区别是构建共享库而不是可执行文件：
 
 ```cmake
 if(ANDROID)
@@ -72,13 +75,13 @@ else()
 endif()
 ```
 
-When Slint is configured with the Android NDK toolchain, its `CMakeLists.txt` automatically:
+当使用 Android NDK 工具链配置 Slint 时，它的 `CMakeLists.txt` 会自动：
 
-- Detects the Android target and maps the ABI to the correct Rust target.
-- Selects Slint's Android backend and a suitable renderer.
-- Sets the Material style as default.
+- 检测 Android 目标，并将 ABI 映射到正确的 Rust 目标。
+- 选择 Slint 的 Android 后端和合适的渲染器。
+- 将 Material 风格设为默认。
 
-The `android/` subdirectory contains the Gradle project that wraps the CMake build:
+`android/` 子目录包含包装 CMake 构建的 Gradle 项目：
 
 ```
 my-app/
@@ -150,57 +153,57 @@ android {
 ```
 
 :::note[Note]
-The `android:value="app"` must match the CMake library name in `add_library(app SHARED ...)`.
-Mismatches cause the app to crash on startup with `couldn't find "libapp.so"`.
+`android:value="app"` 必须与 `add_library(app SHARED ...)` 中的 CMake 库名匹配。
+不匹配会导致应用在启动时崩溃，并提示 `couldn't find "libapp.so"`。
 :::
 
 </TabItem>
 </Tabs>
 
-## Android Setup
+## Android 环境搭建
 
-The Android development workflow centers around the `adb` command line tool. Use it to connect to
-Android devices and emulators to upload and run applications.
+Android 开发工作流以 `adb` 命令行工具为中心。用它连接到
+Android 设备和模拟器以上传并运行应用程序。
 
-The easiest way to install the Android development environment is to download and install
-[Android Studio](https://developer.android.com/studio). In the settings pane, navigate to the Android
-SDK page and install all SDK versions you need. We recommend to use the latest version available,
-because it can be configured to be backwards-compatible with older versions of Android. The SDK Manager
-is available in the settings in "Languages & Frameworks" > "Android SDK".
+安装 Android 开发环境最简单的方式是下载并安装
+[Android Studio](https://developer.android.com/studio)。在设置面板中，导航到 Android
+SDK 页面并安装你需要的所有 SDK 版本。我们建议使用可用的最新版本，
+因为它可以配置为向后兼容更早版本的 Android。SDK Manager
+可在设置的“Languages & Frameworks” > “Android SDK”中找到。
 
 import androidSdkManager from '/src/assets/android/android_sdk_manager.png';
 
 <Image
   src={androidSdkManager}
   style={{ width: '500px' }}
-  alt="Screenshot Android SDK Manager"
+  alt="Android SDK Manager 截图"
 />
 
-Also note the SDK location on top, this path might have to be used for the `ANDROID_HOME` environment
-variable if the build tools can't detect it automatically.
+还要注意顶部的 SDK 位置；如果构建工具无法自动检测到，可能必须将此路径用于 `ANDROID_HOME` 环境
+变量。
 
-In the SDK Manager, also install:
+在 SDK Manager 中，还要安装：
 
-- The Android NDK (under the "SDK Tools" tab)
-- CMake (under the "SDK Tools" tab)
+- Android NDK（在“SDK Tools”选项卡下）
+- CMake（在“SDK Tools”选项卡下）
 
-Set up these environment variables so the build can find the NDK:
+设置这些环境变量，以便构建能够找到 NDK：
 
 ```sh
 export ANDROID_HOME=$HOME/Android/Sdk
 export ANDROID_NDK_ROOT=$ANDROID_HOME/ndk/<version>
 ```
 
-### Rust Toolchain
+### Rust 工具链
 
-Slint is written in Rust, so a Rust toolchain is needed to compile for Android.
-Install Rust via the [Rust Getting Started Guide](https://www.rust-lang.org/learn/get-started), then add the Android target:
+Slint 是用 Rust 编写的，因此需要 Rust 工具链才能为 Android 编译。
+通过 [Rust 入门指南](https://www.rust-lang.org/learn/get-started)安装 Rust，然后添加 Android 目标：
 
 ```sh
 rustup target add aarch64-linux-android
 ```
 
-Add other targets if you need to support additional ABIs:
+如果你需要支持其他 ABI，请添加其他目标：
 
 ```sh
 rustup target add armv7-linux-androideabi  # armeabi-v7a
@@ -208,94 +211,90 @@ rustup target add x86_64-linux-android     # x86_64 (emulator)
 rustup target add i686-linux-android       # x86 (emulator)
 ```
 
-Add the `platform-tools` directory to your `PATH` so that the `adb` tool is available on the command
-line.
+将 `platform-tools` 目录添加到你的 `PATH`，以便 `adb` 工具能在命令行
+中使用。
 
-To get a list of Android devices, simulators and emulators currently attached to your machine, run
+要获取当前连接到你的机器的 Android 设备、模拟器和仿真器列表，请运行
 
 ```sh
 adb devices
 ```
 
-You can connect to a physical device on the network by using
+你可以通过以下方式连接到网络上的物理设备
 
 ```sh
 adb connect <host>
 ```
 
-The `host` is the IP address of the device; it has to have development mode enabled.
+`host` 是设备的 IP 地址；该设备必须已启用开发模式。
 
-### Virtual Device Setup
+### 虚拟设备设置
 
-We recommend developing using a virtual device first, because it speeds up the development cycle.
-However, eventually you have to also test on a device to make sure that the interface is usable on a
-touch screen and to verify the look and feel.
+我们建议先使用虚拟设备进行开发，因为它能加快开发周期。
+不过，最终你还必须在真实设备上测试，以确保界面在触摸屏上可用，
+并验证外观和手感。
 
-To create and run a virtual device, use the Virtual Device Manager available in Android Studio. You
-can open it from its main screen under "More Actions":
+要创建并运行虚拟设备，请使用 Android Studio 中提供的 Virtual Device Manager。你
+可以从其主界面的“More Actions”下打开它：
 
 import virtualDeviceManagerMenuItem from '/src/assets/android/android_virtual_device_manager_menu.png';
 
 <Image
   src={virtualDeviceManagerMenuItem}
   style={{ width: '500px' }}
-  alt="Screenshot Virtual Device Manager Menu Item"
+  alt="Virtual Device Manager 菜单项截图"
 />
 
-You can create any number of devices with different configurations here:
+你可以在这里创建任意数量、配置各不相同的设备：
 
 import virtualDeviceManager from '/src/assets/android/android_virtual_device_manager.png';
 
 <Image
   src={virtualDeviceManager}
   style={{ width: '500px' }}
-  alt="Screenshot Virtual Device Manager"
+  alt="Virtual Device Manager 截图"
 />
 
-A good approach is to have one device with the minimum API level supported by your application and
-another one with the latest release to make sure it runs on both.
+一个好的做法是准备一台使用你的应用所支持的最低 API 级别的设备，以及
+另一台使用最新版本的设备，以确保它能在两者上运行。
 
-Running virtual devices connect to `adb` automatically.
+运行中的虚拟设备会自动连接到 `adb`。
 
-#### Virtual Keyboard
+#### 虚拟键盘
 
-Depending on the device template you pick, the virtual devices created here might use a
-hardware keyboard by default, which is not helpful for testing your application.
+根据你选择的设备模板，这里创建的虚拟设备默认可能使用
+硬件键盘，这不利于测试你的应用程序。
 
-To fix this, click on the three vertical dots next to the device in the manager to open up the menu
-and select "Show on disk". In the directory displayed, open the file `config.ini` in a text editor.
-Navigate to the line `hw.keyboard=yes` and change it to `hw.keyboard=no`, then
-save the file.
+要解决这个问题，请点击管理器中设备旁边的三个竖点打开菜单，
+选择“Show on disk”。在显示的目录中，用文本编辑器打开文件 `config.ini`。
+找到 `hw.keyboard=yes` 这一行，将其改为 `hw.keyboard=no`，然后
+保存文件。
 
-This brings us to choose a stylus:
+接下来我们选择触控笔：
 
 import virtualKeyboardStylus from '/src/assets/android/android_virtual_keyboard_stylus.png';
 
 <Image
   src={virtualKeyboardStylus}
   style={{ width: '300px' }}
-  alt="Screenshot Stylus Support"
+  alt="触控笔支持截图"
 />
 
-Disable the stylus input in the keyboard settings:
+在键盘设置中禁用触控笔输入：
 
 import keyboardSettings from '/src/assets/android/android_keyboard_settings.png';
 
-<Image
-  src={keyboardSettings}
-  style={{ width: '300px' }}
-  alt="Screenshot Keyboard Settings"
-/>
+<Image src={keyboardSettings} style={{ width: '300px' }} alt="键盘设置截图" />
 
-Select "Write in textfields" in the list and then disable that feature. This enables the
-regular virtual keyboard.
+在列表中选择“Write in textfields”，然后禁用该功能。这会启用
+常规的虚拟键盘。
 
-## Writing Your Application
+## 编写你的应用程序
 
 <Tabs syncKey="dev-language">
 <TabItem label="Rust" icon="seti:rust">
 
-Define your main function and UI in your `lib.rs`:
+在你的 `lib.rs` 中定义主函数和 UI：
 
 ```rs
 #[cfg(target_os = "android")]
@@ -307,18 +306,19 @@ fn android_main(app: slint::android::AndroidApp) {
 }
 ```
 
-You can also add an Android event
-([`android_activity::PollEvent`](https://docs.rs/android-activity/latest/android_activity/enum.PollEvent.html))
-listener by replacing the call to `slint::android::init` with `slint::android::init_with_event_listener`.
+你还可以通过把对 `slint::android::init` 的调用替换为 `slint::android::init_with_event_listener`，
+来添加一个 Android 事件
+（[`android_activity::PollEvent`](https://docs.rs/android-activity/latest/android_activity/enum.PollEvent.html)）
+监听器。
 
 </TabItem>
 <TabItem label="C++" icon="seti:cpp">
 
-On Android, the entry point is `slint_main` instead of `main`.
-Slint provides the actual `android_main` entry point internally,
-and calls your `slint_main` once the platform is initialized.
+在 Android 上，入口点是 `slint_main` 而不是 `main`。
+Slint 在内部提供了实际的 `android_main` 入口点，
+并在平台初始化后调用你的 `slint_main`。
 
-To share a `main.cpp` between desktop and Android builds, use a preprocessor guard:
+要在桌面和 Android 构建之间共享一个 `main.cpp`，请使用预处理器守卫：
 
 ```cpp
 #ifdef __ANDROID__
@@ -335,29 +335,29 @@ int main()
 </TabItem>
 </Tabs>
 
-## Building and Running
+## 构建与运行
 
 <Tabs syncKey="dev-language">
 <TabItem label="Rust" icon="seti:rust">
 
-Slint doesn't require a specific tool to build, upload, and run Android apps written in Rust.
-The app's activity must be `android.app.NativeActivity`, or a subclass of it,
-because that's the activity type Slint's Android backend supports.
-This section covers some common tools that can package such an app.
-None of them needs Android Studio.
+Slint 不要求特定的工具来构建、上传和运行用 Rust 编写的 Android 应用。
+应用的 activity 必须是 `android.app.NativeActivity` 或其子类，
+因为那是 Slint 的 Android 后端所支持的 activity 类型。
+本节介绍一些可以打包此类应用的常用工具。
+它们都不需要 Android Studio。
 
 ### cargo-apk2
 
-[cargo-apk2](https://crates.io/crates/cargo-apk2) builds, signs, and installs the APK from your `Cargo.toml`,
-and can also compile Java and Kotlin sources into it.
-Install it and run your app on the connected device:
+[cargo-apk2](https://crates.io/crates/cargo-apk2) 会从你的 `Cargo.toml` 构建、签名并安装 APK，
+还可以将 Java 和 Kotlin 源代码编译进去。
+安装它，并在已连接的设备上运行你的应用：
 
 ```sh
 cargo install cargo-apk2
 cargo apk2 run --target aarch64-linux-android --lib
 ```
 
-Declare the `NativeActivity` in your `Cargo.toml`:
+在你的 `Cargo.toml` 中声明 `NativeActivity`：
 
 ```toml
 [[package.metadata.android.application.activity]]
@@ -371,115 +371,114 @@ actions = ["android.intent.action.VIEW", "android.intent.action.MAIN"]
 categories = ["android.intent.category.LAUNCHER"]
 ```
 
-Set additional manifest values in the `[package.metadata.android]` table of your `Cargo.toml`.
-See the [cargo-apk2 README](https://github.com/mzdk100/cargo-apk2#manifest) for the available keys.
+在你 `Cargo.toml` 的 `[package.metadata.android]` 表中设置额外的清单值。
+可用的键请参见 [cargo-apk2 README](https://github.com/mzdk100/cargo-apk2#manifest)。
 
-To build a release APK, run `cargo apk2 build --target aarch64-linux-android --lib --release`.
-The APK is then located in `target/release/apk/`.
+要构建 release APK，请运行 `cargo apk2 build --target aarch64-linux-android --lib --release`。
+APK 随后位于 `target/release/apk/`。
 
 ### cargo-apk
 
-[cargo-apk](https://crates.io/crates/cargo-apk) generates the Android manifest,
-including the `NativeActivity`, from your `Cargo.toml`.
-Install it and run your app on the connected device:
+[cargo-apk](https://crates.io/crates/cargo-apk) 会根据你的 `Cargo.toml` 生成 Android 清单，
+包括 `NativeActivity`。
+安装它，并在已连接的设备上运行你的应用：
 
 ```sh
 cargo install cargo-apk
 cargo apk run --target aarch64-linux-android --lib
 ```
 
-Set additional manifest values in the `[package.metadata.android]` table of your `Cargo.toml`.
-See the [cargo-apk README](https://github.com/rust-mobile/cargo-apk/tree/main/cargo-apk#manifest) for the available keys.
+在你 `Cargo.toml` 的 `[package.metadata.android]` 表中设置额外的清单值。
+可用的键请参见 [cargo-apk README](https://github.com/rust-mobile/cargo-apk/tree/main/cargo-apk#manifest)。
 
-To build a release APK, run `cargo apk build --target aarch64-linux-android --lib --release`.
-The APK is then located in `target/release/apk/`.
+要构建 release APK，请运行 `cargo apk build --target aarch64-linux-android --lib --release`。
+APK 随后位于 `target/release/apk/`。
 
-### cargo-ndk and Gradle
+### cargo-ndk 与 Gradle
 
-[cargo-ndk](https://crates.io/crates/cargo-ndk) builds only the native library.
-Gradle, or Android Studio, then packages it like any other Android app.
-Use this setup to add Java or Kotlin code, or to build an Android App Bundle (AAB) for Google Play.
+[cargo-ndk](https://crates.io/crates/cargo-ndk) 只构建原生库。
+然后由 Gradle 或 Android Studio 像打包任何其他 Android 应用一样打包它。
+使用这个方案来添加 Java 或 Kotlin 代码，或为 Google Play 构建 Android App Bundle（AAB）。
 
-Build the library into the `jniLibs` directory of your Gradle project:
+将该库构建到你的 Gradle 项目的 `jniLibs` 目录中：
 
 ```sh
 cargo install cargo-ndk
 cargo ndk -t arm64-v8a -o app/src/main/jniLibs build --release --lib
 ```
 
-Declare a `NativeActivity` in `AndroidManifest.xml`, with `android.app.lib_name` set to your library name.
-The C++ tab of this page shows such a manifest,
-and the [Slint Viewer](https://github.com/slint-ui/slint/tree/master/tools/viewer/android) is a complete example.
+在 `AndroidManifest.xml` 中声明一个 `NativeActivity`，并把 `android.app.lib_name` 设置为你的库名。
+本页的 C++ 选项卡展示了这样一个清单，
+而 [Slint Viewer](https://github.com/slint-ui/slint/tree/master/tools/viewer/android) 是一个完整的示例。
 
 ### xbuild
 
-[xbuild](https://github.com/rust-mobile/xbuild) builds for Android and iOS.
-The release on crates.io (0.2.0) is outdated, so install the git version:
+[xbuild](https://github.com/rust-mobile/xbuild) 可以构建 Android 和 iOS。
+crates.io 上的发布版本（0.2.0）已经过时，因此请安装 git 版本：
 
 ```sh
 cargo install --git https://github.com/rust-mobile/xbuild.git
 ```
 
-The command line tool is called `x`.
-List the connected devices with `x devices`.
-For Android devices it talks to `adb`, so a device you connected with `adb` shows up here too.
+命令行工具名为 `x`。
+用 `x devices` 列出已连接的设备。
+对于 Android 设备，它会与 `adb` 通信，因此你用 `adb` 连接的设备也会出现在这里。
 
-To build your project, navigate to the directory containing your `Cargo.toml` and run
+要构建你的项目，请导航到包含 `Cargo.toml` 的目录并运行
 
 ```sh
 x run --device <id>
 ```
 
-Where `<id>` is shown in `x devices` as the leftmost column and is something like `adb:emulator-1234`
-for virtual Android devices.
-To recompile and test changes, press ctrl-c and run the same command again.
+其中 `<id>` 在 `x devices` 中显示为最左列，对于虚拟 Android 设备来说类似于 `adb:emulator-1234`。
+要重新编译并测试更改，请按 ctrl-c 并再次运行相同的命令。
 
-If `x run` doesn't work, run `x doctor` to check that xbuild finds all the tools it needs.
+如果 `x run` 不起作用，请运行 `x doctor` 检查 xbuild 是否找到了它需要的所有工具。
 
-To build an APK for distribution, use something like
+要构建用于分发的 APK，请使用类似这样的命令
 
 ```sh
 x build --platform android --arch arm64 --format apk --release
 ```
 
-The APK is then located in `target/x/release/android/<name>.apk`.
-Run `x build --help` for the other formats.
+APK 随后位于 `target/x/release/android/<name>.apk`。
+运行 `x build --help` 查看其他格式。
 
 </TabItem>
 <TabItem label="C++" icon="seti:cpp">
 
-Connect a device or start an emulator, then:
+连接设备或启动模拟器，然后：
 
 ```sh
 ./gradlew installDebug
 ```
 
-This builds the native library (Rust + C++),
-packages it into an APK,
-and installs it on the connected device.
+这会构建原生库（Rust + C++），
+将其打包进 APK，
+并安装到已连接的设备上。
 
 :::note[Note]
-The first build takes longer because it compiles Slint and the Skia renderer from source.
-Subsequent builds are faster thanks to Cargo's incremental compilation.
+首次构建耗时更长，因为它会从源代码编译 Slint 和 Skia 渲染器。
+得益于 Cargo 的增量编译，后续构建会更快。
 :::
 
-### View Logs
+### 查看日志
 
 ```sh
 adb logcat -s "slint"
 ```
 
-### Release Builds
+### Release 构建
 
 ```sh
 ./gradlew assembleRelease
 ```
 
-The APK is in `app/build/outputs/apk/release/`.
+APK 位于 `app/build/outputs/apk/release/`。
 
-### Multiple ABIs
+### 多个 ABI
 
-To build for multiple ABIs, add them to `abiFilters` in `build.gradle.kts`:
+要为多个 ABI 构建，请把它们添加到 `build.gradle.kts` 中的 `abiFilters`：
 
 ```kotlin
 ndk {
@@ -487,33 +486,33 @@ ndk {
 }
 ```
 
-Each ABI requires the corresponding Rust target to be installed,
-and triggers a separate Rust compilation that increases build time.
+每个 ABI 都需要安装对应的 Rust 目标，
+并会触发一次单独的 Rust 编译，从而增加构建时间。
 
-### Troubleshooting
+### 故障排除
 
 #### `Rust target not installed`
 
-Run `rustup target add aarch64-linux-android` (or the target matching your ABI).
+运行 `rustup target add aarch64-linux-android`（或与你的 ABI 匹配的目标）。
 
 #### `ANDROID_NDK_ROOT not set`
 
-The NDK path must be available to the Rust build.
-Set it as an environment variable or ensure the NDK is installed via Android Studio's SDK Manager.
+NDK 路径必须对 Rust 构建可用。
+将其设置为环境变量，或确保已通过 Android Studio 的 SDK Manager 安装 NDK。
 
-#### Build fails with Skia errors
+#### 构建因 Skia 错误而失败
 
-The Skia renderer requires `clang` to be available on your host system.
-Install it with your system package manager.
+Skia 渲染器要求你的主机系统上有可用的 `clang`。
+使用你的系统包管理器安装它。
 
-#### App crashes on startup
+#### 应用在启动时崩溃
 
-Check `adb logcat` for errors.
-Common causes:
+检查 `adb logcat` 中的错误。
+常见原因：
 
-- The library name in `AndroidManifest.xml` doesn't match the CMake target name.
-- The `slint_main` function is missing (it must be `extern "C"`).
-- The API level is below 26.
+- `AndroidManifest.xml` 中的库名与 CMake 目标名不匹配。
+- 缺少 `slint_main` 函数（它必须是 `extern "C"`）。
+- API 级别低于 26。
 
 </TabItem>
 </Tabs>

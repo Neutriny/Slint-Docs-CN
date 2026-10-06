@@ -7,62 +7,63 @@ import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
 import Link from '@slint/common-files/src/components/Link.astro';
 import LangRefLink from '@slint/common-files/src/components/LangRefLink.astro';
 
-When building a Slint application in Rust or C++,
-`.slint` files are normally compiled ahead of time into native code.
-This means every UI change requires recompiling and restarting the application.
+在 Rust 或 C++ 中构建 Slint 应用程序时，
+`.slint` 文件通常会预先编译为原生代码。
+这意味着每次 UI 更改都需要重新编译并重启应用程序。
 
-The **live preview** feature lets your running application watch `.slint` files on disk
-and reload them automatically when they change.
-Your business logic stays connected, so you can iterate on the UI without restarting.
+**实时预览**功能让你正在运行的应用程序监视磁盘上的 `.slint` 文件，
+并在它们更改时自动重新加载。
+你的业务逻辑保持连接，因此你无需重启即可迭代 UI。
 
-It's the same live preview as the one in <Link type="VSCode" label="VS Code" />,
-the <Link type="SlintLSP" label="Slint LSP" />, and the <Link type="SlintViewer" label="Slint Viewer" />.
-The same interpreter loads and renders your `.slint` files, so the UI looks and behaves the same.
-What differs is the surroundings:
-here the preview runs inside your application, wired up to your business logic.
+它与 <Link type="VSCode" label="VS Code" />、
 
-## How It Works
+<Link type="SlintLSP" label="Slint LSP" /> 和
+<Link type="SlintViewer" label="Slint Viewer" /> 中的实时预览相同。
+同一个解释器加载并渲染你的 `.slint` 文件，因此 UI 的外观和行为都相同。
+不同之处在于环境： 这里的预览在你的应用程序内部运行，并与你的业务逻辑相连。
 
-When live preview is enabled,
-The Slint compiler no longer compiles your components ahead-of-time, but generates an interface that uses the Slint interpreter at runtime.
-It reloads `.slint` files from disk whenever they change.
-The application keeps running during reloads,
-and properties, callbacks, and models are preserved.
-If a `.slint` file has a syntax error, the previous version stays on screen until the error is fixed.
+## 工作原理
 
-If you change the Slint API that the native code interacts with, for example renaming a property or callback used from Rust or C++, the application may terminate.
-Recompile and restart to pick up those changes.
+启用实时预览后，
+Slint 编译器不再提前编译你的组件，而是生成一个在运行时使用 Slint 解释器的接口。
+每当 `.slint` 文件更改时，它都会从磁盘重新加载这些文件。
+应用程序在重新加载期间保持运行，
+属性、回调和模型都会保留。
+如果某个 `.slint` 文件存在语法错误，则之前的版本会保持在屏幕上，直到错误被修复。
 
-This feature is intended for development only.
-Don't ship release builds with live preview enabled.
+如果你更改了原生代码所交互的 Slint API，例如重命名从 Rust 或 C++ 使用的属性或回调，应用程序可能会终止。
+请重新编译并重启以应用这些更改。
 
-## Setup
+此功能仅用于开发。
+不要在启用实时预览的情况下发布正式版本。
+
+## 设置
 
 <Tabs>
 <TabItem label="Rust" icon="seti:rust">
 
-Live preview requires the `live-preview` Cargo feature and the `SLINT_LIVE_PREVIEW` environment variable.
+实时预览需要 `live-preview` Cargo 特性以及 `SLINT_LIVE_PREVIEW` 环境变量。
 
-Build your application with both:
+在构建应用程序时同时使用两者：
 
 ```bash
 SLINT_LIVE_PREVIEW=1 cargo run --features slint/live-preview
 ```
 
-Don't add `live-preview` to the `[features]` section of your `Cargo.toml`.
-Use the `--features` flag on the command line instead,
-so it stays out of your regular builds.
+不要将 `live-preview` 添加到 `Cargo.toml` 的 `[features]` 部分。
+请改用命令行上的 `--features` 标志，
+以便它不会出现在你的常规构建中。
 
-See the <LangRefLink lang="rust-slint" relpath="docs/cargo_features/">`live-preview` feature documentation</LangRefLink> for more details.
+更多详情请参阅 <LangRefLink lang="rust-slint" relpath="docs/cargo_features/">`live-preview` 特性文档</LangRefLink>。
 
 </TabItem>
 <TabItem label="C++" icon="seti:cpp">
 
-Live preview for C++ requires building Slint from source with the interpreter enabled.
+C++ 的实时预览需要使用启用解释器的 Slint 源码构建。
 
 <Steps>
 
-1. **Build Slint from source** with the `SLINT_FEATURE_LIVE_PREVIEW` CMake option enabled:
+1. **从源码构建 Slint**，并启用 `SLINT_FEATURE_LIVE_PREVIEW` CMake 选项：
 
    ```bash
    mkdir build && cd build
@@ -70,18 +71,18 @@ Live preview for C++ requires building Slint from source with the interpreter en
    cmake --build .
    ```
 
-2. **Compile your application** with the `SLINT_LIVE_PREVIEW` environment variable set:
+2. **编译你的应用程序**，并设置 `SLINT_LIVE_PREVIEW` 环境变量：
 
    ```bash
    SLINT_LIVE_PREVIEW=1 cmake --build path/to/your/build
    ```
 
-3. **Run your application.**
-   Slint loads `.slint` files from disk and reloads them whenever you save changes.
+3. **运行你的应用程序。**
+   Slint 会从磁盘加载 `.slint` 文件，并在你保存更改时重新加载它们。
 
 </Steps>
 
-See the <LangRefLink lang="cpp" relpath="live-preview/">C++ live preview documentation</LangRefLink> for more details.
+更多详情请参阅 <LangRefLink lang="cpp" relpath="live-preview/">C++ 实时预览文档</LangRefLink>。
 
 </TabItem>
 </Tabs>

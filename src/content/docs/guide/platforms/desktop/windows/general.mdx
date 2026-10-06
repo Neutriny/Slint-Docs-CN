@@ -5,33 +5,33 @@ description: Windows 平台指南
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-We test Slint on these Windows versions and architectures:
+我们在以下 Windows 版本和架构上测试 Slint：
 
-| Operating System | Architecture    |
-| ---------------- | --------------- |
-| Windows 10       | x86-64          |
-| Windows 11       | x86-64, aarch64 |
+| 操作系统   | 架构            |
+| ---------- | --------------- |
+| Windows 10 | x86-64          |
+| Windows 11 | x86-64, aarch64 |
 
-## Handle the Console Window
+## 处理控制台窗口
 
-When you run an application, a console window is displayed by [default](https://learn.microsoft.com/en-us/cpp/build/reference/subsystem-specify-subsystem?view=msvc-170).
+运行应用程序时，[默认](https://learn.microsoft.com/en-us/cpp/build/reference/subsystem-specify-subsystem?view=msvc-170)会显示一个控制台窗口。
 
-To disable the console, specify `WINDOWS` as a subsystem.
+要禁用控制台，请将 `WINDOWS` 指定为子系统。
 
-When you run the application from the command line, if the subsystem is set to `WINDOWS`, it will no longer output `stdout`. If you need `stdout`, consider using `FreeConsole()`.
+从命令行运行应用程序时，如果子系统设置为 `WINDOWS`，它将不再输出 `stdout`。如果你需要 `stdout`，可以考虑使用 `FreeConsole()`。
 
-For more details, see [#3235](https://github.com/slint-ui/slint/issues/3235).
+更多细节请参见 [#3235](https://github.com/slint-ui/slint/issues/3235)。
 
 <Tabs syncKey="dev-language">
 <TabItem label="Rust" icon="seti:rust">
 
-Add the code to the top of the .rs file which contains `fn main()`:
+将以下代码添加到包含 `fn main()` 的 .rs 文件顶部：
 
 ```rust
 #![windows_subsystem = "windows"]
 ```
 
-If you want to keep console output in debug mode:
+如果你想在 debug 模式下保留控制台输出：
 
 ```rust
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
@@ -40,7 +40,7 @@ If you want to keep console output in debug mode:
 </TabItem>
 <TabItem label="C++" icon="seti:cpp">
 
-Select the `WINDOWS` subsystem by setting the [`WIN32_EXECUTABLE`](https://cmake.org/cmake/help/latest/prop_tgt/WIN32_EXECUTABLE.html#prop_tgt:WIN32_EXECUTABLE) target property on your executable target:
+通过在你的可执行目标上设置 [`WIN32_EXECUTABLE`](https://cmake.org/cmake/help/latest/prop_tgt/WIN32_EXECUTABLE.html#prop_tgt:WIN32_EXECUTABLE) 目标属性来选择 `WINDOWS` 子系统：
 
 ```cmake
 add_executable(my_program ...)
@@ -50,22 +50,21 @@ set_property(TARGET my_program APPEND PROPERTY WIN32_EXECUTABLE TRUE)
 </TabItem>
 
 <TabItem label="Python" icon="seti:python">
-  Change the extension of your Python script from `.py` to `.pyw`. The default
-  Python interpreter associated with Python files then launches without a
-  console window. Alternatively, use `pythonw.exe` instead of `python.exe` to
-  launch your Python script.
+  将 Python 脚本的扩展名从 `.py` 改为 `.pyw`。这样与 Python 文件关联的默认
+  Python 解释器就会在没有控制台窗口的情况下启动。或者，使用 `pythonw.exe` 而不是
+  `python.exe` 来启动你的 Python 脚本。
 </TabItem>
 
 </Tabs>
 
-## Rust: Stack Overflows
+## Rust：栈溢出
 
-When developing Rust applications on Windows, you might sooner or later observe the program aborting with `STATUS_STACK_OVERFLOW`,
-especially in debug builds. This is a known issue that's a combination of a high demand for stack space and MSVC defaulting to
-a stack size for the main thread that's significantly smaller compared to other operating systems.
+在 Windows 上开发 Rust 应用程序时，你迟早可能会观察到程序以 `STATUS_STACK_OVERFLOW` 中止，
+尤其是在 debug 构建中。这是一个已知问题，是栈空间需求高与 MSVC 默认给主线程设置的栈大小
+相比其他操作系统明显更小共同造成的。
 
-You can fix this by configuring the linker. Create a [`.cargo\config.toml`](https://doc.rust-lang.org/cargo/reference/config.html#configuration)
-file in your project (note the `.cargo` sub-directory) with the following contents:
+你可以通过配置链接器来解决。在你的项目中创建一个 [`.cargo\config.toml`](https://doc.rust-lang.org/cargo/reference/config.html#configuration)
+文件（注意是 `.cargo` 子目录），内容如下：
 
 ```toml
 [target.x86_64-pc-windows-msvc]

@@ -6,66 +6,66 @@ description: 把 Figma 变量导出为 Slint 设计令牌
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import LangRefLink from '@slint/common-files/src/components/LangRefLink.astro';
 
-## Introduction
+## 简介
 
-The "Figma to Slint" plugin bridges the gap between Figma designs and Slint user interfaces. It provides two primary functionalities:
+"Figma to Slint" 插件弥合了 Figma 设计与 Slint 用户界面之间的差距。它提供两大功能：
 
-1.  **Object Inspection:** Allows developers to select any object on the Figma canvas and view its properties (like dimensions, colors, fonts, etc.)formatted as a Slint code snippet. This is useful for quickly translating visual design elements into Slint code. When paired with the variable export, this inserts variables into the code, if they are used in the Figma file.
-2.  **Variable Export:** Enables the reliable export of design tokens (variables for colors, numbers, strings, and booleans) defined in Figma directly into `.slint` files. This feature fully supports Figma's modes, allowing for themeable designs (e.g., light and dark modes) and generates the necessary Slint structs, enums, and global instances to use these tokens seamlessly in your Slint application.
+1.  **对象检查：** 允许开发者选择 Figma 画布上的任意对象，并查看其属性（如尺寸、颜色、字体等），这些属性会格式化为 Slint 代码片段。这对于快速将视觉设计元素转换为 Slint 代码很有用。与变量导出配合使用时，如果 Figma 文件中使用了变量，该功能会将变量插入到代码中。
+2.  **变量导出：** 能够将 Figma 中定义的设计令牌（颜色、数字、字符串和布尔值的变量）可靠地直接导出到 `.slint` 文件中。此功能完全支持 Figma 的模式，允许实现可换肤的设计（例如浅色和深色模式），并生成必要的 Slint 结构体、枚举和全局实例，以便在你的 Slint 应用程序中无缝使用这些令牌。
 
-## Setting up the Figma Inspector
+## 设置 Figma Inspector
 
-First of all, find and enable the "Figma to Slint" plugin in the Figma Plugin Manager.
-The inspector currently has 2 functions. One is to inspect individual Figma objects for their properties, and the other is to export the variables defined in Figma so they are useable in Slint directly.
+首先，在 Figma 插件管理器中找到并启用 "Figma to Slint" 插件。
+该检查器目前有 2 个功能。一个是检查单个 Figma 对象的属性，另一个是导出 Figma 中定义的变量，以便直接在 Slint 中使用。
 
-## Key Features of Variable Export
+## 变量导出的主要特性
 
-- **Type Conversion:**
+- **类型转换：**
 
-  The plugin maps Figma variable types to their corresponding Slint types as follows:
+  该插件将 Figma 变量类型映射到对应的 Slint 类型，如下所示：
 
-  | Figma Variable Type | Slint Type |
-  | ------------------- | ---------- |
-  | Color               | `brush`    |
-  | Float               | `length`   |
-  | String              | `string`   |
-  | Boolean             | `bool`     |
+  | Figma 变量类型 | Slint 类型 |
+  | -------------- | ---------- |
+  | Color          | `brush`    |
+  | Float          | `length`   |
+  | String         | `string`   |
+  | Boolean        | `bool`     |
 
-- **Mode Support:**
-  For a figma file where Mode `MyCollection` has modes `light` and `dark`, the exporter will create a Slint `enum` for mode selection (e.g., `MyCollectionMode { light, dark }`).
-  The file also contains a `Scheme` struct (`MyCollection-Scheme`) representing the structure of variables. A `Scheme-Mode` struct (`MyCollection-Scheme-Mode`) holds instances of the `Scheme` for each mode. And finally a global instance (`my_collection`) which contains: - `mode`: An instance of `Scheme-Mode` holding the resolved values for each mode. - `current-mode`: An `in-out` property using the mode `enum` to control the active mode. - `current`: An `out` property dynamically selecting the correct scheme instance based on `current-mode`.
-- **Reliable Variable Resolution:** Automatically resolves all variable aliases (references) to their concrete values, ensuring consistent and predictable output regardless of how variables reference each other.
-- **Hierarchy Generation:** Interprets `/` in Figma like
+- **模式支持：**
+  对于一个 Figma 文件，其中 Mode `MyCollection` 具有 `light` 和 `dark` 模式，导出器将为模式选择创建一个 Slint `enum`（例如 `MyCollectionMode { light, dark }`）。
+  该文件还包含一个表示变量结构的 `Scheme` 结构体（`MyCollection-Scheme`）。一个 `Scheme-Mode` 结构体（`MyCollection-Scheme-Mode`）为每个模式保存 `Scheme` 的实例。最后还有一个全局实例（`my_collection`），其中包含：- `mode`：一个 `Scheme-Mode` 实例，保存每个模式解析后的值。- `current-mode`：一个 `in-out` 属性，使用模式 `enum` 控制活动模式。- `current`：一个 `out` 属性，根据 `current-mode` 动态选择正确的 scheme 实例。
+- **可靠的变量解析：** 自动将所有变量别名（引用）解析为其具体值，确保无论变量之间如何相互引用，输出都保持一致且可预测。
+- **层级生成：** 将 Figma 中的 `/` 例如
   `colors/background/primary`
-  to generate nested Slint structs so the corresponding variables are nested for dot notation in Slint, thus the above example turns into `colors.background.primary`
-- **Robust Mode Handling:** Intelligently matches Figma modes to ensure all variables export with their correct values, even when mode IDs don't match perfectly between collections and variables.
-- **Name Sanitization:** Cleans up collection, variable, and mode names to be valid Slint identifiers (e.g., converting spaces and special characters to underscores, handling leading digits).
-- **Export Options:**
-  - **Separate Files:** Exports each Figma collection into its own `.slint` file. Creates `<collection_name>.slint` files with automatic cross-collection imports when needed.
-  - **Single File:** Combines all collections into a single `design-tokens.slint` file for simpler project integration.
-- **README Generation:** Creates a `README.md` file alongside the export, summarizing exported collections, renamed variables, and any warnings.
+  解释为生成嵌套的 Slint 结构体，使相应变量在 Slint 中按点表示法嵌套，因此上述示例会转换为 `colors.background.primary`
+- **稳健的模式处理：** 智能匹配 Figma 模式，确保所有变量都以其正确的值导出，即使集合与变量之间的模式 ID 无法完全匹配。
+- **名称清理：** 清理集合、变量和模式名称，使其成为合法的 Slint 标识符（例如将空格和特殊字符转换为下划线，处理前导数字）。
+- **导出选项：**
+  - **单独文件：** 将每个 Figma 集合导出到各自的 `.slint` 文件。生成 `<collection_name>.slint` 文件，并在需要时自动进行跨集合导入。
+  - **单文件：** 将所有集合合并到单个 `design-tokens.slint` 文件中，便于项目集成。
+- **README 生成：** 在导出时同时生成一个 `README.md` 文件，总结导出的集合、重命名的变量以及任何警告。
 
-## Usage
+## 用法
 
-1.  **Inspector:**
-    - Bring up the plugin UI and select any object you'd like to inspect.
+1.  **检查器：**
+    - 打开插件 UI，选择你想检查的任意对象。
       ![alt text](../../../../assets/guide/tooling/inspect.webp)
 
-2.  **Variables:**
-    - To see and export variables, check the "Use Figma Variables" checkbox in the plugin UI.
+2.  **变量：**
+    - 要查看和导出变量，请在插件 UI 中勾选 "Use Figma Variables" 复选框。
       ![alt text](../../../../assets/guide/tooling/use-variables.webp)
-    - Now when selecting objects to inspect you should see variable names instead of resolved values (if they are assigned)
+    - 现在选择要检查的对象时，你应该会看到变量名称而不是解析后的值（如果它们已被赋值）
       ![alt text](../../../../assets/guide/tooling/inspect-variables.webp)
-3.  **Export:** Click the "Export" button and choose:
+3.  **导出：** 点击 "Export" 按钮并选择：
     ![alt text](../../../../assets/guide/tooling/export-variables.webp)
-    - `Separate Files Per Collection…`: Recommended for organization. Creates `<collection_name>.slint` files.
-    - `Single Design-Tokens File…`: Creates `design-tokens.slint` for simpler project integration.
-4.  **Integrate:**
-    - Place the generated `.slint` file(s) in your Slint project.
+    - `Separate Files Per Collection…`：推荐用于组织管理。生成 `<collection_name>.slint` 文件。
+    - `Single Design-Tokens File…`：生成 `design-tokens.slint`，便于项目集成。
+4.  **集成：**
+    - 将生成的 `.slint` 文件放入你的 Slint 项目中。
 
-## Design-Token File Structure
+## 设计令牌文件结构
 
-1. **Import**
+1. **导入**
 
    ```slint no-test
    // If separate files:
@@ -78,7 +78,7 @@ The inspector currently has 2 functions. One is to inspect individual Figma obje
    import { Colors, Spacing } from "design-tokens.slint";
    ```
 
-2. **Use variables**
+2. **使用变量**
 
    ```slint no-test
    // Use the tokens:
@@ -88,8 +88,8 @@ The inspector currently has 2 functions. One is to inspect individual Figma obje
    }
    ```
 
-3. **Mode Switching:** (For multi-mode collections)
-   Modify the `current-mode` property of the imported global:
+3. **模式切换：**（用于多模式集合）
+   修改导入的全局的 `current-mode` 属性：
 
    ```slint no-test
    // Example: In your main component's logic
@@ -103,19 +103,19 @@ The inspector currently has 2 functions. One is to inspect individual Figma obje
    }
    ```
 
-   - All properties accessed via `<collection_name>.current.*` will automatically update.
+   - 通过 `<collection_name>.current.*` 访问的所有属性都会自动更新。
 
-## Naming Conventions & Sanitization
+## 命名约定与清理
 
-- **Hierarchy:** Figma uses `/` in variable names (e.g., `radius/small`, `font/body/weight`). The export will use these to create nested Slint structs for code completion clarity.
-- **Sanitization:** Collection names, variable names (path segments), and mode names are automatically sanitized:
-  - Spaces and invalid characters (`&`, `+`, `:`, `-`, etc.) are typically converted to `-` for collection/struct names and `_` for property/enum names.
-  - Leading/trailing invalid characters are removed.
-  - Names starting with a digit are prefixed with `_` or `m_`.
-  - Any variable named exactly `mode` at the root of a collection is renamed to `mode-var` in the Slint output to avoid conflicts with the generated scheme `mode` property.
+- **层级：** Figma 在变量名称中使用 `/`（例如 `radius/small`、`font/body/weight`）。导出时会利用它们创建嵌套的 Slint 结构体，使代码补全更清晰。
+- **清理：** 集合名称、变量名称（路径段）和模式名称会被自动清理：
+  - 空格和非法字符（`&`、`+`、`:`、`-` 等）通常会在集合/结构体名称中转换为 `-`，在属性/枚举名称中转换为 `_`。
+  - 移除开头/结尾的非法字符。
+  - 以数字开头的名称会加上 `_` 或 `m_` 前缀。
+  - 集合根层级中任何名称恰好为 `mode` 的变量，在 Slint 输出中会重命名为 `mode-var`，以避免与生成的 scheme `mode` 属性冲突。
 
-  #### Example
+  #### 示例
 
-  Variable `Color & Shade (only #hex values)` in a collection named `Color Primitives`
-  would get turned into
+  集合 `Color Primitives` 中的变量 `Color & Shade (only #hex values)`
+  会被转换成
   `color-primitives.color_and_shade_only_hex_values`

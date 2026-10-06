@@ -1,6 +1,6 @@
 ---
 title: 游戏逻辑
-description: Game Logic
+description: 游戏逻辑
 ---
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
@@ -8,104 +8,104 @@ import { extractLines } from '../../../utils/utils.ts';
 import { Code } from '@astrojs/starlight/components';
 import LangRefLink from '../../../components/LangRefLink.astro';
 
-This step implements the rules of the game in your coding language of choice.
+这一步用你选择的编程语言实现游戏规则。
 
-Slint's general philosophy is that you implement the user interface in Slint and the business logic in your favorite programming
-language.
+Slint 的总体理念是：在 Slint 中实现用户界面，在你喜欢的编程
+语言中实现业务逻辑。
 
-The game rules enforce that at most two tiles have their curtain open. If the tiles match, then the game
-considers them solved and they remain open. Otherwise, the game waits briefly so the player can memorize
-the location of the icons, and then closes the curtains again.
+游戏规则规定最多只能有两张牌的帘幕处于打开状态。如果牌匹配，则游戏
+认为它们已解开并保持打开。否则，游戏会短暂等待，让玩家记住
+图标的位置，然后再次合上帘幕。
 
 <Tabs syncKey="dev-language">
 <TabItem label="Rust" icon="seti:rust">
 
-Add the following code inside the <span class="hljs-title">MainWindow</span> component to signal to the Rust code when the user clicks on a tile.
+在 <span class="hljs-title">MainWindow</span> 组件内添加以下代码，以便在用户点击牌时向 Rust 代码发送信号。
 
 <Code code={extractLines(gameLogicInRust, 107, 115)} lang="slint" />
 
-This change adds a way for the <span class="hljs-title">MainWindow</span> to call to the Rust code that it should
-check if a player has solved a pair of tiles. The Rust code needs an additional property to toggle to disable further
-tile interaction, to prevent the player from opening more tiles than allowed. No cheating allowed!
+这一改动为 <span class="hljs-title">MainWindow</span> 提供了一种方式，通知 Rust 代码它应该
+检查玩家是否解开了一对牌。Rust 代码需要一个额外的属性用于切换，以禁用进一步的
+牌交互，防止玩家打开超过允许数量的牌。不允许作弊！
 
-The last change to the code is to act when the <span class="hljs-title">MemoryTile</span> signals that a player clicked it.
+代码的最后一项改动是在 <span class="hljs-title">MemoryTile</span> 发出玩家点击了它的信号时采取行动。
 
-Add the following handler in the <span class="hljs-title">MainWindow</span> `for` loop `clicked` handler:
+在 <span class="hljs-title">MainWindow</span> 的 `for` 循环 `clicked` 处理器中添加以下处理器：
 
 <Code code={extractLines(gameLogicInRust, 126, 143)} lang="slint" />
 
-On the Rust side, you can now add a handler to the `check_if_pair_solved` callback, that checks if a player opened two tiles.
-If they match, the code sets the `solved` property to true in the model. If they don't
-match, start a timer that closes the tiles after one second. While the timer is running, disable every tile so
-a player can't click anything during this time.
+在 Rust 一侧，你现在可以为 `check_if_pair_solved` 回调添加一个处理器，检查玩家是否打开了两张牌。
+如果它们匹配，代码将模型中的 `solved` 属性设置为 true。如果它们不匹配，
+则启动一个计时器，在一秒后合上牌。计时器运行期间，禁用每一张牌，这样
+玩家在这段时间内无法点击任何东西。
 
-Add this code before the `main_window.run().unwrap();` call:
+在 `main_window.run().unwrap();` 调用之前添加这段代码：
 
 <Code code={extractLines(gameLogicInRust, 25, 52)} lang="rust" />
 
-The code uses a <LangRefLink lang="rust-slint" relpath="struct.Weak">Weak</LangRefLink> pointer of the `main_window`. This is
-important because capturing a copy of the `main_window` itself within the callback handler would result in circular ownership.
-The `MainWindow` owns the callback handler, which itself owns a reference to the `MainWindow`, which must be weak
-instead of strong to avoid a memory leak.
+代码使用了 `main_window` 的 <LangRefLink lang="rust-slint" relpath="struct.Weak">Weak</LangRefLink> 指针。这很
+重要，因为在回调处理器内部捕获 `main_window` 本身的副本会导致循环所有权。
+`MainWindow` 拥有回调处理器，而处理器本身又拥有对 `MainWindow` 的引用，这个引用必须是弱引用
+而不是强引用，以避免内存泄漏。
 
 </TabItem>
 
 <TabItem label="C++" icon="seti:cpp">
 
-Add the following code inside the <span class="hljs-title">MainWindow</span> component to signal to the C++ code when the user clicks on a tile.
+在 <span class="hljs-title">MainWindow</span> 组件内添加以下代码，以便在用户点击牌时向 C++ 代码发送信号。
 
 import gameLogicInRust from '/src/content/code/main_game_logic_in_rust.rs?raw';
 
 <Code code={extractLines(gameLogicInRust, 107, 115)} lang="slint" />
 
-This change adds a way for the <span class="hljs-title">MainWindow</span> to call to the C++ code that it should
-check if a player has solved a pair of tiles. The C++ code needs an additional property to toggle to disable further
-tile interaction, to prevent the player from opening more tiles than allowed. No cheating allowed!
+这一改动为 <span class="hljs-title">MainWindow</span> 提供了一种方式，通知 C++ 代码它应该
+检查玩家是否解开了一对牌。C++ 代码需要一个额外的属性用于切换，以禁用进一步的
+牌交互，防止玩家打开超过允许数量的牌。不允许作弊！
 
-The last change to the code is to act when the <span class="hljs-title">MemoryTile</span> signals that a player clicked it.
+代码的最后一项改动是在 <span class="hljs-title">MemoryTile</span> 发出玩家点击了它的信号时采取行动。
 
-Add the following handler in the <span class="hljs-title">MainWindow</span> `for` loop `clicked` handler:
+在 <span class="hljs-title">MainWindow</span> 的 `for` 循环 `clicked` 处理器中添加以下处理器：
 
 <Code code={extractLines(gameLogicInRust, 126, 143)} lang="slint" />
 
-On the C++ side, you can now add a handler to the `check_if_pair_solved` callback, that checks if a player opened two tiles.
-If they match, the code sets the `solved` property to true in the model. If they don't
-match, start a timer that closes the tiles after one second. While the timer is running, disable every tile so
-a player can't click anything during this time.
+在 C++ 一侧，你现在可以为 `check_if_pair_solved` 回调添加一个处理器，检查玩家是否打开了两张牌。
+如果它们匹配，代码将模型中的 `solved` 属性设置为 true。如果它们不匹配，
+则启动一个计时器，在一秒后合上牌。计时器运行期间，禁用每一张牌，这样
+玩家在这段时间内无法点击任何东西。
 
-Insert this code before the `main_window->run()` call:
+在 `main_window->run()` 调用之前插入这段代码：
 
 import gameLogicInCpp from '/src/content/code/main_game_logic.cpp?raw';
 
 <Code code={extractLines(gameLogicInCpp, 29, 65)} lang="cpp" />
 
-The code uses a <LangRefLink lang="cpp" relpath="api/slint/componentweakhandle/">`ComponentWeakHandle`</LangRefLink> pointer of the `main_window`. This is
-important because capturing a copy of the `main_window` itself within the callback handler would result in circular ownership.
-The `MainWindow` owns the callback handler, which itself owns a reference to the `MainWindow`, which must be weak
-instead of strong to avoid a memory leak.
+代码使用了 `main_window` 的 <LangRefLink lang="cpp" relpath="api/slint/componentweakhandle/">`ComponentWeakHandle`</LangRefLink> 指针。这很
+重要，因为在回调处理器内部捕获 `main_window` 本身的副本会导致循环所有权。
+`MainWindow` 拥有回调处理器，而处理器本身又拥有对 `MainWindow` 的引用，这个引用必须是弱引用
+而不是强引用，以避免内存泄漏。
 
 </TabItem>
 <TabItem label="NodeJS" icon="node">
 
-Add the following code inside the <span class="hljs-title">MainWindow</span> component to signal to the JavaScript code when the user clicks on a tile.
+在 <span class="hljs-title">MainWindow</span> 组件内添加以下代码，以便在用户点击牌时向 JavaScript 代码发送信号。
 
 <Code code={extractLines(gameLogicInRust, 107, 115)} lang="slint" />
 
-This change adds a way for the <span class="hljs-title">MainWindow</span> to call to the JavaScript code that it should
-check if a player has solved a pair of tiles. The JavaScript code needs an additional property to toggle to disable further
-tile interaction, to prevent the player from opening more tiles than allowed. No cheating allowed!
+这一改动为 <span class="hljs-title">MainWindow</span> 提供了一种方式，通知 JavaScript 代码它应该
+检查玩家是否解开了一对牌。JavaScript 代码需要一个额外的属性用于切换，以禁用进一步的
+牌交互，防止玩家打开超过允许数量的牌。不允许作弊！
 
-The last change to the code is to act when the <span class="hljs-title">MemoryTile</span> signals that a player clicked it.
+代码的最后一项改动是在 <span class="hljs-title">MemoryTile</span> 发出玩家点击了它的信号时采取行动。
 
-Add the following handler in the <span class="hljs-title">MainWindow</span> `for` loop `clicked` handler:
+在 <span class="hljs-title">MainWindow</span> 的 `for` 循环 `clicked` 处理器中添加以下处理器：
 
 <Code code={extractLines(gameLogicInRust, 126, 143)} lang="slint" />
 
-On the JavaScript side, now add a handler to the `check_if_pair_solved` callback, that checks if a player opened two tiles. If they match, the code sets the `solved` property to true in the model. If they don't
-match, start a timer that closes the tiles after one second. While the timer is running, disable every tile so
-a player can't click anything during this time.
+在 JavaScript 一侧，现在为 `check_if_pair_solved` 回调添加一个处理器，检查玩家是否打开了两张牌。如果它们匹配，代码将模型中的 `solved` 属性设置为 true。如果它们不匹配，
+则启动一个计时器，在一秒后合上牌。计时器运行期间，禁用每一张牌，这样
+玩家在这段时间内无法点击任何东西。
 
-Insert this code before the `mainWindow.run()` call:
+在 `mainWindow.run()` 调用之前插入这段代码：
 
 import gameLogicInJs from '/src/content/code/main_game_logic.js?raw';
 
@@ -114,25 +114,25 @@ import gameLogicInJs from '/src/content/code/main_game_logic.js?raw';
 
 <TabItem label="Python" icon="seti:python">
 
-Add the following code inside the <span class="hljs-title">MainWindow</span> component to signal to the Python code when the user clicks on a tile.
+在 <span class="hljs-title">MainWindow</span> 组件内添加以下代码，以便在用户点击牌时向 Python 代码发送信号。
 
 <Code code={extractLines(gameLogicInRust, 107, 115)} lang="slint" />
 
-This change adds a way for the <span class="hljs-title">MainWindow</span> to call to the Python code that it should
-check if a player has solved a pair of tiles. The Python code needs an additional property to toggle to disable further
-tile interaction, to prevent the player from opening more tiles than allowed. No cheating allowed!
+这一改动为 <span class="hljs-title">MainWindow</span> 提供了一种方式，通知 Python 代码它应该
+检查玩家是否解开了一对牌。Python 代码需要一个额外的属性用于切换，以禁用进一步的
+牌交互，防止玩家打开超过允许数量的牌。不允许作弊！
 
-The last change to the code is to act when the <span class="hljs-title">MemoryTile</span> signals that a player clicked it.
+代码的最后一项改动是在 <span class="hljs-title">MemoryTile</span> 发出玩家点击了它的信号时采取行动。
 
-Add the following handler in the <span class="hljs-title">MainWindow</span> `for` loop `clicked` handler:
+在 <span class="hljs-title">MainWindow</span> 的 `for` 循环 `clicked` 处理器中添加以下处理器：
 
 <Code code={extractLines(gameLogicInRust, 126, 143)} lang="slint" />
 
-On the Python side, now add a handler to the `check_if_pair_solved` callback, that checks if a player opened two tiles. If they match, the code sets the `solved` property to true in the model. If they don't
-match, start a timer that closes the tiles after one second. While the timer is running, disable every tile so
-a player can't click anything during this time.
+在 Python 一侧，现在为 `check_if_pair_solved` 回调添加一个处理器，检查玩家是否打开了两张牌。如果它们匹配，代码将模型中的 `solved` 属性设置为 true。如果它们不匹配，
+则启动一个计时器，在一秒后合上牌。计时器运行期间，禁用每一张牌，这样
+玩家在这段时间内无法点击任何东西。
 
-Insert this function in the `MainWindow` class, annotated with `@slint.callback` to associated it with `check_if_pair_solved`:
+在 `MainWindow` 类中插入这个函数，并用 `@slint.callback` 标注，以将其关联到 `check_if_pair_solved`：
 
 import gameLogicInPython from '/src/content/code/main_game_logic.py?raw';
 
@@ -140,4 +140,4 @@ import gameLogicInPython from '/src/content/code/main_game_logic.py?raw';
 </TabItem>
 </Tabs>
 
-These were the last changes and running the code opens a window that allows a player to play the game by the rules.
+这些就是最后的改动，运行代码会打开一个窗口，让玩家可以按规则进行游戏。

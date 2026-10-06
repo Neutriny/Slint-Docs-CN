@@ -9,10 +9,10 @@ import { Tabs, TabItem, FileTree } from '@astrojs/starlight/components';
 import LangRefLink from '@slint/common-files/src/components/LangRefLink.astro';
 import Link from '@slint/common-files/src/components/Link.astro';
 
-Slint's translation infrastructure makes your application available in different languages.
+Slint 的翻译基础设施让你的应用能够支持多种语言。
 
-:::tip[Prerequisite]
-Install the [`slint-tr-extractor`](https://crates.io/crates/slint-tr-extractor) tool to extract translatable strings from `.slint` files:
+:::tip[前置条件]
+安装 [`slint-tr-extractor`](https://crates.io/crates/slint-tr-extractor) 工具，以便从 `.slint` 文件中提取可翻译字符串：
 
 ```sh
 cargo install slint-tr-extractor
@@ -20,27 +20,27 @@ cargo install slint-tr-extractor
 
 :::
 
-You can choose between runtime translations using `gettext` or bundling translations directly into your executable for platforms where `gettext` is unavailable or impractical.
+你可以选择使用 `gettext` 的运行时翻译，或者在 `gettext` 不可用或不切实际的平台上，将翻译直接捆绑到可执行文件中。
 
-To translate your application, follow these steps:
+要翻译你的应用，请按以下步骤操作：
 
-1. Identify all user-visible strings that need translation and annotate them with the `@tr()` macro.
-2. Extract annotated strings by running the `slint-tr-extractor` tool to generate `.pot` files.
-3. Use a third-party tool to translate the strings into `.po` files for each target language.
-4. **(For runtime `gettext` translations only)** Convert `.po` files into `.mo` files using [gettext's `msgfmt`](https://www.gnu.org/software/gettext/manual/gettext.html).
-5. **(For bundled translations only)** Configure bundling during the build process to embed translations into your application.
-6. Use Slint's API to select the appropriate translation based on the user's locale.
+1. 找出所有需要翻译的用户可见字符串，并用 `@tr()` 宏标注它们。
+2. 运行 `slint-tr-extractor` 工具提取已标注的字符串，生成 `.pot` 文件。
+3. 使用第三方工具将字符串翻译为每种目标语言的 `.po` 文件。
+4. **（仅用于运行时 `gettext` 翻译）** 使用 [gettext 的 `msgfmt`](https://www.gnu.org/software/gettext/manual/gettext.html) 将 `.po` 文件转换为 `.mo` 文件。
+5. **（仅用于捆绑翻译）** 在构建过程中配置捆绑，将翻译嵌入到你的应用中。
+6. 使用 Slint 的 API 根据用户的 locale 选择合适的翻译。
 
-At this point, all strings marked for translation will be automatically rendered in the selected language.
+此时，所有标记为翻译的字符串都会自动以所选语言渲染。
 
-## Annotating Translatable Strings
+## 标注可翻译字符串
 
-Use the `@tr` macro in `.slint` files to mark strings for translation.
-This macro supports formatting and pluralization, and can include contextual information.
+在 `.slint` 文件中使用 `@tr` 宏将字符串标记为可翻译。
+该宏支持格式化和复数形式，并且可以包含上下文信息。
 
-The first argument must be a plain string literal, followed by the arguments:
+第一个参数必须是纯字符串字面量，其后是各个参数：
 
-### Basic Example
+### 基础示例
 
 ```slint
 export component Example {
@@ -51,28 +51,28 @@ export component Example {
 }
 ```
 
-### Formatting
+### 格式化
 
-Each `{}` placeholder in the format string is replaced with the corresponding argument, in order.
-A placeholder can name a zero-based position, as in `{0}` or `{1}`, to pick an argument explicitly.
-Positional and non-positional placeholders can't be mixed in one format string.
-A translation may use positional placeholders even when the source string doesn't.
+格式字符串中的每个 `{}` 占位符都会按顺序替换为对应的参数。
+占位符可以指定一个从零开始的位置，如 `{0}` 或 `{1}`，以显式选择某个参数。
+在一个格式字符串中不能混用位置占位符和非位置占位符。
+即使源字符串没有使用位置占位符，翻译也可以使用它们。
 
-Write a literal `{` or `}` by doubling it, as `{{` or `}}`.
-An unterminated placeholder, an unescaped `{` or `}`, or more placeholders than arguments is an error.
+通过将 `{` 或 `}` 加倍，即写成 `{{` 或 `}}`，来写出字面量。
+未终止的占位符、未转义的 `{` 或 `}`，或者占位符多于参数，都是错误。
 
-### Plurals
+### 复数
 
-A plural form picks between two format strings based on a count.
-Write it with `|` between the two string literals and `%` before the count expression:
+复数形式根据计数在两个格式字符串之间选择。
+其写法是在两个字符串字面量之间加 `|`，并在计数表达式前加 `%`：
 
 ```slint no-test
 @tr("I have {n} item" | "I have {n} items" % count)
 ```
 
-Both sides of the `|` must be plain string literals, and the count expression is converted to `int`.
-The `{n}` placeholder refers to the count and is only valid in a plural form.
-Other placeholders still refer to the arguments after the count:
+`|` 的两侧都必须是纯字符串字面量，计数表达式会被转换为 `int`。
+`{n}` 占位符指代计数，只在复数形式中有效。
+其他占位符仍然指代计数之后的参数：
 
 ```slint
 export component Example inherits Text {
@@ -82,10 +82,10 @@ export component Example inherits Text {
 }
 ```
 
-### Contexts
+### 上下文
 
-A context disambiguates strings that share the same source text but differ in meaning.
-Write it as a plain string literal followed by `=>` before the format string:
+上下文用于区分源文本相同但含义不同的字符串。
+其写法是在格式字符串之前写一个纯字符串字面量，后跟 `=>`：
 
 ```slint
 export component MenuItem {
@@ -94,147 +94,147 @@ export component MenuItem {
 }
 ```
 
-Without a context, it defaults to the name of the enclosing component.
+如果没有提供上下文，则默认为外层组件的名称。
 
-Pass the `--no-default-translation-context` flag to `slint-tr-extractor` if you don't want the component name to be the default context. The same option needs to be passed to the Slint compiler:
+如果你不希望组件名称成为默认上下文，请向 `slint-tr-extractor` 传递 `--no-default-translation-context` 标志。同样的选项也需要传递给 Slint 编译器：
 
 <Tabs syncKey="dev-language">
   <TabItem label="Rust" icon="seti:rust">
-    With{' '}
+    使用构建脚本时，用{' '}
     <LangRefLink
       lang="rust-slint-build"
       relpath="struct.compilerconfiguration#method.with_default_translation_context"
     >
       `slint_build::CompilerConfiguration::with_default_translation_context(slint_build::DefaultTranslationContext::None)`
     </LangRefLink>
-    when using a build script. With{' '}
+    。使用 `slint-interpreter` crate 时，用{' '}
     <LangRefLink
       lang="rust-slint-interpreter"
       relpath="struct.compiler#method.set_default_translation_context"
     >
       `slint_interpreter::Compiler::set_default_translation_context(slint_interpreter::DefaultTranslationContext::None)`
     </LangRefLink>
-    when using the `slint-interpreter` crate.
+    。
   </TabItem>
   <TabItem label="C++" icon="seti:cpp">
-    Set the{' '}
+    在你的 CMake 目标上设置{' '}
     <LangRefLink
       lang="cpp"
       relpath="cmake-reference/disable-default-translation-context/"
     >
       `SLINT_NO_DEFAULT_TRANSLATION_CONTEXT`
     </LangRefLink>{' '}
-    target property on your CMake target.
+    目标属性。
   </TabItem>
 </Tabs>
 
-## Extracting Translatable Strings
+## 提取可翻译字符串
 
-Use [`slint-tr-extractor`](https://crates.io/crates/slint-tr-extractor) to generate a `.pot` file with all strings marked for translation:
+使用 [`slint-tr-extractor`](https://crates.io/crates/slint-tr-extractor) 生成一个包含所有已标记为翻译的字符串的 `.pot` 文件：
 
 ```sh
 find -name \*.slint | xargs slint-tr-extractor -o MY_PROJECT.pot
 ```
 
-This creates a file called `MY_PROJECT.pot`. Replace "MY_PROJECT" with your actual project name.
-To learn how the project name affects the lookup of translations, read the sections below.
+这会创建一个名为 `MY_PROJECT.pot` 的文件。将 "MY_PROJECT" 替换为你的实际项目名称。
+要了解项目名称如何影响翻译的查找，请阅读下面的章节。
 
-:::tip[Tip]
-`.pot` files are [Gettext](https://www.gnu.org/software/gettext/) template files.
+:::tip[提示]
+`.pot` 文件是 [Gettext](https://www.gnu.org/software/gettext/) 模板文件。
 :::
 
-## Translating Strings
+## 翻译字符串
 
-Start a new translation by creating a `.po` file from a `.pot` file. Both file formats are identical.
-You can either copy the file manually or use a tool like Gettext's `msginit` to start a new `.po` file.
+通过从 `.pot` 文件创建 `.po` 文件来开始一个新的翻译。两种文件格式完全相同。
+你可以手动复制文件，或者使用类似 Gettext 的 `msginit` 这样的工具来创建一个新的 `.po` 文件。
 
-The `.po` file contains the strings in a target language.
+`.po` 文件包含目标语言的字符串。
 
-`.po` and `.pot` files are plain text files that you can edit with a text editor. We recommend
-using a dedicated translation tool for working with them, such as the following:
+`.po` 和 `.pot` 文件是纯文本文件，你可以用文本编辑器编辑它们。我们建议
+使用专门的翻译工具来处理它们，例如以下几种：
 
 - [poedit](https://poedit.net/)
 - [OmegaT](https://omegat.org/)
 - [Lokalize](https://userbase.kde.org/Lokalize)
 - [Transifex](https://www.transifex.com/) (web interface)
 
-## Runtime Translations with Gettext
+## 使用 Gettext 的运行时翻译
 
-Slint can use the [Gettext](https://www.gnu.org/software/gettext/) library to load translations at run-time.
+Slint 可以使用 [Gettext](https://www.gnu.org/software/gettext/) 库在运行时加载翻译。
 
-Gettext expects translation files - called message catalogs - in following directory hierarchy:
+Gettext 期望翻译文件（称为消息目录）按以下目录层级组织：
 
 <FileTree>
 
 - dir_name/
-  - locale/ e.g. `fr`, `en`, `de`, etc.
+  - locale/ 例如 `fr`、`en`、`de` 等
     - LC_MESSAGES/
       - domain_name.mo
 
 </FileTree>
 
-- `dir_name`: the base directory that you can choose freely.
-- `locale`: The name of the user's locale for a given target language, such as `fr` for French, or `de` for German.
+- `dir_name`：你可以自由选择的基础目录。
+- `locale`：给定目标语言对应的用户 locale 名称，例如法语用 `fr`，德语用 `de`。
 
-  The locale is typically determined using environment variables that your operating system sets.
+  locale 通常是使用操作系统设置的环境变量来确定的。
 
-- `domain_name`: Selected based on the programming language you're using Slint with.
+- `domain_name`：根据你使用 Slint 时所搭配的编程语言来选择。
 
-:::tip[Tip]
-Read the [Gettext documentation](https://www.gnu.org/software/gettext/manual/gettext.html#Locating-Catalogs) for more information.
+:::tip[提示]
+阅读 [Gettext 文档](https://www.gnu.org/software/gettext/manual/gettext.html#Locating-Catalogs) 了解更多信息。
 :::
 
-### Convert `.po` Files to `.mo` Files
+### 将 `.po` 文件转换为 `.mo` 文件
 
-Convert the human readable `.po` files into machine-friendly `.mo` files, which are a binary representation
-that is more efficient to read by code.
+将人类可读的 `.po` 文件转换为便于机器处理的 `.mo` 文件，后者是一种二进制表示，
+代码读取起来更高效。
 
-Use [Gettext](https://www.gnu.org/software/gettext/)'s `msgfmt` command line tool to convert `.po` files to `.mo`
-files:
+使用 [Gettext](https://www.gnu.org/software/gettext/) 的 `msgfmt` 命令行工具将 `.po` 文件转换为 `.mo`
+文件：
 
 ```sh
 msgfmt translation.po -o translation.mo
 ```
 
-### Select and Load Translations
+### 选择并加载翻译
 
 <Tabs syncKey="dev-language">
 <TabItem label="Rust" icon="seti:rust">
 
-First, enable the `gettext` feature of the `slint` crate in the `features` section to gain access to the translations API
-and activate run-time translation support.
+首先，在 `features` 部分启用 `slint` crate 的 `gettext` feature，以访问翻译 API
+并激活运行时翻译支持。
 
-Next, use the <LangRefLink lang="rust-slint" relpath="macro.init_translations">`slint::init_translations!`</LangRefLink> macro to specify the base location of your `.mo` files.
-This is the `dir_name` in the scheme of the previous section. Slint expects the `.mo` files to be in the
-corresponding sub-directories and their file name - `domain_name` - must match the package name
-in your `Cargo.toml`. This is often the same as the crate name.
+接下来，使用 <LangRefLink lang="rust-slint" relpath="macro.init_translations">`slint::init_translations!`</LangRefLink> 宏指定 `.mo` 文件的基础位置。
+这就是上一节方案中的 `dir_name`。Slint 期望 `.mo` 文件位于
+相应的子目录中，并且它们的文件名——`domain_name`——必须与
+你的 `Cargo.toml` 中的包名匹配。这通常与 crate 名称相同。
 
-For example:
+例如：
 
 ```rust
 slint::init_translations!(concat!(env!("CARGO_MANIFEST_DIR"), "/lang/"));
 ```
 
-For example, if your `Cargo.toml` contains the following lines and the user's locale is `fr`:
+例如，如果你的 `Cargo.toml` 包含以下几行，且用户的 locale 是 `fr`：
 
 ```toml
 [package]
 name = "gallery"
 ```
 
-With these settings, Slint looks for `gallery.mo` in the `lang/fr/LC_MESSAGES/gallery.mo`.
+使用这些设置，Slint 会在 `lang/fr/LC_MESSAGES/gallery.mo` 中查找 `gallery.mo`。
 
 </TabItem>
 <TabItem label="C++" icon="seti:cpp">
 
-First, enable the `SLINT_FEATURE_GETTEXT` cmake option when compiling Slint to gain access to
-the translations API and activate run-time translation support.
+首先，在编译 Slint 时启用 `SLINT_FEATURE_GETTEXT` cmake 选项，以访问
+翻译 API 并激活运行时翻译支持。
 
-In C++ applications using cmake, the `domain_name` is the CMake target name.
+在使用 cmake 的 C++ 应用中，`domain_name` 就是 CMake 目标名称。
 
-Next, bind the text domain to a path using the standard gettext library.
+接下来，使用标准 gettext 库将文本域绑定到一个路径。
 
-To do so, add this in your `CMakeLists.txt` file:
+为此，请在你的 `CMakeLists.txt` 文件中添加以下内容：
 
 ```cmake
 find_package(Intl)
@@ -244,7 +244,7 @@ if(Intl_FOUND)
 endif()
 ```
 
-You can then setup the locale and the text domain
+然后你就可以设置 locale 和文本域
 
 ```c++
 #ifdef HAVE_GETTEXT
@@ -262,31 +262,31 @@ int main()
 }
 ```
 
-For example, if you're using the above and the user's locale is `fr`,
-Slint looks for `my_application.mo` in the `lang/fr/LC_MESSAGES/` directory.
+例如，如果你使用上述代码，且用户的 locale 是 `fr`，
+Slint 会在 `lang/fr/LC_MESSAGES/` 目录中查找 `my_application.mo`。
 
 </TabItem>
 </Tabs>
 
-## Bundled Translations
+## 捆绑翻译
 
-Bundled translations embed the translated strings directly into your application binary.
-This approach is ideal for platforms like WASM or microcontrollers where `gettext` is unavailable.
+捆绑翻译将翻译后的字符串直接嵌入到你的应用二进制文件中。
+这种方法非常适合 WASM 或微控制器等 `gettext` 不可用的平台。
 
-Configure the Slint compiler to bundle translations by providing a path to the translations.
-Translation files should be organized in the following hierarchy:
+通过向 Slint 编译器提供翻译路径来配置翻译捆绑。
+翻译文件应按以下层级组织：
 
 ```
 path/<lang>/LC_MESSAGES/<domain>.po
 ```
 
-### Bundling
+### 捆绑
 
 <Tabs syncKey="dev-language">
 <TabItem label="Rust" icon="seti:rust">
 
-Use `slint_build::CompilerConfiguration`'s <LangRefLink lang="rust-slint-build" relpath="struct.compilerconfiguration#method.with_bundled_translations">`with_bundled_translations()`</LangRefLink> function to set up bundling in
-`build.rs`:
+使用 `slint_build::CompilerConfiguration` 的 <LangRefLink lang="rust-slint-build" relpath="struct.compilerconfiguration#method.with_bundled_translations">`with_bundled_translations()`</LangRefLink> 函数在
+`build.rs` 中设置捆绑：
 
 ```rust
 let config = slint_build::CompilerConfiguration::new()
@@ -294,65 +294,65 @@ let config = slint_build::CompilerConfiguration::new()
 slint_build::compile_with_config("path/to/main-ui.slint", config).unwrap();
 ```
 
-The `<domain>` is the crate name.
+`<domain>` 就是 crate 名称。
 
 </TabItem>
 <TabItem label="C++" icon="seti:cpp">
-Set the <LangRefLink lang="cpp" relpath="cmake-reference/bundle-translations/">`SLINT_BUNDLE_TRANSLATIONS`</LangRefLink> property in CMake:
+在 CMake 中设置 <LangRefLink lang="cpp" relpath="cmake-reference/bundle-translations/">`SLINT_BUNDLE_TRANSLATIONS`</LangRefLink> 属性：
 
 ```cmake
 set_property(TARGET my_application PROPERTY SLINT_BUNDLE_TRANSLATIONS "${CMAKE_CURRENT_SOURCE_DIR}/lang")
 ```
 
-the `<domain>` is the cmake target name.
+`<domain>` 就是 cmake 目标名称。
 
 </TabItem>
 </Tabs>
 
-### Selecting a Translation
+### 选择翻译
 
-If you enable the `std` feature with Slint, language for translations is detected based on the locale:
-if one of the bundled language matches the selected locale, it will be used.
+如果你为 Slint 启用了 `std` feature，翻译语言会根据 locale 检测：
+如果某个捆绑语言与所选 locale 匹配，就会使用该语言。
 
 <Tabs syncKey="dev-language">
   <TabItem label="Rust" icon="seti:rust">
-    Use the{' '}
+    使用{' '}
     <LangRefLink lang="rust-slint" relpath="fn.select_bundled_translation.html">
       `slint::select_bundled_translation`
     </LangRefLink>{' '}
-    function to change translations at runtime.
+    函数在运行时更改翻译。
   </TabItem>
   <TabItem label="C++" icon="seti:cpp">
-    Use the{' '}
+    使用{' '}
     <LangRefLink lang="cpp" relpath="api/slint/select-bundled-translation/">
       `slint::select_bundled_translation`
     </LangRefLink>{' '}
-    function to change translations at runtime.
+    函数在运行时更改翻译。
   </TabItem>
   <TabItem label="Python" icon="seti:python">
-    Use the{' '}
+    使用{' '}
     <LangRefLink lang="python" relpath="api/functions/init_translations/">
       `slint.init_translations()`
     </LangRefLink>{' '}
-    function to change translations at runtime.
+    函数在运行时更改翻译。
   </TabItem>
 </Tabs>
 
-## Previewing Translations with `slint-viewer`
+## 使用 `slint-viewer` 预览翻译
 
-Make sure the `gettext` feature was enabled when building slint-viewer.
-Use the `--translation-domain` and `--translation-dir` command line options to load translations for preview.
+确保在构建 slint-viewer 时启用了 `gettext` feature。
+使用 `--translation-domain` 和 `--translation-dir` 命令行选项加载翻译以进行预览。
 
-## Selecting the Decimal Separator
+## 选择小数分隔符
 
-Conversions between `float` and `string` use the locale's decimal separator,
-for example the comma (`,`) in a German locale.
-See <Link type="NumberStringConversion" label="Converting Between Numbers and Strings" /> for the conversion rules.
+`float` 和 `string` 之间的转换使用 locale 的小数分隔符，
+例如德语 locale 中的逗号（`,`）。
+转换规则参见 <Link type="NumberStringConversion" label="数字与字符串之间的转换" />。
 
-Read the currently used separator from <Link type="Platform.decimal-separator" />.
-It defaults to the dot (`.`).
+从 <Link type="Platform.decimal-separator" /> 读取当前使用的分隔符。
+它默认是点（`.`）。
 
-When bundling translations, the decimal separator of each language is determined at compile time
-and bundled with the application:
-selecting a translation also selects its decimal separator.
-When the `gettext` feature is enabled, the decimal separator is determined from the system locale.
+在捆绑翻译时，每种语言的小数分隔符在编译时确定，
+并与应用一起捆绑：
+选择某种翻译也会选择其小数分隔符。
+当启用 `gettext` feature 时，小数分隔符由系统 locale 决定。

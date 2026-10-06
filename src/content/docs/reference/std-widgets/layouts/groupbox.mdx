@@ -1,6 +1,6 @@
 ---
 title: GroupBox
-description: GroupBox api.
+description: GroupBox API。
 ---
 
 import SlintProperty from '@slint/common-files/src/components/SlintProperty.astro';
@@ -23,9 +23,9 @@ export component Example inherits Window {
 ```
 </CodeSnippetMD>
 
-A `GroupBox` is a container that groups its children together under a common title.
+`GroupBox` 是一个容器，将其子元素归组在一个公共标题下。
 
-## Properties
+## 属性
 
 ### content-padding
 
@@ -34,18 +34,17 @@ A `GroupBox` is a container that groups its children together under a common tit
   typeName="length"
   defaultValue="Depends on the style"
 >
-  The padding within the layout of the content as a whole. This single value is
-  applied to all sides.
+  内容整体布局的内边距。此单一值 应用于所有边。
 </SlintProperty>
 
 ### enabled
 
 <SlintProperty propName="enabled" typeName="bool" defaultValue="true">
-  When false, the groupbox can't be interacted with
+  当为 false 时，无法与分组框交互
 </SlintProperty>
 
 ### title
 
 <SlintProperty propName="title" typeName="string">
-  A text written as the title of the group box.
+  作为分组框标题显示的文本。
 </SlintProperty>

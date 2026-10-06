@@ -1,68 +1,68 @@
 ---
 title: 词法结构
-description: Identifiers, contextual keywords, and element type names in the Slint language.
+description: Slint 语言中的标识符、上下文关键字和元素类型名称。
 SC: true
 ---
 
 import SC from '@slint/common-files/src/components/SC.astro';
 
 <SC>
-## Tokens
+## 词法单元
 
-After whitespace and comments are removed (see [Source Files](../source-files/)),
-the remaining input is a sequence of tokens.
-The token kinds are tried in a fixed order and the first that matches at the current position is taken,
-so an input that could be read as either a number or an identifier is a number. \{#sls.lex.tokens}
+在移除空白和注释（见[源文件](../source-files/)）之后，
+剩余的输入是词法单元的序列。
+词法单元种类按固定顺序尝试，取当前位置匹配的第一个，
+因此既可读作数字也可读作标识符的输入会被读作数字。 \{#sls.lex.tokens}
 
-## Numbers
+## 数字
 
-A number begins with a decimal digit (`U+0030`–`U+0039`),
-and consists of one or more decimal digits, an optional fractional part introduced by a `U+002E` (FULL STOP, `.`),
-and an optional suffix that is either a sequence of ASCII letters (a unit)
-or a single `U+0025` (PERCENT SIGN, `%`). \{#sls.lex.number}
+数字以十进制数字（`U+0030`–`U+0039`）开头，
+由一个或多个十进制数字、由 `U+002E`（FULL STOP，`.`）引入的可选小数部分，
+以及可选后缀组成；后缀要么是 ASCII 字母序列（单位），
+要么是单个 `U+0025`（PERCENT SIGN，`%`）。 \{#sls.lex.number}
 
-## Identifiers
+## 标识符
 
-An identifier is a token that is not a [number](#sls.lex.number).
-Its characters have the Unicode identifier properties defined by
-Unicode Standard Annex #31: \{#sls.lex.identifier.classes}
+标识符是不是[数字](#sls.lex.number)的词法单元。
+其字符具有 Unicode Standard Annex #31 所定义的
+Unicode 标识符属性： \{#sls.lex.identifier.classes}
 
-- The first character shall have the `XID_Start` property or be `U+005F` (LOW LINE, `_`).
-- Each subsequent character shall have the `XID_Continue` property or be `U+002D` (HYPHEN-MINUS, `-`).
-- A character with neither property is not part of an identifier.
+- 第一个字符应具有 `XID_Start` 属性，或者是 `U+005F`（LOW LINE，`_`）。
+- 每个后续字符应具有 `XID_Continue` 属性，或者是 `U+002D`（HYPHEN-MINUS，`-`）。
+- 两种属性都不具备的字符不是标识符的一部分。
 
-A decimal digit has the `XID_Continue` property but not `XID_Start`,
-so it may appear in an identifier but not as its first character;
-a token that begins with a digit is a number. \{#sls.lex.identifier.no-leading-digit}
+十进制数字具有 `XID_Continue` 属性但不具有 `XID_Start`，
+因此它可以出现在标识符中，但不能作为其第一个字符；
+以数字开头的词法单元是数字。 \{#sls.lex.identifier.no-leading-digit}
 
-A `U+002D` (`-`) shall not appear as the first character of an identifier. \{#sls.lex.identifier.no-leading-hyphen}
+`U+002D`（`-`）不得作为标识符的第一个字符出现。 \{#sls.lex.identifier.no-leading-hyphen}
 
-## Identifier Normalization
+## 标识符规范化
 
-Two identifiers are considered the same if and only if their _normalized forms_ are equal.
-The normalized form of an identifier is obtained by applying the following replacements over the characters of the source identifier: \{#sls.lex.identifier.normalization}
+当且仅当两个标识符的*规范化形式*相等时，它们才被视为相同。
+标识符的规范化形式是通过对源标识符的字符应用以下替换得到的： \{#sls.lex.identifier.normalization}
 
-- Each `U+005F` (`_`) is replaced with `U+002D` (`-`), except as the first character.
-- All other characters are left unchanged.
+- 除作为第一个字符外，每个 `U+005F`（`_`）都替换为 `U+002D`（`-`）。
+- 所有其他字符保持不变。
 
-For example, `foo_bar` and `foo-bar` are the same identifier, and so are `_foo_bar` and `_foo-bar`. \{#sls.lex.identifier.normalization-example}
+例如，`foo_bar` 和 `foo-bar` 是同一个标识符，`_foo_bar` 和 `_foo-bar` 也是。 \{#sls.lex.identifier.normalization-example}
 
-The kebab-case form (with `U+002D`) is the canonical written form. \{#sls.lex.identifier.canonical-form}
+kebab-case 形式（使用 `U+002D`）是规范书写形式。 \{#sls.lex.identifier.canonical-form}
 
-## Contextual Keywords
+## 上下文关键字
 
-Slint has no globally reserved words.
-Each language construct is introduced by a _contextual keyword_: an identifier that has a special meaning only when it appears in a position where the grammar expects that construct. \{#sls.lex.contextual-keywords}
+Slint 没有全局保留字。
+每种语言构造都由*上下文关键字*引入：一个仅当出现在语法期望该构造的位置时才具有特殊含义的标识符。 \{#sls.lex.contextual-keywords}
 
 </SC>
 
-:::note[The @ sigil]
-The `@` character introduces a fixed set of built-in constructs that can't be declared, each with its own parsing rules.
-Writing any other name after `@` is an error.
-The constructs are:
+:::note[@ 符号]
+`@` 字符引入一组固定的内置构造，这些构造无法声明，每种都有自己的解析规则。
+在 `@` 之后写任何其他名字都是一个错误。
+这些构造包括：
 
-- [`@tr`](../../../guide/development/translations/) marks a string for translation.
-- [`@image-url`](../../property-types/images/#image), [`@markdown`](../../property-types/strings/#styled-text), and [`@keys`](../../property-types/other-types/#keys) build an `image`, `styled-text`, or `keys` value.
-- [`@linear-gradient`, `@radial-gradient`, and `@conic-gradient`](../../property-types/colors-and-brushes/) build a gradient `brush`.
-- [`@children`](../container-components/) marks where a container component places its children.
+- [`@tr`](../../../guide/development/translations/) 将字符串标记为待翻译。
+- [`@image-url`](../../property-types/images/#image)、[`@markdown`](../../property-types/strings/#styled-text) 和 [`@keys`](../../property-types/other-types/#keys) 构建 `image`、`styled-text` 或 `keys` 值。
+- [`@linear-gradient`、`@radial-gradient` 和 `@conic-gradient`](../../property-types/colors-and-brushes/) 构建渐变 `brush`。
+- [`@children`](../container-components/) 标记容器组件放置其子元素的位置。
   :::

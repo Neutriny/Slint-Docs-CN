@@ -1,10 +1,10 @@
 ---
 title: 函数
-description: Declaring and calling functions.
+description: 声明和调用函数。
 ---
 
-A _function_ names a block of Slint logic that takes parameters and returns a value.
-It is declared with the `function` keyword inside a component or inside an element of a component:
+_函数_ 为一组接收参数并返回值的 Slint 逻辑命名。
+它使用 `function` 关键字在组件内部或组件的元素内部声明：
 
 ```slint
 export component Example {
@@ -14,45 +14,45 @@ export component Example {
 }
 ```
 
-A function may be declared on the component's root, on any element within it, or in a [global](../globals/).
-It cannot be declared at the top level of a file, inside a struct or enum, or nested inside another function; each is a compile error.
+函数可以在组件的根元素上、其内部任何元素上或[全局对象](../globals/)中声明。
+它不能声明在文件的顶层、结构体或枚举内部，也不能嵌套在另一个函数内部；每一种都会构成编译错误。
 
-## Signature
+## 签名
 
-The declaration is an optional sequence of modifiers, the `function` keyword, a name, a parenthesized parameter list, and an optional return type:
+声明是可选的修饰符序列、`function` 关键字、一个名字、带括号的参数列表以及可选的返回类型：
 
 ```slint
 public pure function name(a: int, b: string) -> int { return a; }
 ```
 
-- Each parameter is written `name: type`.
-  Parameters are passed by value and are referenced by name within the body.
-  Two parameters of the same function may not share a name.
-- The return type follows `->`.
-  With no `->` the return type is `void`.
-- The `return` [statement](../statements/#return) returns an expression of the return type.
-  A function with no explicit `return` returns the value of its last statement.
+- 每个参数写作 `name: type`。
+  参数按值传递，并在主体内按名字引用。
+  同一函数的两个参数不得同名。
+- 返回类型跟在 `->` 之后。
+  没有 `->` 时，返回类型为 `void`。
+- `return` [语句](../statements/#return)返回返回类型的表达式。
+  没有显式 `return` 的函数返回其最后一条语句的值。
 
-A function must have a body.
-A declaration without a `{ }` block is a compile error.
+函数必须有主体。
+没有 `{ }` 块的声明会构成编译错误。
 
-The modifiers may be preceded by a [`@deprecated` annotation](../deprecation/),
-which marks the function as deprecated and points users at its replacement.
+修饰符前可以带有 [`@deprecated` 注解](../deprecation/)，
+它会将该函数标记为已废弃，并指引用户使用其替代者。
 
-A function's name may not collide with a property of the same element, and may not override a non-shadowable member inherited from a base element; both are compile errors.
+函数名字不得与同一元素的属性冲突，也不得覆盖从基元素继承的不可遮蔽成员；两者都会构成编译错误。
 
-## Visibility
+## 可见性
 
-A function is _private_ by default.
-The `public` and `protected` modifiers widen its visibility:
+函数默认是*私有的*。
+`public` 和 `protected` 修饰符会扩大其可见性：
 
-- A _private_ function is reachable only from within its own component.
-  Referencing it from another component is a compile error.
-- A _public_ function is reachable from any component that holds the declaring component as an element, and from native code when the component is exported.
-- A _protected_ function is reachable only from a component that _directly_ inherits the declaring component, and only through that component's own root (`self` or `root`).
-  It is not reachable through an inherited instance held as a child, nor across more than one level of inheritance.
+- *私有*函数只能从其自身组件内部访问。
+  从另一个组件引用它会构成编译错误。
+- *公共*函数可以从任何将声明组件作为元素持有的组件访问，并且在组件被导出时也可以从原生代码访问。
+- *受保护*函数只能从*直接*继承声明组件的组件访问，并且只能通过该组件自身的根（`self` 或 `root`）访问。
+  它不能通过作为子元素持有的继承实例访问，也不能跨多于一层继承访问。
 
-Reaching a function of another component always requires a target: the caller declares that component as one of its elements and calls the function on it.
+访问另一个组件的函数总是需要一个目标：调用者将该组件声明为其元素之一，并在其上调用该函数。
 
 ```slint
 export component HasFunction {
@@ -67,26 +67,26 @@ export component CallsFunction {
 }
 ```
 
-A `public` function declared on a _child_ element of a component is not reachable from another component: only the component itself can serve as a target, so no path to the child element's function exists.
+在组件*子*元素上声明的 `public` 函数无法从另一个组件访问：只有组件本身才能充当目标，因此不存在通向该子元素函数的路径。
 
-The same visibility rules apply to functions declared in a [global](../globals/), reached through the global's name.
+相同的可见性规则适用于在[全局对象](../globals/)中声明、通过全局对象名字访问的函数。
 
-Functions marked `public` in an exported component can be invoked from native code (Rust, C++, JavaScript, Python).
-See the language-specific documentation for the generated code.
+导出组件中标记为 `public` 的函数可以从原生代码（Rust、C++、JavaScript、Python）调用。
+有关生成的代码，请参见各语言的文档。
 
-## Purity
+## 纯性
 
-The `pure` modifier marks a function free of side effects, so that it may be called from pure contexts such as bindings.
-For a `public` or `protected` function purity must be stated explicitly; without `pure` the function is treated as impure.
-For a private function purity is deduced from its body when it is unmarked.
-A `pure` function that assigns a property or calls an impure function or callback is a compile error.
-See [Evaluation and Purity](../evaluation-and-purity/).
+`pure` 修饰符将函数标记为没有副作用，以便它可以从绑定等纯上下文中调用。
+对于 `public` 或 `protected` 函数，必须显式说明纯性；没有 `pure` 时，函数被视为非纯。
+对于私有函数，在未标记时其纯性由主体推断。
+`pure` 函数若赋值属性或调用非纯函数或回调，会构成编译错误。
+参见[求值与纯度](../evaluation-and-purity/)。
 
-## Calling
+## 调用
 
-A function is called with or without an element name.
-The name resolves by the shared [lookup rules](../name-resolution/#lookup-rules):
-without an element name it is looked up on `self` and then on each enclosing element up to the component root; with an element name it must be defined on that element.
+函数调用可以带或不带元素名。
+名字按照共享的[查找规则](../name-resolution/#lookup-rules)解析：
+不带元素名时，它在 `self` 上查找，然后依次在每个外层元素上查找，直到组件根；带元素名时，它必须定义在该元素上。
 
 ```slint
 import { Button, VerticalBox } from "std-widgets.slint";
@@ -112,14 +112,14 @@ export component Example {
 }
 ```
 
-Because functions of the same name may be declared on different elements, a call without an element name may resolve to a different function than a call qualified with `self`.
+由于同名函数可以声明在不同的元素上，不带元素名的调用解析到的函数可能与用 `self` 限定的调用不同。
 
-## Functions vs. callbacks
+## 函数与回调
 
-Functions and [callbacks](../callbacks/) are both invoked the same way, take parameters and a return value, and may be `pure`.
-They differ as follows:
+函数和[回调](../callbacks/)都以相同的方式触发、都接受参数和返回值，并且都可以是 `pure`。
+它们的区别如下：
 
-- A callback's handler can be set from native code and written in the native language; a function is defined entirely in Slint.
-- A callback may be declared without a body; a function must have one.
-- A callback may declare an [alias](../callbacks/#aliases) with the `<=>` operator; a function cannot.
-- A callback is always reachable like a `public` function; a function defaults to private.
+- 回调的处理程序可以从原生代码设置并用原生语言编写；函数完全用 Slint 定义。
+- 回调可以没有主体地声明；函数必须有主体。
+- 回调可以用 `<=>` 运算符声明[别名](../callbacks/#aliases)；函数不能。
+- 回调始终像 `public` 函数一样可访问；函数默认是私有的。

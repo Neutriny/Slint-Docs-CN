@@ -6,25 +6,25 @@ description: Qt 后端
 import Link from '@slint/common-files/src/components/Link.astro';
 // cSpell: ignore qttype qttypes
 
-The Qt backend uses the [Qt](https://www.qt.io) library to interact with the windowing system, for
-rendering, as well as widget style for a native look and feel.
+Qt 后端使用 [Qt](https://www.qt.io) 库与窗口系统交互、进行
+渲染，并使用控件样式以获得原生外观和手感。
 
-The Qt backend supports practically all relevant operating systems and windowing systems, including
-macOS, Windows, Linux with Wayland and X11, and direct full-screen rendering via KMS or proprietary drivers.
+Qt 后端几乎支持所有相关的操作系统和窗口系统，包括
+macOS、Windows、带 Wayland 和 X11 的 Linux，以及通过 KMS 或专有驱动直接进行全屏渲染。
 
-The Qt backend only supports software rendering at the moment. That means it runs with any graphics driver,
-but it does not utilize GPU hardware acceleration.
+Qt 后端目前仅支持软件渲染。这意味着它可以在任何图形驱动上运行，
+但不利用 GPU 硬件加速。
 
-The compilation step will detect whether Qt is installed or not using the qttype crate.
-See the instructions in the [qttypes documentation](https://docs.rs/qttypes/latest/qttypes/#finding-qt)
-on how to set environment variables to point to the Qt installation.
+编译步骤会使用 qttype crate 检测是否安装了 Qt。
+关于如何设置环境变量来指向 Qt 安装位置，请参见
+[qttypes 文档](https://docs.rs/qttypes/latest/qttypes/#finding-qt)中的说明。
 
-If Qt is not installed, the backend will be disabled, and Slint will fallback to another backend, usually the <Link type="WinitBackend" label="Winit backend" />.
+如果未安装 Qt，该后端将被禁用，Slint 会回退到另一个后端，通常是 <Link type="WinitBackend" label="Winit 后端" />。
 
-## Configuration Options
+## 配置选项
 
-The Qt backend reads and interprets the following environment variables:
+Qt 后端会读取并解释以下环境变量：
 
-| Name               | Accepted Values | Description                                                        |
-| ------------------ | --------------- | ------------------------------------------------------------------ |
-| `SLINT_FULLSCREEN` | any value       | If this variable is set, every window is shown in fullscreen mode. |
+| 名称               | 接受的值 | 描述                                         |
+| ------------------ | -------- | -------------------------------------------- |
+| `SLINT_FULLSCREEN` | 任意值   | 如果设置了此变量，每个窗口都以全屏模式显示。 |

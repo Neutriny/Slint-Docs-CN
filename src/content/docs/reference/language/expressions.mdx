@@ -1,6 +1,6 @@
 ---
 title: 表达式
-description: The expression forms and what they evaluate to.
+description: 表达式形式及其求值结果。
 SC: true
 ---
 
@@ -9,41 +9,43 @@ import OnlyInSC from '@slint/common-files/src/components/OnlyInSC.astro';
 import NotInSC from '@slint/common-files/src/components/NotInSC.astro';
 
 <OnlyInSC>
-An expression is a color literal, a length literal, an integer literal, an image literal,
-a boolean value, an enumeration value, a struct literal,
-an arithmetic, logical, unary, or conditional expression,
-a property reference, or a field access. \{#sls.expr.forms}
+表达式是颜色字面量、长度字面量、整数字面量、图像字面量、
+布尔值、枚举值、结构体字面量、
+算术、逻辑、一元或条件表达式、
+属性引用或字段访问。 \{#sls.expr.forms}
 </OnlyInSC>
 
-An expression produces a value.
-A literal is the simplest form: a number such as `42` or `3.14`, a number with a unit such as `100px` or `250ms`,
-the boolean `true` or `false`, a [string](../../property-types/strings/#string) with `\{ }` interpolation,
-or a [color](#color-literals).
-The other forms are a [reference](#references), an [operator or conditional expression](../operators/),
-a [member access or index](../operators/#member-access-and-indexing), a function or callback call,
-an array or struct literal, and a macro such as `@image-url` or `@tr`.
+表达式产生一个值。
+字面量是最简单的形式：诸如 `42` 或 `3.14` 的数字，诸如 `100px` 或 `250ms` 的带单位数字，
+布尔值 `true` 或 `false`，带 `\{ }` 插值的[字符串](../../property-types/strings/#string)，
+或[颜色](#color-literals)。
+其他形式包括[引用](#references)、[运算符或条件表达式](../operators/)、
+[成员访问或索引](../operators/#member-access-and-indexing)、函数或回调调用、
+数组或结构体字面量，以及诸如 `@image-url` 或 `@tr` 的宏。
 
 <SC>
-Parentheses group a nested expression. \{#sls.expr.grouping}
+括号用于对嵌套表达式进行分组。 \{#sls.expr.grouping}
 
-## Color Literals
+<a id="color-literals"></a>
 
-A color literal consists of `#` followed by 3, 4, 6, or 8 hexadecimal digits:
-`#rgb`, `#rgba`, `#rrggbb`, or `#rrggbbaa`.
-The digits are case-insensitive.
-Any other number of digits is an error. \{#sls.expr.color.forms}
+## 颜色字面量
 
-The digits specify the red, green, blue, and alpha channels, in this order.
-When the alpha channel is absent, the color is fully opaque. \{#sls.expr.color.channels}
+颜色字面量由 `#` 后跟 3、4、6 或 8 个十六进制数字组成：
+`#rgb`、`#rgba`、`#rrggbb` 或 `#rrggbbaa`。
+这些数字不区分大小写。
+任何其他位数的数字都是一个错误。 \{#sls.expr.color.forms}
 
-In the 3- and 4-digit forms, each digit specifies a channel with the digit duplicated:
-`#18f` is the same color as `#1188ff`. \{#sls.expr.color.short-forms}
+这些数字按顺序指定红、绿、蓝和 alpha 通道。
+当省略 alpha 通道时，颜色完全不透明。 \{#sls.expr.color.channels}
 
-A color literal evaluates to a value of type `color`. \{#sls.expr.color.type}
+在 3 位和 4 位形式中，每个数字通过重复来指定一个通道：
+`#18f` 与 `#1188ff` 是同一种颜色。 \{#sls.expr.color.short-forms}
 
-## Length Literals
+颜色字面量求值为 `color` 类型的值。 \{#sls.expr.color.type}
 
-A length literal consists of a number directly followed by a unit, for example `120px`. \{#sls.expr.length.form}
+## 长度字面量
+
+长度字面量由数字直接后跟一个单位组成，例如 `120px`。 \{#sls.expr.length.form}
 
 ```slint
 export component Example inherits Window {
@@ -58,34 +60,34 @@ export component Example inherits Window {
 </SC>
 
 <OnlyInSC>
-The number shall be integral: `10.5px` is an error. \{#sls.expr.length.integral}
+数字应为整数：`10.5px` 是一个错误。 \{#sls.expr.length.integral}
 
-`px` is the only unit.
-A number literal with another unit is an error. \{#sls.expr.length.px-only}
+`px` 是唯一的单位。
+带其他单位的数字字面量是一个错误。 \{#sls.expr.length.px-only}
 
 </OnlyInSC>
 
-The number may be fractional, as in `10.5px`.
-Length units include `px`, `phx`, `cm`, `mm`, `in`, `pt`, and `rem`.
+数字可以是小数，例如 `10.5px`。
+长度单位包括 `px`、`phx`、`cm`、`mm`、`in`、`pt` 和 `rem`。
 
 <SC>
-A length literal evaluates to a value of type `length`. \{#sls.expr.length.type}
+长度字面量求值为 `length` 类型的值。 \{#sls.expr.length.type}
 
-## Integer Literals
+## 整数字面量
 
-An integer literal is a whole number written without a unit, for example `42`. \{#sls.expr.int.form}
+整数字面量是不带单位书写的整数，例如 `42`。 \{#sls.expr.int.form}
 
-An integer literal evaluates to a value of type `int`. \{#sls.expr.int.type}
+整数字面量求值为 `int` 类型的值。 \{#sls.expr.int.type}
 
 <OnlyInSC>
-A number with a fractional part but no unit is an error. \{#sls.expr.int.fractional}
+带小数部分但不带单位的数字是一个错误。 \{#sls.expr.int.fractional}
 </OnlyInSC>
 
 <SC>
-## Image Literals
+## 图像字面量
 
-An image literal consists of `@image-url(`, a string literal in double
-quotes, and `)`. \{#sls.expr.image.form}
+图像字面量由 `@image-url(`、双引号中的字符串字面量，
+以及 `)` 组成。 \{#sls.expr.image.form}
 
 ```slint
 export component Example inherits Window {
@@ -93,38 +95,33 @@ export component Example inherits Window {
 }
 ```
 
-The string is the path of an image file: an absolute path, or a path
-resolved relative to the directory of the `.slint` file that contains the
-literal. \{#sls.expr.image.path}
+该字符串是图像文件的路径：绝对路径，或相对于包含该字面量的 `.slint` 文件所在目录解析的路径。 \{#sls.expr.image.path}
 
-An empty string evaluates to no image. \{#sls.expr.image.empty}
+空字符串求值为无图像。 \{#sls.expr.image.empty}
 
-An image literal evaluates to a value of type `image`. \{#sls.expr.image.type}
+图像字面量求值为 `image` 类型的值。 \{#sls.expr.image.type}
 
 </SC>
 
 <NotInSC>
-  The path may also name a file on the compiler's include path, and an image can
-  also be loaded from a `data:` URI or a URL; the [image
-  type](../../property-types/images/) describes these forms and the `nine-slice`
-  argument.
+  该路径也可以指向编译器包含路径上的文件，并且图像还可以从 `data:` URI 或 URL
+  加载；[图像类型](../../property-types/images/)描述了这些形式以及 `nine-slice`
+  参数。
 </NotInSC>
 
 <OnlyInSC>
-The file shall exist, and hold a raster image in a format the compiler can
-decode, such as PNG or JPEG.
-An SVG image is an error: it has no pixels to decode until it is
-rendered. \{#sls.expr.image.raster-only}
+该文件应存在，并包含编译器可解码格式的栅格图像，例如 PNG 或 JPEG。
+SVG 图像是一个错误：在渲染之前它没有可供解码的像素。 \{#sls.expr.image.raster-only}
 
-The string shall be a path: a `data:` URI or a URL is an
-error. \{#sls.expr.image.path-only}
+该字符串应是一个路径：`data:` URI 或 URL 是一个错误。 \{#sls.expr.image.path-only}
 
-The `nine-slice` argument of full Slint is an
-error. \{#sls.expr.image.no-nine-slice}
+完整 Slint 中的 `nine-slice` 参数是一个错误。 \{#sls.expr.image.no-nine-slice}
 
 </OnlyInSC>
 
-## References
+<a id="references"></a>
+
+## 引用
 
 ```slint
 export component Example inherits Window {
@@ -136,23 +133,23 @@ export component Example inherits Window {
 }
 ```
 
-A property reference refers to a property.
-It is a property name, optionally preceded by an element reference and a `.`. \{#sls.expr.ref.form}
+属性引用指向某个属性。
+它是一个属性名，可选地前面带有一个元素引用和一个 `.`。 \{#sls.expr.ref.form}
 
-The element reference is `self` for the enclosing element, `parent` for its parent,
-`root` for the component's root element, or an element `id`. \{#sls.expr.ref.element}
+元素引用对于外层元素是 `self`，对于其父元素是 `parent`，
+对于组件的根元素是 `root`，或者是元素的 `id`。 \{#sls.expr.ref.element}
 
-The predefined names `true` and `false` are references to the two values of type `bool`. \{#sls.expr.bool}
+预定义名字 `true` 和 `false` 是对 `bool` 类型两个值的引用。 \{#sls.expr.bool}
 
-A name without an element reference follows the [lookup rules](../name-resolution/#lookup-rules). \{#sls.expr.ref.lookup}
+不带元素引用的名字遵循[查找规则](../name-resolution/#lookup-rules)。 \{#sls.expr.ref.lookup}
 
-The name shall refer to a property of the referenced element. \{#sls.expr.ref.target}
+该名字应指向被引用元素的一个属性。 \{#sls.expr.ref.target}
 
-When reading, a property reference evaluates to the value of the referenced property,
-and has that property's type. \{#sls.expr.ref.value}
+读取时，属性引用求值为被引用属性的值，
+并具有该属性的类型。 \{#sls.expr.ref.value}
 
 </SC>
 
-Without an element reference, a name may also resolve to a local variable, a callback, or a function.
+不带元素引用时，名字也可以解析为局部变量、回调或函数。
 
-A reference may also name an [enumeration](../structs-and-enums/#enums) value or a [global](../globals/)'s property.
+引用也可以命名[枚举](../structs-and-enums/#enums)值或[全局对象](../globals/)的属性。

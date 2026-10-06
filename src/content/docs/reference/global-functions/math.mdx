@@ -1,11 +1,11 @@
 ---
 title: Math
-description: Math Namespace
+description: Math 命名空间
 ---
 
 import Link from '@slint/common-files/src/components/Link.astro';
 
-The **Math** namespace contains functions that are available both in the global scope and in the `Math` namespace.
+**Math** 命名空间包含在全局作用域和 `Math` 命名空间中都可用的函数。
 
 ```slint no-test
 // Using the Math namespace
@@ -19,21 +19,21 @@ x: abs(-10); // sets x to 10
 
 ```
 
-Some of the math functions can be used in a postfix style which can make the code more readable.
+一些数学函数可以以后缀风格使用，这可以使代码更具可读性。
 
 ```slint no-test
 // Using the postfix style.
 x: (-10).abs(); // sets x to 10
 ```
 
-**T type**
-Many of the math functions can be used with any <Link type="NumericTypes" label="numeric type"/> such as `angle`, `duration`, `float`, `int`, `length`, and `percent`. These are represented on this page as `T`.
+**T 类型**
+许多数学函数可以与任何 <Link type="NumericTypes" label="数值类型"/> 一起使用，例如 `angle`、`duration`、`float`、`int`、`length` 和 `percent`。在本页中它们表示为 `T`。
 
-## General Math Functions
+## 通用数学函数
 
 ### abs(T) -> T
 
-Return the absolute value, where T is a numeric type.
+返回绝对值，其中 T 是数值类型。
 
 ```slint no-test
 Math.abs(-10); // returns 10
@@ -43,7 +43,7 @@ abs(-10px); // returns 10px
 
 ### ceil(float) -> int
 
-Returns the value rounded up to the nearest integer.
+返回向上舍入到最接近整数的值。
 
 ```slint no-test
 Math.ceil(4); // returns 4
@@ -53,7 +53,7 @@ Math.ceil(-1.5); // returns -1
 
 ### floor(float) -> int
 
-Returns the value rounded down to the nearest integer.
+返回向下舍入到最接近整数的值。
 
 ```slint no-test
 Math.floor(4); // returns 4
@@ -63,7 +63,7 @@ Math.floor(-1.5); // returns -2
 
 ### round(float) -> int
 
-Return the value rounded to the nearest integer
+返回舍入到最接近整数的值
 
 ```slint no-test
 Math.round(4.5); // returns 5
@@ -73,8 +73,8 @@ Math.round(-1.2); // returns -1
 
 ### sign(float) -> float
 
-Returns 1 or -1, indicating the sign of the number passed as argument.
-Returns 1 if the input is 0 or -0.
+返回 1 或 -1，表示作为参数传入的数字的符号。
+如果输入为 0 或 -0，则返回 1。
 
 ```slint no-test
 Math.sign(10); // returns 1
@@ -84,22 +84,22 @@ Math.sign(0); // returns 1
 
 ### clamp(T, T, T) -> T
 
-Takes a `value`, `minimum` and `maximum` and returns `maximum` if
-`value > maximum`, `minimum` if `value < minimum`, or `value` in all other cases.
+接受 `value`、`minimum` 和 `maximum`，如果 `value > maximum` 则返回 `maximum`，
+如果 `value < minimum` 则返回 `minimum`，否则返回 `value`。
 
 ### log(float, float) -> float
 
-Return the log of the first value with a base of the second value
+返回以第二个值为底的第一个值的对数
 
 ### ln(float) -> float
 
-Return the natural log of the value. Same as `log(x, e)`
+返回该值的自然对数。等同于 `log(x, e)`
 
 ### min(T, T) -> T
 
 ### max(T, T) -> T
 
-Return the arguments with the minimum (or maximum) value. All arguments must be of the same numeric type.
+返回具有最小（或最大）值的参数。所有参数必须是相同的数值类型。
 
 ```slint no-test
 Math.min(1, 2); // returns 1
@@ -110,35 +110,35 @@ Math.max(2, 1); // returns 2
 
 ### mod(T, T) -> T
 
-Perform a modulo operation, where T is some numeric type.
-Returns the remainder of the euclidean division of the arguments.
-This always returns a positive number between 0 and the absolute value of the second value.
+执行取模运算，其中 T 是某种数值类型。
+返回参数进行欧几里得除法后的余数。
+这始终返回 0 与第二个值绝对值之间的正数。
 
 ### sqrt(float) -> float
 
-Square root
+平方根
 
 ### pow(float, float) -> float
 
-Return the value of the first value raised to the second
+返回第一个值的第二个值次幂
 
 ### exp(float) -> float
 
-Return the value of e raised to the given value
+返回 e 的给定值次幂
 
-## Trigonometric Functions
+## 三角函数
 
 ### acos(float) -> angle
 
-Returns the arccosine, or inverse cosine, of a number. The arccosine is the angle whose cosine is number.
+返回数字的反余弦。反余弦是余弦为该数字的角度。
 
 ### asin(float) -> angle
 
-Returns the arcsine, or inverse sine, of a number. The arcsine is the angle whose sine is number.
+返回数字的反正弦。反正弦是正弦为该数字的角度。
 
 ### atan(float) -> angle
 
-Returns the arctangent, or inverse tangent, of a number.
+返回数字的反正切。
 
 ### atan2(float, float) -> angle
 
@@ -148,5 +148,5 @@ Returns the arctangent, or inverse tangent, of a number.
 
 ### tan(angle) -> float
 
-The trigonometry function. Note that the should be typed with `deg` or `rad` unit
-(for example `cos(90deg)` or `sin(slider.value * 1deg)`).
+三角函数。注意应使用 `deg` 或 `rad` 单位输入
+（例如 `cos(90deg)` 或 `sin(slider.value * 1deg)`）。

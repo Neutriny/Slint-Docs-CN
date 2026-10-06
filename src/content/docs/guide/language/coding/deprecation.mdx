@@ -5,33 +5,33 @@ description: 把属性、回调或函数标记为已弃用，并指引用户迁�
 
 import Link from '@slint/common-files/src/components/Link.astro';
 
-The `@deprecated` annotation marks a property, callback, or function as deprecated.
-Whenever the member is accessed from outside the component that declares it, the compiler emits a warning that points to the replacement.
-This lets a component evolve its public API while giving users a migration path instead of a hard break.
+`@deprecated` 注解会把属性、回调或函数标记为已弃用。
+只要从声明该成员的组件之外访问该成员，编译器就会发出警告，并指向替代方案。
+这让组件能够演进其公共 API，同时为用户提供迁移路径，而不是硬性破坏。
 
-## Syntax
+## 语法
 
-Prefix the declaration with `@deprecated`, followed by the message in parentheses:
+在声明前加上 `@deprecated`，后面跟括号中的消息：
 
 ```slint
 in-out property <int> new-prop;
 @deprecated("Please use 'new-prop' instead") in-out property <int> old-prop <=> new-prop;
 ```
 
-Accessing `old-prop` then warns with `The property 'old-prop' has been deprecated: Please use 'new-prop' instead`.
+随后访问 `old-prop` 会发出警告：`The property 'old-prop' has been deprecated: Please use 'new-prop' instead`。
 
-Write the message you want the user to read.
-There is no inference from the declaration, so say what replaces the member, even when it aliases its replacement with `<=>`.
+请写上你希望用户读到的消息。声明本身不会推导出任何内容，因此要说明什么取代了该成员，
+即使它通过 `<=>` 别名指向其替代者也要如此。
 
-When nothing replaces the member, leave the message empty:
+当没有任何东西取代该成员时，把消息留空：
 
 ```slint
 @deprecated("") in-out property <int> going-away;
 ```
 
-The warning then just reads `The property 'going-away' has been deprecated`.
+此时警告只会显示 `The property 'going-away' has been deprecated`。
 
-## Example
+## 示例
 
 ```slint
 component Inner {
@@ -52,12 +52,12 @@ export component Example {
 }
 ```
 
-## Rules
+## 规则
 
-- The message is mandatory.
-  Write `@deprecated("")` to deprecate without advising on a replacement.
-- The message must be a plain string literal, without any `\{}` expressions.
-- Accessing a deprecated member is only a warning, never an error, so existing code keeps compiling.
-- Accesses from within the declaring component don't warn, since that component still needs to implement the member.
+- 消息是必需的。
+  写 `@deprecated("")` 可在不给出替代建议的情况下弃用。
+- 消息必须是纯字符串字面量，不能包含任何 `\{}` 表达式。
+- 访问已弃用的成员只会产生警告，绝不会是错误，因此现有代码仍可继续编译。
+- 从声明该成员的组件内部访问不会发出警告，因为该组件仍然需要实现该成员。
 
-For the normative rules, see <Link type="DeprecationSpec" label="Deprecation" /> in the language specification.
+关于规范性规则，参见语言规范中的 <Link type="DeprecationSpec" label="弃用" />。

@@ -5,38 +5,36 @@ description: 实验性 ComponentContainer 元素，可动态嵌入子组件
 
 import SlintProperty from '@slint/common-files/src/components/SlintProperty.astro';
 
-`ComponentContainer` is a built-in element that embeds a component chosen at runtime.
-The component to embed is supplied from Rust code as a `ComponentFactory` and bound to the container's `component-factory` property.
-This is useful for loading `.slint` files dynamically through the interpreter, or for plugging in different components based on application state.
+`ComponentContainer` 是一个内置元素，用于嵌入在运行时选择的组件。
+要嵌入的组件由 Rust 代码以 `ComponentFactory` 的形式提供，并绑定到容器的 `component-factory` 属性。
+这对于通过解释器动态加载 `.slint` 文件，或根据应用状态接入不同组件非常有用。
 
-> **Note**: `ComponentContainer` is experimental and subject to change.
-> It is currently only available from Rust.
-> Tracking issue: [slint-ui/slint#2390](https://github.com/slint-ui/slint/issues/2390).
+> **注意**：`ComponentContainer` 是实验性的，可能会发生变化。
+> 它目前只能从 Rust 使用。
+> 跟踪 issue：[slint-ui/slint#2390](https://github.com/slint-ui/slint/issues/2390)。
 
-## Properties
+## 属性
 
 ### component-factory
 
 <SlintProperty propName="component-factory" typeName="component-factory">
-  The factory that produces the embedded component. Assign it from Rust code
-  with a `slint::ComponentFactory`. Changing this property replaces the embedded
-  component.
+  生成所嵌入组件的工厂。从 Rust 代码用 `slint::ComponentFactory`
+  为它赋值。更改此属性会替换所嵌入的组件。
 </SlintProperty>
 
 ### has-component
 
 <SlintProperty propName="has-component" typeName="bool" defaultValue="false">
-  Output property. Set to `true` while an embedded component is present, and
-  `false` otherwise. Use it to show a placeholder when no component has been
-  loaded.
+  输出属性。当存在所嵌入的组件时设为 `true`， 否则为
+  `false`。可用于在未加载任何组件时显示占位内容。
 </SlintProperty>
 
-The container also has the usual `width` and `height` properties.
-The embedded component is placed at `(0, 0)` inside the container and its size constraints propagate to the container's layout info.
+该容器还具有通常的 `width` 和 `height` 属性。
+所嵌入的组件被放置在容器内的 `(0, 0)` 处，其尺寸约束会传递到容器的布局信息中。
 
-## Example
+## 示例
 
-A minimal `.slint` file that exposes the factory as a property of the root component:
+一个最小的 `.slint` 文件，将工厂暴露为根组件的一个属性：
 
 ```slint
 export component MainWindow inherits Window {
@@ -52,7 +50,7 @@ export component MainWindow inherits Window {
 }
 ```
 
-The Rust side creates a `ComponentFactory` that compiles a `.slint` source at runtime with the interpreter and sets it on the `plugin` property:
+Rust 侧创建一个 `ComponentFactory`，它在运行时用解释器编译一个 `.slint` 源，并将其设置到 `plugin` 属性上：
 
 ```rust
 use slint::ComponentFactory;
@@ -83,7 +81,7 @@ fn main() -> Result<(), slint::PlatformError> {
 }
 ```
 
-The closure passed to `ComponentFactory::new` receives a `FactoryContext` that you forward to `create_embedded`.
-The embedded instance is rebuilt whenever the container needs it.
+传递给 `ComponentFactory::new` 的闭包会接收一个 `FactoryContext`，你应将其转发给 `create_embedded`。
+只要容器需要，所嵌入的实例就会被重新构建。
 
-Statically compiled components can also be embedded: call `ComponentHandle::new()` inside the closure and return the handle instead of going through the interpreter.
+静态编译的组件也可以嵌入：在闭包内调用 `ComponentHandle::new()` 并返回该句柄，而无需经过解释器。

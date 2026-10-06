@@ -11,53 +11,52 @@ import { Code } from '@astrojs/starlight/components';
 import Link from '@slint/common-files/src/components/Link.astro';
 import skiaGenerator from '../../../../../../../scripts/flatpak-skia-generator.py?raw';
 
-Distribution on Linux takes a few forms.
-The easiest to get started with is [Flatpak](https://flatpak.org/), so that's what this guide covers.
-Flatpaks are sandboxed, work across distributions, and are straightforward to create.
+Linux 上的分发有几种形式。
+最容易上手的是 [Flatpak](https://flatpak.org/)，所以本指南介绍它。
+Flatpak 是沙箱化的，可跨发行版工作，而且创建起来很直接。
 
 <Aside type="note">
-  [Snap](https://snapcraft.io/), [AppImage](https://appimage.org/), and your
-  distribution's own package manager are the alternatives to Flatpak, each with
-  a different trade-off between integration, sandboxing, and how many systems
-  you have to build on.
+  [Snap](https://snapcraft.io/)、[AppImage](https://appimage.org/) 以及你的
+  发行版自带的包管理器都是 Flatpak 的替代方案，各自在集成度、沙箱化，
+  以及需要为之构建的系统数量之间有着不同的取舍。
 </Aside>
 
-## Prerequisites
+## 先决条件
 
-The tools needed are the `flatpak` and `flatpak-builder` tools.
-Add the Flathub remote as well.
-That's where the runtime and the SDK your application builds against come from:
+需要的工具是 `flatpak` 和 `flatpak-builder`。
+同时还要添加 Flathub 远程仓库。
+你的应用程序所构建所依赖的运行时和 SDK 都来自那里：
 
 ```bash
 flatpak remote-add --if-not-exists --user flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 ```
 
-Depending on your programming language, you also need a tool that converts your build tool's lockfile into dependencies that `flatpak-builder` understands.
-The build process is sandboxed just like Flatpaks themselves, and nothing inside it reaches the network.
-Every dependency that would otherwise be downloaded has to be declared up front.
+根据你使用的编程语言，你还需要一个工具，把构建工具的锁文件转换为 `flatpak-builder` 能够理解的依赖项。
+构建过程与 Flatpak 本身一样是沙箱化的，其内部无法访问网络。
+每一个原本需要下载的依赖项都必须事先声明。
 
-Lockfile conversion scripts exist for every programming language Slint supports:
+Slint 支持的每种编程语言都有对应的锁文件转换脚本：
 
 - Rust
   - [`cargo`](https://github.com/flatpak/flatpak-builder-tools/tree/master/cargo)
 - NodeJS
-  - [`node`](https://github.com/flatpak/flatpak-builder-tools/tree/master/node) - this is the recommended method, supporting `npm`, `yarn` and `pnpm`
-  - [`npm`](https://github.com/flatpak/flatpak-builder-tools/tree/master/npm) (if the `node` script does not work)
-  - [`yarn`](https://github.com/flatpak/flatpak-builder-tools/tree/master/yarn) (if the `node` script does not work)
+  - [`node`](https://github.com/flatpak/flatpak-builder-tools/tree/master/node) - 这是推荐的方法，支持 `npm`、`yarn` 和 `pnpm`
+  - [`npm`](https://github.com/flatpak/flatpak-builder-tools/tree/master/npm)（如果 `node` 脚本不起作用）
+  - [`yarn`](https://github.com/flatpak/flatpak-builder-tools/tree/master/yarn)（如果 `node` 脚本不起作用）
 - Deno
   - [`deno`](https://github.com/flatpak/flatpak-builder-tools/tree/master/deno)
 - Python
   - [`pip`](https://github.com/flatpak/flatpak-builder-tools/tree/master/pip)
   - [`poetry`](https://github.com/flatpak/flatpak-builder-tools/tree/master/poetry)
 
-C++ has no standard, cross-platform package manager.
-Vendor your dependencies instead.
-Slint supports Bun, but Flatpak doesn't.
+C++ 没有标准的跨平台包管理器。
+请改为将依赖项随项目一同提供。
+Slint 支持 Bun，但 Flatpak 不支持。
 
-## Creating a Build File
+## 创建构建文件
 
-Flatpak build files are named after the package ID, which is a domain you control written backwards.
-This guide uses `com.yourorganization.YourApp`, so the build file is named `com.yourorganization.YourApp.yml`.
+Flatpak 构建文件以包 ID 命名，包 ID 是一个你控制的、反向书写的域名。
+本指南使用 `com.yourorganization.YourApp`，因此构建文件名为 `com.yourorganization.YourApp.yml`。
 
 ```yaml
 # The ID, explained above.
@@ -88,27 +87,27 @@ finish-args:
   - --socket=fallback-x11
 ```
 
-Those permissions are the minimum every Slint application needs.
-For anything beyond them, see [Flatpak's documentation](https://docs.flatpak.org/en/latest/sandbox-permissions.html).
-The common additions are `--share=network` for network access, `--socket=pulseaudio` for audio, and `--allow=bluetooth` for Bluetooth.
+这些权限是每个 Slint 应用程序所需的最低权限。
+如果需要更多权限，请参见 [Flatpak 的文档](https://docs.flatpak.org/en/latest/sandbox-permissions.html)。
+常见的额外权限有：用于网络访问的 `--share=network`、用于音频的 `--socket=pulseaudio`，以及用于蓝牙的 `--allow=bluetooth`。
 
-## Specifying the Build Process
+## 指定构建过程
 
-Next comes the part that depends on your language: the dependencies and the build process.
+接下来是与你的语言相关的部分：依赖项和构建过程。
 
 <Tabs syncKey="dev-language">
 <TabItem label="Rust" icon="seti:rust">
 
-Run the [`flatpak-cargo-generator.py`](https://github.com/flatpak/flatpak-builder-tools/tree/master/cargo) script mentioned above over your lockfile.
-It declares its own dependencies inline, so [`uv`](https://docs.astral.sh/uv/) runs it without a virtual environment:
+对锁文件运行上面提到的 [`flatpak-cargo-generator.py`](https://github.com/flatpak/flatpak-builder-tools/tree/master/cargo) 脚本。
+它会以内联方式声明自己的依赖项，因此 [`uv`](https://docs.astral.sh/uv/) 无需虚拟环境即可运行它：
 
 ```bash
 curl -O https://raw.githubusercontent.com/flatpak/flatpak-builder-tools/master/cargo/flatpak-cargo-generator.py
 uv run flatpak-cargo-generator.py Cargo.lock -o cargo-sources.json
 ```
 
-Pass `-o`, or the script writes `generated-sources.json` instead.
-To run it with `python3` rather than `uv`, install its `aiohttp` and `tomlkit` dependencies first.
+传入 `-o`，否则脚本会改为写入 `generated-sources.json`。
+如果要使用 `python3` 而不是 `uv` 运行它，请先安装它的 `aiohttp` 和 `tomlkit` 依赖项。
 
 ```yaml
 # ...
@@ -155,29 +154,29 @@ modules:
       - cargo-sources.json
 ```
 
-That covers everything the default renderer needs.
-The <Link type="skia_renderer" label="Skia renderer" /> needs more, as the section below explains.
+这涵盖了默认渲染器所需的一切。
+正如下一节所解释的，<Link type="skia_renderer" label="Skia 渲染器" />需要更多内容。
 
-### The Skia Renderer
+### Skia 渲染器
 
-Skia is a large graphics library written in C++.
-Building Slint with the Skia renderer normally downloads a prebuilt copy of it, but nothing inside the sandbox reaches the network, so the build has to compile Skia itself.
-That means declaring Skia's own sources in the manifest, all few hundred megabytes of them.
+Skia 是一个用 C++ 编写的大型图形库。
+通常，使用 Skia 渲染器构建 Slint 时会下载一份预编译的副本，但沙箱内无法访问网络，因此构建过程必须自行编译 Skia。
+这意味着要在清单中声明 Skia 自身的源代码，足足有数百兆字节。
 
-The script below does that.
-It looks up the exact Skia revision your version of Slint expects, then turns Skia's list of dependencies into sources pinned to a commit each.
-Save it next to `flatpak-cargo-generator.py` and run it from the root of your project, whenever your dependencies change:
+下面的脚本可以完成这件事。
+它会查找你的 Slint 版本所期望的确切 Skia 修订版本，然后把 Skia 的依赖项列表转换为各自固定到某个提交的源代码。
+把它保存到 `flatpak-cargo-generator.py` 旁边，并在依赖项发生变化时从项目根目录运行它：
 
 ```bash
 python3 flatpak-skia-generator.py
 ```
 
-It uses the standard library alone, so it needs no dependencies of its own.
+它只使用标准库，因此自身不需要任何依赖项。
 
 <Code code={skiaGenerator} lang="python" title="flatpak-skia-generator.py" />
 
-Skia is configured with `gn`, a build tool the SDK doesn't ship, and it's compiled with clang rather than the SDK's gcc.
-That makes for four additions to the manifest:
+Skia 使用 `gn` 进行配置，而 SDK 并不附带这个构建工具；它使用 clang 而不是 SDK 的 gcc 进行编译。
+这给清单带来了四项新增内容：
 
 ```yaml
 # ...
@@ -227,17 +226,17 @@ modules:
       - skia-sources.json
 ```
 
-Building Skia takes a while, and its sources are large.
-Every input is pinned to a commit, so the build stays reproducible, works on every architecture the runtime supports, and follows your version of Slint when you re-run the generator.
+编译 Skia 需要一段时间，而且它的源代码很大。
+每个输入都固定到某个提交，因此构建保持可复现、能在运行时支持的所有架构上工作，并且在你重新运行生成器时会跟随你的 Slint 版本。
 
 </TabItem>
 <TabItem label="C++" icon="seti:cpp">
 
-Projects created from the Slint template call `find_package(Slint)` and fall back to downloading Slint, and Slint in turn downloads Corrosion.
-The sandbox has no network for either, so both become sources in the manifest, and Slint gets built as its own module that installs into `/app` where `find_package` picks it up.
+从 Slint 模板创建的项目会调用 `find_package(Slint)`，并在失败时回退到下载 Slint，而 Slint 又会下载 Corrosion。
+沙箱对两者都没有网络，因此两者都成为清单中的源代码，而 Slint 会作为它自己的模块被构建，安装到 `/app`，供 `find_package` 拾取。
 
-A C++ project has no lockfile of its own, but Slint's C++ library is built from Rust sources, so its crates have to be declared as well.
-Configure your project once outside the sandbox, and everything the manifest needs is on disk:
+C++ 项目没有自己的锁文件，但 Slint 的 C++ 库是由 Rust 源代码构建的，因此还必须声明它的 crate。
+在沙箱外配置一次你的项目，清单所需的一切就都在磁盘上了：
 
 ```bash
 # Downloads Slint and Corrosion, as an ordinary build does
@@ -251,8 +250,8 @@ git -C build/_deps/slint-src rev-parse HEAD
 git -C build/_deps/corrosion-src rev-parse HEAD
 ```
 
-Taking the lockfile and the revision from the same checkout keeps them in step.
-Crates generated from a different revision than the one you build leave `cargo` unable to resolve its dependencies, and it says so in terms of the crate that differs rather than the mismatch itself.
+从同一次检出中获取锁文件和修订版本，可以让两者保持同步。
+如果 crate 是从与你构建时不同的修订版本生成的，会导致 `cargo` 无法解析其依赖项，而且它会以存在差异的 crate 来表述，而不是直接说明不匹配本身。
 
 ```yaml
 # ...
@@ -307,17 +306,17 @@ modules:
         branch: HEAD
 ```
 
-The C++ library builds with the FemtoVG renderer and without Skia, which takes a few minutes.
+该 C++ 库会使用 FemtoVG 渲染器构建，且不包含 Skia，这需要几分钟时间。
 
-#### With the Skia Renderer
+#### 使用 Skia 渲染器
 
-Skia is a large graphics library written in C++.
-Building Slint with it normally downloads a prebuilt copy, and since nothing inside the sandbox reaches the network, the build compiles Skia from source instead.
-That adds roughly fifteen minutes, and means declaring Skia's own sources in the manifest.
+Skia 是一个用 C++ 编写的大型图形库。
+使用它构建 Slint 通常需要下载一份预编译副本，而由于沙箱内无法访问网络，构建过程会改为从源代码编译 Skia。
+这会增加大约十五分钟，并意味着要在清单中声明 Skia 自身的源代码。
 
-The script below writes them to `skia-sources.json`.
-It looks up the Skia revision that your Slint version expects, then turns Skia's list of dependencies into sources pinned to a commit each.
-Run it inside the Slint checkout that CMake fetched, because that is the version being built:
+下面的脚本会把它们写入 `skia-sources.json`。
+它会查找你的 Slint 版本所期望的 Skia 修订版本，然后把 Skia 的依赖项列表转换为各自固定到某个提交的源代码。
+在 CMake 拉取的 Slint 检出目录中运行它，因为那才是正在构建的版本：
 
 ```bash
 project=$PWD
@@ -326,7 +325,7 @@ project=$PWD
 
 <Code code={skiaGenerator} lang="python" title="flatpak-skia-generator.py" />
 
-Skia is configured with `gn`, a build tool the SDK doesn't ship, and it's compiled with clang rather than the SDK's gcc:
+Skia 使用 `gn` 进行配置，而 SDK 并不附带这个构建工具；它使用 clang 而不是 SDK 的 gcc 进行编译：
 
 ```yaml
 # ...
@@ -378,16 +377,16 @@ modules:
       - skia-sources.json
 ```
 
-The environment and the sources belong to the module that builds Slint, not to your application.
-Slint's CMake finds the clang Skia wants on the path the `llvm20` extension adds, so nothing else needs pointing at it.
+这些环境和源代码属于构建 Slint 的模块，而不属于你的应用程序。
+Slint 的 CMake 会在 `llvm20` 扩展添加的路径上找到 Skia 所需的 clang，因此不需要再额外指向它。
 
 </TabItem>
 </Tabs>
 
-## Icons and Desktop Metadata
+## 图标与桌面元数据
 
-To make your application show up in the launcher, write a `.desktop` file and provide an icon.
-For this example the desktop entry looks like this:
+要让你的应用程序出现在启动器中，请编写一个 `.desktop` 文件并提供图标。
+在本例中，桌面条目如下所示：
 
 ```ini
 [Desktop Entry]
@@ -405,13 +404,13 @@ Name=Your App
 Icon=com.yourorganization.YourApp
 ```
 
-Check the file with `desktop-file-validate`, which comes with the Freedesktop SDK:
+使用 Freedesktop SDK 附带的 `desktop-file-validate` 检查该文件：
 
 ```bash
 flatpak run --command=desktop-file-validate org.freedesktop.Sdk//25.08 com.yourorganization.YourApp.desktop
 ```
 
-Install it from `build-commands`:
+从 `build-commands` 中安装它：
 
 ```yaml
 # ...
@@ -421,12 +420,12 @@ build-commands:
   # ...
 ```
 
-Flatpak looks for the icon in these directories:
+Flatpak 会在以下目录中查找图标：
 
-- `.png` files in `${FLATPAK_DEST}/share/icons/hicolor/WIDTHxHEIGHT/apps/`, where `WIDTHxHEIGHT` matches the width and height of your image (up to 512)
-- `.svg` files in `${FLATPAK_DEST}/share/icons/hicolor/scalable/apps/`
+- `${FLATPAK_DEST}/share/icons/hicolor/WIDTHxHEIGHT/apps/` 中的 `.png` 文件，其中 `WIDTHxHEIGHT` 与图像（最大 512）的宽高相匹配
+- `${FLATPAK_DEST}/share/icons/hicolor/scalable/apps/` 中的 `.svg` 文件
 
-Whichever format you choose, name the file after your Flatpak package ID and install it from `build-commands`:
+无论你选择哪种格式，都应按照你的 Flatpak 包 ID 命名文件，并从 `build-commands` 中安装它：
 
 ```yaml
 # ...
@@ -439,11 +438,11 @@ build-commands:
   # ...
 ```
 
-## Metainfo
+## 元信息（Metainfo）
 
-Finally, your package needs a `.metainfo.xml` file.
-Package managers and Flathub read it to describe your application to users.
-The [full specification](https://docs.flathub.org/docs/for-app-authors/metainfo-guidelines) is out of scope here, so below are the minimum fields that pass validation:
+最后，你的包需要一个 `.metainfo.xml` 文件。
+包管理器和 Flathub 会读取它来向用户描述你的应用程序。
+[完整规范](https://docs.flathub.org/docs/for-app-authors/metainfo-guidelines)不在本文范围内，因此下面是通过校验所需的最少字段：
 
 ```xml
 <?xml version="1.0" encoding="UTF-8" ?>
@@ -494,13 +493,13 @@ The [full specification](https://docs.flathub.org/docs/for-app-authors/metainfo-
 </component>
 ```
 
-Validate the file before you build, with `appstreamcli` from the Freedesktop SDK:
+在构建之前，使用 Freedesktop SDK 中的 `appstreamcli` 校验该文件：
 
 ```bash
 flatpak run --command=appstreamcli org.freedesktop.Sdk//25.08 validate --no-net com.yourorganization.YourApp.metainfo.xml
 ```
 
-Install it from `build-commands`, like the desktop entry and the icon:
+像桌面条目和图标一样，从 `build-commands` 中安装它：
 
 ```yaml
 # ...
@@ -511,16 +510,16 @@ build-commands:
 ```
 
 <Aside type="note">
-Flathub requires at least one screenshot, added as a `<screenshots>` section.
-Leave the section out while you develop: an empty one fails validation,
-and `flatpak-builder` runs the same validation over the metadata it installs.
+Flathub 要求至少提供一张截图，以 `<screenshots>` 节的形式添加。
+开发期间请省略该节：空节无法通过校验，
+而且 `flatpak-builder` 会对它安装的元数据运行相同的校验。
 </Aside>
 
-## Putting It All Together
+## 整合起来
 
-The build file grew in fragments, so here it is complete and without the annotations, ready to copy and adapt.
-It assumes the desktop entry, the icon, and the metainfo sit next to the manifest in the root of your project.
-Commit them before you build: the `git` source packages what the repository holds, not your working tree.
+构建文件是零散地逐步展开的，因此这里给出完整且不带注释的版本，可供复制和调整。
+它假设桌面条目、图标和 metainfo 与清单一起位于项目根目录。
+在构建之前提交它们：`git` 源代码打包的是仓库所保存的内容，而不是你的工作树。
 
 <Tabs syncKey="dev-language">
 <TabItem label="Rust" icon="seti:rust">
@@ -588,7 +587,7 @@ modules:
       - skia-sources.json
 ```
 
-For the FemtoVG renderer, drop the `llvm20` extension, the `gn` module, the `cleanup` entry, the three Skia environment variables, and `skia-sources.json`.
+对于 FemtoVG 渲染器，请去掉 `llvm20` 扩展、`gn` 模块、`cleanup` 条目、三个 Skia 环境变量，以及 `skia-sources.json`。
 
 </TabItem>
 <TabItem label="C++" icon="seti:cpp">
@@ -656,31 +655,31 @@ modules:
 </TabItem>
 </Tabs>
 
-## Building and Running
+## 构建与运行
 
-With the manifest, the desktop entry, the icon, and the metainfo in place,
-build the package and install it for your own user:
+清单、桌面条目、图标和 metainfo 都就绪后，
+构建包并为你自己的用户安装它：
 
 ```bash
 flatpak-builder --user --install --force-clean --install-deps-from=flathub \
     build-dir com.yourorganization.YourApp.yml
 ```
 
-`build-dir` is a scratch directory that `flatpak-builder` fills,
-and `--force-clean` empties it first.
-`--install-deps-from=flathub` fetches the runtime and the SDK if they're missing.
-The first build downloads a couple of gigabytes and compiles every dependency,
-later builds reuse the cache in `.flatpak-builder`.
-Add that directory to your `.gitignore`, together with the generated sources.
+`build-dir` 是 `flatpak-builder` 填充的临时目录，
+`--force-clean` 会先清空它。
+`--install-deps-from=flathub` 会在运行时和 SDK 缺失时获取它们。
+首次构建会下载几 GB 内容并编译每一个依赖项，
+之后的构建会复用 `.flatpak-builder` 中的缓存。
+请把该目录连同生成的源代码一起加入你的 `.gitignore`。
 
-Run it the way your users will:
+按照用户将采用的方式运行它：
 
 ```bash
 flatpak run com.yourorganization.YourApp
 ```
 
-To hand the package to someone else,
-export it into a repository and turn that into a single file:
+要把包交给别人，
+可以将其导出到一个仓库，然后把该仓库转换为单个文件：
 
 ```bash
 flatpak-builder --user --force-clean --repo=repo build-dir com.yourorganization.YourApp.yml
@@ -688,8 +687,8 @@ flatpak build-bundle repo com.yourorganization.YourApp.flatpak com.yourorganizat
     --runtime-repo=https://dl.flathub.org/repo/flathub.flatpakrepo
 ```
 
-Install the result with `flatpak install ./com.yourorganization.YourApp.flatpak`.
-A bundle holds your application alone,
-so `--runtime-repo` tells the other machine where to fetch the runtime.
-It's also a snapshot: `flatpak update` can't update an application installed from one.
-To ship updates, serve the `repo` directory over HTTPS and have your users add it as a remote.
+使用 `flatpak install ./com.yourorganization.YourApp.flatpak` 安装结果。
+一个 bundle 只包含你的应用程序本身，
+因此 `--runtime-repo` 会告诉另一台机器到何处获取运行时。
+它也是一份快照：`flatpak update` 无法更新从 bundle 安装的应用程序。
+要发布更新，请通过 HTTPS 提供 `repo` 目录，并让你的用户将其添加为远程仓库。

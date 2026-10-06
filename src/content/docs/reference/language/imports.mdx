@@ -1,6 +1,6 @@
 ---
 title: 导入
-description: Bringing declarations from other files into scope.
+description: 将其他文件中的声明引入作用域。
 SC: true
 ---
 
@@ -8,99 +8,103 @@ import SC from '@slint/common-files/src/components/SC.astro';
 import OnlyInSC from '@slint/common-files/src/components/OnlyInSC.astro';
 
 <SC>
-An import statement brings exported declarations from another file into the importing file's namespace. \{#sls.import.semantics}
+`import` 语句将另一个文件中导出的声明带入导入文件的命名空间。 \{#sls.import.semantics}
 
 <OnlyInSC>
-An imported source file shall itself conform to this specification. \{#sls.import.subset}
+被导入的源文件本身应符合本规范。 \{#sls.import.subset}
 </OnlyInSC>
 
-## Placement
+## 位置
 
-Import statements appear at the top level of a `.slint` source file,
-interleaved with [component definitions](../file-structure/#sls.file.component.definition-forms) and [exports](../exports/). \{#sls.import.placement}
+`import` 语句出现在 `.slint` 源文件的顶层，
+与[组件定义](../file-structure/#sls.file.component.definition-forms)和[导出](../exports/)交错。 \{#sls.import.placement}
 
-## Named Imports
+## 具名导入
 
 <OnlyInSC>
-Every import statement is a named import. \{#sls.import.named-only}
+每条 import 语句都是具名导入。 \{#sls.import.named-only}
 </OnlyInSC>
 
-A named import has the form: \{#sls.import.forms}
+具名导入具有以下形式： \{#sls.import.forms}
 
 ```slint no-test
 import { Item, ... } from "path";
 ```
 
-The brace-delimited list contains one or more _import items_ separated by commas.
-A trailing comma is permitted. \{#sls.import.list}
+由花括号界定的列表包含一个或多个以逗号分隔的*导入项*。
+允许尾随逗号。 \{#sls.import.list}
 
-An import item is either: \{#sls.import.item}
+导入项可以是： \{#sls.import.item}
 
-- a single [identifier](../lexical-structure/#sls.lex.identifier.classes) `Name`, or
-- a renaming of the form `Name as Other`.
+- 单个[标识符](../lexical-structure/#sls.lex.identifier.classes) `Name`，或
+- `Name as Other` 形式的改名。
 
-A bare identifier `Name` brings the corresponding exported name from the imported file into the current file's namespace under the same name. \{#sls.import.same-name}
+裸标识符 `Name` 将导入文件中对应的导出名字以相同的名字带入当前文件的命名空间。 \{#sls.import.same-name}
 
-A renaming `Name as Other` brings the corresponding exported name into the current file's namespace under the name `Other` only.
-The original name `Name` is not introduced. \{#sls.import.rename}
+改名 `Name as Other` 将对应的导出名字仅以名字 `Other` 带入当前文件的命名空间。
+原始名字 `Name` 不会被引入。 \{#sls.import.rename}
 
-The name on the left of `as` must be exported by the imported file. \{#sls.import.left-must-exist}
+`as` 左侧的名字必须由被导入文件导出。 \{#sls.import.left-must-exist}
 
-Two import items in the same source file can't introduce the same name. \{#sls.import.no-clash}
+同一源文件中的两个导入项不能引入相同的名字。 \{#sls.import.no-clash}
 
 <OnlyInSC>
-An imported name refers to a component. \{#sls.import.kinds}
+被导入的名字指向一个组件。 \{#sls.import.kinds}
 </OnlyInSC>
 </SC>
 
-An imported name refers to a component, struct, enum, or global.
+被导入的名字指向组件、结构体、枚举或全局对象。
 
 <SC>
-## Import Paths
+<a id="import-paths"></a>
 
-An import path is a double-quoted string literal. \{#sls.import.path-literal}
+## 导入路径
+
+导入路径是双引号字符串字面量。 \{#sls.import.path-literal}
 
 <OnlyInSC>
-The path is resolved relative to the directory of the importing source file. \{#sls.import.path-relative}
+该路径相对于导入源文件所在目录解析。 \{#sls.import.path-relative}
 </OnlyInSC>
 
-The characters between the quotes are taken verbatim: escape sequences aren't decoded.
-Both `/` and `\` are directory separators,
-so a backslash separates directories rather than escaping the next character. \{#sls.import.path-verbatim}
+引号之间的字符按原样处理：不解析转义序列。
+`/` 和 `\` 都是目录分隔符，
+因此反斜杠用于分隔目录，而不是转义下一个字符。 \{#sls.import.path-verbatim}
 
 </SC>
 
-If the path begins with the character `@`, it is a _library import_:
-the remainder of the path is resolved against the [component libraries](../../../guide/language/coding/file/#component-libraries) configured in the build system.
+如果路径以字符 `@` 开头，它就是*库导入*：
+路径的其余部分相对于构建系统中配置的[组件库](../../../guide/language/coding/file/#component-libraries)解析。
 
-Otherwise, the path is resolved first relative to the directory of the importing source file,
-then against the compiler's configured include paths.
-The first match in this search order is used.
+否则，路径首先相对于导入源文件所在目录解析，
+然后相对于编译器配置的包含路径解析。
+使用该搜索顺序中的第一个匹配项。
 
 <SC>
-The referenced file must exist. \{#sls.import.path-must-exist}
+被引用的文件必须存在。 \{#sls.import.path-must-exist}
 </SC>
 
-## File Imports
+## 文件导入
 
-An import statement without an import list makes the referenced file available to the compiler: \{#sls.import.file}
+不带导入列表的 import 语句使被引用的文件对编译器可用： \{#sls.import.file}
 
 ```slint no-test
 import "./NotoSans-Regular.ttf";
 ```
 
-Importing a font file (`.ttf` or `.otf`) registers the font for use in the application;
-see [Fonts](../../../guide/development/fonts/). \{#sls.import.file-font}
+导入字体文件（`.ttf` 或 `.otf`）会注册该字体以供应用中使用；
+参见[字体](../../../guide/development/fonts/)。 \{#sls.import.file-font}
 
-## Re-Exports
+<a id="re-exports"></a>
 
-An [export](../exports/) statement with a `from` clause imports declarations and exports them again in one step: \{#sls.export.reexport}
+## 重新导出
+
+带 `from` 子句的 [export](../exports/) 语句一步导入并再次导出声明： \{#sls.export.reexport}
 
 ```slint no-test
 export { Item, ... } from "path";
 export * from "path";
 ```
 
-The `*` form exports every declaration the referenced file exports.
-It can appear at most once per file.
-The path resolves like any other [import path](#import-paths). \{#sls.export.reexport-all}
+`*` 形式导出被引用文件导出的每一条声明。
+它最多每个文件出现一次。
+该路径像任何其他[导入路径](#import-paths)一样解析。 \{#sls.export.reexport-all}

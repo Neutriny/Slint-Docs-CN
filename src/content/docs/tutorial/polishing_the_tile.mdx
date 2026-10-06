@@ -1,49 +1,50 @@
 ---
 title: 美化牌面
-description: Polishing the Tile
+description: 美化牌面
 ---
 
 import { Code } from '@astrojs/starlight/components';
 import { extractLines } from '../../../utils/utils.ts';
 
-In this step, you add a curtain-like cover that opens when clicked. Slint files have an implicit z order for drawing items.
-Each subsequent item is drawn above the previous one. So a `Rectangle` on line 10 would be underneath another declared later
-in the file on line 50. To give the impression of curtains that cover the image,
-declare two rectangles after the <span class="hljs-built_in">Image</span>, so that Slint draws them over the Image.
+在这一步中，你将添加一个点击时会打开的帘幕式覆盖层。Slint 文件在绘制项目时有一个隐式的 z 顺序。
+每个后续项目都绘制在前一个项目之上。因此，第 10 行的 `Rectangle` 会位于文件中第 50 行
+之后声明的另一个 `Rectangle` 之下。为了营造覆盖图像的帘幕效果，
+请在 <span class="hljs-built_in">Image</span> 之后声明两个矩形，这样 Slint 会把它们绘制在 Image 之上。
 
-The <span class="hljs-built_in">TouchArea</span> element declares a transparent rectangular region that allows
-reacting to user input such as a mouse click or tap. The element forwards a callback to the <em>MainWindow</em> indicating that a user clicked the tile.
+<span class="hljs-built_in">TouchArea</span> 元素声明了一个透明的矩形区域，用于
+响应用户输入，例如鼠标点击或触摸。该元素会向 <em>MainWindow</em>
+转发一个回调，表明用户点击了这张牌。
 
-The <em>MainWindow</em> reacts by flipping a custom <em>open_curtain</em> property.
-Property bindings for the animated width and x properties also use the custom <em>open_curtain</em> property.
+<em>MainWindow</em> 通过翻转自定义的 <em>open_curtain</em> 属性来做出反应。 动画
+width 和 x 属性的属性绑定也使用自定义的 <em>open_curtain</em> 属性。
 
-The following table shows more detail on the two states:
+下表更详细地展示这两种状态：
 
-| _open_curtain_ value:   | false                                                                        | true                                                                                                          |
-| ----------------------- | ---------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| Left curtain rectangle  | Fill the left half by setting the width _width_ to half the parent's width   | Width of zero makes the rectangle invisible                                                                   |
-| Right curtain rectangle | Fill the right half by setting _x_ and _width_ to half of the parent's width | _width_ of zero makes the rectangle invisible. _x_ moves to the right, sliding the curtain open when animated |
+| _open_curtain_ 值： | false                                                  | true                                                           |
+| ------------------- | ------------------------------------------------------ | -------------------------------------------------------------- |
+| 左侧帘幕矩形        | 通过将宽度 _width_ 设为父级宽度的一半来填充左半部分    | 宽度为零会使矩形不可见                                         |
+| 右侧帘幕矩形        | 通过将 _x_ 和 _width_ 设为父级宽度的一半来填充右半部分 | _width_ 为零会使矩形不可见。_x_ 向右移动，在播放动画时滑开帘幕 |
 
-To make the tile extensible, replace the hard-coded icon name with an _icon_
-property that can be set when instantiating the element.
+为了让牌具有可扩展性，请将硬编码的图标名称替换为一个可在实例化元素时设置的 _icon_
+属性。
 
-For the final polish, add a
-_solved_ property used to animate the color to a shade of green when a player finds a pair.
+作为最后的润色，添加一个
+_solved_ 属性，用于在玩家找到一对匹配的牌时将颜色动画过渡到一种绿色调。
 
-Replace the code inside the `ui/app-window.slint` file with the following:
+将 `ui/app-window.slint` 文件中的代码替换为以下内容：
 
 import polishingTheTile from '/src/content/code/main_polishing_the_tile.rs?raw';
 
 <Code code={extractLines(polishingTheTile, 10, 61)} lang="slint" />
 
-The code uses `root` and `self`. `root` refers to the outermost
-element in the component, the <span class="hljs-title">MemoryTile</span> in this case. `self` refers
-to the current element.
+代码使用了 `root` 和 `self`。`root` 指组件中最外层的
+元素，在本例中是 <span class="hljs-title">MemoryTile</span>。`self` 指
+当前元素。
 
-The code exports the <span class="hljs-title">MainWindow</span> component. This is necessary so that you can later access it
-from application business logic.
+代码导出了 <span class="hljs-title">MainWindow</span> 组件。这是必要的，以便你稍后可以从应用业务逻辑中
+访问它。
 
-Running the code opens a window with a rectangle that opens up to show the bus icon when clicked. Subsequent clicks close and open the curtain again.
+运行代码会打开一个窗口，其中的矩形在点击时会打开以显示公交车图标。后续点击会再次合上和打开帘幕。
 
 <video
   autoplay

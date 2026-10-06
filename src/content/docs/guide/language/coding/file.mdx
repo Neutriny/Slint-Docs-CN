@@ -10,14 +10,13 @@ import Link from '@slint/common-files/src/components/Link.astro';
 import LangRefLink from '@slint/common-files/src/components/LangRefLink.astro';
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-You write user interfaces in the Slint language and saved in files with the `.slint` extension.
+你用 Slint 语言编写用户界面，并将其保存为扩展名为 `.slint` 的文件。
 
-Each `.slint` file defines one or several components. These components declare
-a tree of elements. Components form the basis of composition in Slint. Use them
-to build your own re-usable set of UI controls. You can use each declared
-component under its name as an element in another component.
+每个 `.slint` 文件定义一个或多个组件。这些组件声明一棵元素树。
+组件构成了 Slint 中组合的基础。用它们来构建你自己可复用的 UI 控件集合。
+你可以在另一个组件中，以元素的形式使用每个已声明的组件，只需引用其名字。
 
-Below is an example of components and elements:
+下面是组件和元素的示例：
 
 ```slint
 
@@ -46,15 +45,14 @@ export component MyApp inherits Window {
 }
 ```
 
-Both `MyButton` and `MyApp` are components. `Window` and `Rectangle` are built-in elements
-used by `MyApp`. `MyApp` also re-uses the `MyButton` component as two separate elements.
+`MyButton` 和 `MyApp` 都是组件。`Window` 和 `Rectangle` 是 `MyApp` 使用的内置元素。
+`MyApp` 还把 `MyButton` 组件复用为两个独立的元素。
 
-Elements have properties, which you can assign values to. The example above assigns a string
-constant "hello" to the first `MyButton`'s `text` property. You
-can also assign entire expressions. Slint re-evaluates the expressions when any
-of the properties they depend on change, which makes the user-interface reactive.
+元素具有属性，你可以为其赋值。上面的示例把字符串常量 "hello" 赋给第一个 `MyButton` 的
+`text` 属性。你也可以赋整个表达式。当表达式所依赖的任一属性发生变化时，Slint 会重新求值这些表达式，
+这使界面具有响应式。
 
-You can name elements using the `:=` syntax:
+你可以用 `:=` 语法为元素命名：
 
 ```slint
 component MyButton inherits Text {
@@ -77,34 +75,34 @@ export component MyApp inherits Window {
 }
 ```
 
-:::note[Note]
-Names have to be valid [identifiers](../../../../reference/language/lexical-structure/).
+:::note[注意]
+名字必须是有效的[标识符](../../../../reference/language/lexical-structure/)。
 :::
 
-Some elements are also accessible under pre-defined names:
+有些元素还可以通过预定义的名字访问：
 
-- `root` refers to the outermost element of a component.
-- `self` refers to the current element.
-- `parent` refers to the parent element of the current element.
+- `root` 指向组件最外层的元素。
+- `self` 指向当前元素。
+- `parent` 指向当前元素的父元素。
 
-These names are reserved and you can't re-define them.
+这些名字是保留的，你无法重新定义它们。
 
-## Comments
+## 注释
 
-Comments are lines of code that are ignored by the Slint compiler. They are used to explain the code or
-to temporarily disable code.
+注释是会被 Slint 编译器忽略的代码行。它们用来解释代码，
+或临时禁用代码。
 
-### Single Line Comments
+### 单行注释
 
-Single line comments are denoted by `//` and are terminated by a new line.
+单行注释用 `//` 表示，并以换行结束。
 
 ```slint
 // Amazing text! This is a comment
 ```
 
-### Multi Line Comments
+### 多行注释
 
-Multi line comments are denoted by `/*` and `*/`, and can span multiple lines.
+多行注释用 `/*` 和 `*/` 表示，可以跨越多行。
 
 ```slint
 /*
@@ -113,15 +111,13 @@ Multi line comments are denoted by `/*` and `*/`, and can span multiple lines.
 */
 ```
 
-## Elements and Components
+## 元素与组件
 
-The core part of the Slint language are elements and components. Technically they are the same thing
-so once you know how to declare and use one you know the other. Elements are the basic building blocks
-that are part of the Slint Language, while components (also know as widgets) are larger items that
-are built up from multiple elements and properties.
+Slint 语言的核心部分是元素和组件。从技术上讲它们是同一种东西，
+所以一旦你学会如何声明和使用其中一个，也就学会了另一个。元素是 Slint 语言的基本构建块，
+而组件（也称为控件）是由多个元素和属性组合而成的更大条目。
 
-If you have come from other languages such as HTML or React you might be used to opening and closing tags as well
-as self closing tags.
+如果你来自 HTML 或 React 等其他语言，你可能习惯了开闭标签以及自闭合标签。
 
 ```html
 <!-- opening and closing tag -->
@@ -130,8 +126,8 @@ as self closing tags.
 <img />
 ```
 
-Slint simply has a single way to declare an item the `element-name` followed by a set of curly braces `{}` that contain
-the properties of the element.
+Slint 只有一种声明条目的方式：先写 `element-name`，后跟一组花括号 `{}`，
+其中包含该元素的属性。
 
 ```slint no-test del="Text {};"
 // valid
@@ -148,14 +144,14 @@ Text
 Text {};
 ```
 
-:::note[Note]
-The Slint tooling provides a code formatter that enforces what is considered good practice.
+:::note[注意]
+Slint 工具提供代码格式化器，会强制执行被认为是良好实践的写法。
 
-If you are new to coding then you can make friends with fellow developers by discussing aspects of
-code formatting you don't like. It's a type of small talk developers love and appreciate.
+如果你是编程新手，可以通过讨论你不喜欢的代码格式方面来与其他开发者交朋友。
+这是开发者喜爱且欣赏的一种闲聊话题。
 :::
 
-## The Root Element
+## 根元素
 
 ```slint playground
 component MyApp {
@@ -166,19 +162,19 @@ component MyApp {
 }
 ```
 
-To be a valid Slint file the root element must be a component. Then inside the component you can declare
-any number of elements. This is explained in more detail later, it's not important to understand at this point.
+要成为有效的 Slint 文件，根元素必须是一个组件。然后在组件内部，你可以声明任意数量的元素。
+这会在后面更详细地解释，此刻不理解也没关系。
 
-## Properties
+## 属性
 
-Properties are the values that are assigned to an element. They are set using the `property-name: value;` syntax.
+属性是赋给元素的值。它们用 `property-name: value;` 语法设置。
 
-## Modules
+## 模块
 
-Components declared in a `.slint` file can be used as elements in other `.slint` files,
-by means of exporting and importing them.
-By default, every type declared in a `.slint` file is private.
-Export a component to make it available to other files, and import it where you need it:
+在 `.slint` 文件中声明的组件可以通过导出和导入，
+在其他 `.slint` 文件中作为元素使用。
+默认情况下，`.slint` 文件中声明的每个类型都是私有的。
+导出组件以使其可供其他文件使用，然后在需要的地方导入：
 
 ```slint no-test
 import { Button } from "./button.slint";
@@ -191,41 +187,39 @@ export component App inherits Rectangle {
 }
 ```
 
-Elements, globals and structs can be exported and imported as well.
-For all the forms, including renaming and re-exports, see the
-[Imports](../../../../reference/language/imports/) and [Exports](../../../../reference/language/exports/)
-chapters of the language reference.
+元素、全局对象和结构体同样可以被导出和导入。
+关于所有形式（包括重命名和再导出），参见语言参考中的
+[导入](../../../../reference/language/imports/)和[导出](../../../../reference/language/exports/)
+章节。
 
-## Component Libraries
+<a id="component-libraries"></a>
 
-Splitting your code base into separate module files promotes re-use and
-improves encapsulation by allow you to hide helper components. This works
-well within a project's own directory structure. To share libraries of
-components between projects without hardcoding their relative paths, use
-the component library syntax:
+## 组件库
+
+把代码库拆分为独立的模块文件可以促进复用，
+并通过允许你隐藏辅助组件来改善封装。这在项目自身的目录结构内运作良好。
+要在项目之间共享组件库，又不想硬编码它们的相对路径，请使用组件库语法：
 
 ```slint no-test
 import { MySwitch } from "@mylibrary/switch.slint";
 import { MyButton } from "@otherlibrary";
 ```
 
-In the above example, the `MySwitch` component will be imported from a component
-library called `mylibrary`, in which Slint looks for the `switch.slint` file. Therefore `mylibrary` must be
-declared to refer to a directory, so that the subsequent search for `switch.slint`
-succeeds. `MyButton` will be imported from `otherlibrary`. Therefore `otherlibrary`
-must be declared to refer to a `.slint` file that exports `MyButton`.
-A library provides images and fonts as well as components.
-Reference them with the same prefix, as in `@image-url("@mylibrary/logo.png")`
-or `import "@mylibrary/MyFont.ttf";`.
+在上面的示例中，`MySwitch` 组件将从名为 `mylibrary` 的组件库中导入，
+Slint 会在其中查找 `switch.slint` 文件。因此必须声明 `mylibrary` 指向一个目录，
+这样后续对 `switch.slint` 的查找才能成功。`MyButton` 将从 `otherlibrary` 导入。
+因此必须声明 `otherlibrary` 指向一个导出 `MyButton` 的 `.slint` 文件。
+库既提供组件，也提供图像和字体。
+用相同的前缀引用它们，例如 `@image-url("@mylibrary/logo.png")`
+或 `import "@mylibrary/MyFont.ttf";`。
 
-The path to each library, as file or directory, must be defined separately at compilation time.
-Use one of the following methods to help the Slint compiler resolve libraries to the correct
-path on disk:
+每个库的路径（无论是文件还是目录）都必须在编译时单独定义。
+使用以下方法之一来帮助 Slint 编译器把库解析到磁盘上正确的路径：
 
 <Tabs syncKey="dev-language">
 <TabItem label="Rust" icon="seti:rust">
-* In `build.rs`, call <LangRefLink lang="rust-slint-build" relpath="struct.CompilerConfiguration#method.with_library_paths">`with_library_paths`</LangRefLink>
-  to provide a mapping from library name to path. For example:
+* 在 `build.rs` 中，调用 <LangRefLink lang="rust-slint-build" relpath="struct.CompilerConfiguration#method.with_library_paths">`with_library_paths`</LangRefLink>
+  以提供从库名到路径的映射。例如：
 
 ```rust
 // build.rs
@@ -242,7 +236,7 @@ fn main() {
 
 </TabItem>
 <TabItem label="C++" icon="seti:cpp">
-* Specify `LIBRARY_PATHS` with <LangRefLink lang="cpp" relpath="cmake-reference/slint-target-sources/">`slint_target_sources`</LangRefLink>. For example:
+* 用 <LangRefLink lang="cpp" relpath="cmake-reference/slint-target-sources/">`slint_target_sources`</LangRefLink> 指定 `LIBRARY_PATHS`。例如：
 
 ```cmake
 slint_target_sources(my_application
@@ -254,7 +248,7 @@ slint_target_sources(my_application
 
 </TabItem>
 <TabItem label="NodeJS" icon="node">
-* Provide the `libraryPaths` map with <LangRefLink lang="nodejs" relpath="api/functions/loadFile/">`loadFile`</LangRefLink> in `LoadFileOptions`. For example:
+* 在 `LoadFileOptions` 中通过 <LangRefLink lang="nodejs" relpath="api/functions/loadFile/">`loadFile`</LangRefLink> 提供 `libraryPaths` 映射。例如：
 
 ```javascript
 let ui = slint.loadFile('/path/to/main.slint', {
@@ -266,7 +260,7 @@ let ui = slint.loadFile('/path/to/main.slint', {
 
 </TabItem>
 <TabItem label="Python" icon="seti:python">
-* Provide the `library_paths` dict with <LangRefLink lang="python" relpath="api/functions/load_file/">`load_file`</LangRefLink>. For example:
+* 通过 <LangRefLink lang="python" relpath="api/functions/load_file/">`load_file`</LangRefLink> 提供 `library_paths` 字典。例如：
 
 ```python
 ui = slint.load_file(
@@ -280,16 +274,14 @@ ui = slint.load_file(
 </TabItem>
 </Tabs>
 
-- When invoking the `slint-viewer` from the command line, pass `-Lmylibrary=/path/to/my/library` for each component
-  library.
-- When using the VS Code extension, configure the Slint extension's library path
-  using the `Slint: Library Paths` setting. Example below:
+- 从命令行调用 `slint-viewer` 时，为每个组件库传入 `-Lmylibrary=/path/to/my/library`。
+- 使用 VS Code 扩展时，用 `Slint: Library Paths` 设置来配置 Slint 扩展的库路径。示例如下：
   ```json
   "slint.libraryPaths": {
       "mylibrary": "/path/to/my/library",
       "otherlibrary": "/path/to/otherlib/index.slint",
   },
   ```
-  This can also be edited in the `.vscode/settings.json` file committed to your repository.
-  Relative paths are resolved against the workspace root.
-- With other editors, you can configure them to pass the `-L` argument to the `slint-lsp` just like for the slint-viewer.
+  这也可以在你提交到仓库的 `.vscode/settings.json` 文件中编辑。
+  相对路径会相对于工作区根目录解析。
+- 使用其他编辑器时，你可以配置它们像 slint-viewer 那样，把 `-L` 参数传给 `slint-lsp`。

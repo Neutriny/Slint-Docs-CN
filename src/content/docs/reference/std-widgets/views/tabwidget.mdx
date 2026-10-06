@@ -1,6 +1,6 @@
 ---
 title: TabWidget
-description: TabWidget api.
+description: TabWidget API。
 ---
 
 import SlintProperty from '@slint/common-files/src/components/SlintProperty.astro';
@@ -26,15 +26,15 @@ export component Example inherits Window {
 ```
 </CodeSnippetMD>
 
-`TabWidget` is a container for a set of tabs. It can only have `Tab` elements as children and only one tab will be visible at
-a time.
+`TabWidget` 是一组标签页的容器。它只能有 `Tab` 元素作为子元素，并且一次只能有一个标签页
+可见。
 
-## Properties
+## 属性
 
 ### current-index
 
 <SlintProperty typeName="int" propName="current-index" defaultValue="0">
-The index of the currently visible tab.
+当前可见标签页的索引。
 
 ```slint "current-index: 1;"
 TabWidget {
@@ -54,10 +54,10 @@ TabWidget {
 ### orientation
 
 <SlintProperty typeName="enum" enumName="Orientation" propName="orientation" defaultValue="horizontal">
-The orientation of the tab bar.
-When set to `vertical`, the tab bar is placed to the left of the content.
-The property must be constant.
-For example:
+标签栏的方向。
+当设置为 `vertical` 时，标签栏放置在内容的左侧。
+该属性必须是常量。
+例如：
 ```slint
 TabWidget {
     in property <Orientation> foo;
@@ -70,12 +70,12 @@ TabWidget {
 ```
 </SlintProperty>
 
-## Properties of the `Tab` element
+## `Tab` 元素的属性
 
 ### title
 
 <SlintProperty typeName="string" propName="title">
-The text written on the tab.
+标签页上显示的文本。
 
 ```slint 'title: "First";'
 TabWidget {

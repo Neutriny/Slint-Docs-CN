@@ -1,6 +1,6 @@
 ---
 title: 图像
-description: The image type of the Slint language.
+description: Slint 语言的图片类型。
 SC: true
 ---
 
@@ -14,75 +14,78 @@ import SC from '../../../../components/SC.astro';
 import NotInSC from '../../../../components/NotInSC.astro';
 
 <SC>
+<a id="image"></a>
+
 ### image
+
 <SlintProperty propName="image" typeName="image" defaultValue='empty image'>
 
-An `image` is a rectangle of pixels: rows of _width_ pixels each, and every
-pixel a [color](../colors-and-brushes/). \{#sls.type.image}
+`image` 是一个像素矩形：每行 _width_ 个像素，每个
+像素是一种 [color](../colors-and-brushes/)。 \{#sls.type.image}
 
-The default `image` is _no image_: it has no pixels, and its width and height
-are 0. \{#sls.type.image.none}
+默认 `image` 是 _无图像_：它没有像素，宽度和高度
+为 0。 \{#sls.type.image.none}
 
-An image is created with an `@image-url()` image literal or set by the
-application. \{#sls.type.image.sources}
+图像通过 `@image-url()` 图像字面量创建，或由
+应用程序设置。 \{#sls.type.image.sources}
 
 <NotInSC>
-The `image` type is a reference to an image.
+`image` 类型是对图像的引用。
 
-In Slint, an image can be loaded from a file with the `@image-url("...")` construct.
-The address within the `@image-url` function must be a string literal and the image is resolved at compile time.
-An empty string produces an empty image.
+在 Slint 中，可以使用 `@image-url("...")` 构造从文件加载图像。
+`@image-url` 函数中的地址必须是字符串字面量，图像在编译时解析。
+空字符串产生空图像。
 
-Unlike an [import path](../../language/imports/#import-paths),
-the address decodes the [escape sequences](../strings/#string) `\"`, `\\`, `\n`, and `\u{...}`,
-so a literal backslash must be written as `\\`.
+与 [导入路径](../../language/imports/#import-paths) 不同，
+该地址会解码[转义序列](../strings/#string) `\"`、`\\`、`\n` 和 `\u{...}`，
+因此字面反斜杠必须写为 `\\`。
 
-Slint looks for images in the following places:
+Slint 在以下位置查找图像：
 
-1. The absolute path or the path relative to the current `.slint` file.
-2. The include path used by the compiler to look up `.slint` files.
+1. 绝对路径或相对于当前 `.slint` 文件的路径。
+2. 编译器用于查找 `.slint` 文件的包含路径。
 
-Loading image from `http` is only supported in [SlintPad](https://slintpad.com).
+仅在 [SlintPad](https://slintpad.com) 中支持从 `http` 加载图像。
 
-Images can also be loaded from [`data:` URIs](https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Schemes/data), with either base64 or URL-encoded content.
-For example: `@image-url("data:image/png;base64,iVBORw0KGgo...")`.
+也可以从 [`data:` URI](https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Schemes/data) 加载图像，内容可以是 base64 或 URL 编码。
+例如：`@image-url("data:image/png;base64,iVBORw0KGgo...")`。
 
-Supported format are SVG, and formats supported by the [`image` crate](https://crates.io/crates/image):
-AVIF, BMP, DDS, Farbfeld, GIF, HDR, ICO, JPEG, EXR, PNG, PNM, QOI, TGA, TIFF, WebP.
+支持的格式有 SVG，以及 [`image` crate](https://crates.io/crates/image) 支持的格式：
+AVIF、BMP、DDS、Farbfeld、GIF、HDR、ICO、JPEG、EXR、PNG、PNM、QOI、TGA、TIFF、WebP。
 
-On the web, the browser decodes images, so every format the browser supports works.
-Compressed SVG (`.svgz`) is the exception: browsers don't render it.
+在 Web 上，浏览器解码图像，因此浏览器支持的每种格式都可以使用。
+压缩 SVG（`.svgz`）是例外：浏览器不会渲染它。
 
 <Tabs syncKey="dev-language">
 <TabItem label="Rust" icon="seti:rust">
-In Rust, properties or struct fields of the image type are mapped to <LangRefLink lang="rust-slint" relpath="struct.Image">`slint::Image`</LangRefLink>.
-:::note[Note]
-By default, only PNG, JPEG, and SVG are supported.
-Enable the `image-default-formats` Cargo feature to support the other formats listed above,
-which comes at a cost of increased binary size and compilation time.
-This feature has no effect on the web, where the browser decodes images.
+在 Rust 中，image 类型的属性或结构体字段映射到 <LangRefLink lang="rust-slint" relpath="struct.Image">`slint::Image`</LangRefLink>。
+:::note[注意]
+默认情况下，仅支持 PNG、JPEG 和 SVG。
+启用 `image-default-formats` Cargo 特性以支持上面列出的其他格式，
+代价是增加二进制大小和编译时间。
+此特性在 Web 上无效，因为浏览器会解码图像。
 :::
 </TabItem>
 <TabItem label="C++" icon="seti:cpp">
-In C++, properties or struct fields of the image type are mapped to <LangRefLink lang="cpp" relpath="api/slint/image/">`slint::Image`</LangRefLink>.
+在 C++ 中，image 类型的属性或结构体字段映射到 <LangRefLink lang="cpp" relpath="api/slint/image/">`slint::Image`</LangRefLink>。
 </TabItem>
 <TabItem label="NodeJS" icon="node">
-In JavaScript properties or struct fields of the image type are mapped an object that implement the <LangRefLink lang="nodejs" relpath="api/interfaces/imagedata/">ImageData interface</LangRefLink>.
+在 JavaScript 中，image 类型的属性或结构体字段映射到实现 <LangRefLink lang="nodejs" relpath="api/interfaces/imagedata/">ImageData 接口</LangRefLink> 的对象。
 </TabItem>
 
 <TabItem label="Python" icon="seti:python">
-  In Python, properties or struct fields of the image type are mapped to{' '}
+  在 Python 中，image 类型的属性或结构体字段映射到{' '}
   <LangRefLink lang="python" relpath="api/classes/image/">
     `Image`
   </LangRefLink>
-  .
+  。
 </TabItem>
 
 </Tabs>
 
-It is also possible to load images supporting [9 slice scaling](https://en.wikipedia.org/wiki/9-slice_scaling) (also called nine patch or border images)
-by adding a `nine-slice(...)` argument. The argument can have either one, two, or four numbers that specifies the size of the edges.
-The numbers are either `top right bottom left` or `vertical horizontal`, or one number for everything
+也可以加载支持 [9 宫格缩放](https://en.wikipedia.org/wiki/9-slice_scaling)（也称为九宫格或边框图像）的图像，
+方法是添加 `nine-slice(...)` 参数。该参数可以有一个、两个或四个数字，用于指定边缘的大小。
+数字为 `top right bottom left` 或 `vertical horizontal`，或一个数字表示全部
 
 ```slint
 // nine-slice scaling
@@ -97,24 +100,24 @@ export component Example inherits Window {
 }
 ```
 
-See also the <Link type="Image" label="Image element"/>.
+另请参见 <Link type="Image" label="Image 元素"/>。
 
 </NotInSC>
 
 </SlintProperty>
 
-An image has the fields `width` and `height`, read with the `.` operator
-as in `logo.width`: \{#sls.type.image.properties}
+图像具有 `width` 和 `height` 字段，使用 `.` 运算符读取，
+如 `logo.width`： \{#sls.type.image.properties}
 
 #### width
 
-The width of the image in pixels, as an `int`.
-An image without pixels has a width of 0. \{#sls.type.image.width}
+图像的宽度（以像素为单位），为 `int`。
+没有像素的图像宽度为 0。 \{#sls.type.image.width}
 
 #### height
 
-The height of the image in pixels, as an `int`.
-An image without pixels has a height of 0. \{#sls.type.image.height}
+图像的高度（以像素为单位），为 `int`。
+没有像素的图像高度为 0。 \{#sls.type.image.height}
 
 ```slint
 export component Example inherits Window {

@@ -1,6 +1,6 @@
 ---
 title: 文件结构
-description: Top-level structure of a Slint source file and the basic form of component definitions.
+description: Slint 源文件的顶层结构以及组件定义的基本形式。
 SC: true
 ---
 
@@ -9,70 +9,70 @@ import OnlyInSC from '@slint/common-files/src/components/OnlyInSC.astro';
 import NotInSC from '@slint/common-files/src/components/NotInSC.astro';
 
 <SC>
-## A Slint Source File
+## Slint 源文件
 
-A `.slint` source file is a sequence of zero or more _top-level items_, separated only by whitespace and comments. \{#sls.file.source-file}
+`.slint` 源文件是零个或多个*顶层项*的序列，仅由空白和注释分隔。 \{#sls.file.source-file}
 
-A source file that contains only whitespace and comments is well-formed and defines no components. \{#sls.file.source-file.empty}
+仅包含空白和注释的源文件格式良好，并且不定义任何组件。 \{#sls.file.source-file.empty}
 
-## Top-Level Items
+## 顶层项
 
 <OnlyInSC>
-A *top-level item* is a *component definition*, a [struct or enum declaration](../structs-and-enums/),
-an [import statement](../imports/), or an [export statement](../exports/). \{#sls.file.top-level-item}
+*顶层项*是*组件定义*、[结构体或枚举声明](../structs-and-enums/)、
+[import 语句](../imports/)或[export 语句](../exports/)。 \{#sls.file.top-level-item}
 </OnlyInSC>
 </SC>
 
-A _top-level item_ is a component definition, an [import statement](../imports/), an [export statement](../exports/),
-a [struct or enum declaration](../structs-and-enums/), or a [global declaration](../globals/).
+*顶层项*是组件定义、[import 语句](../imports/)、[export 语句](../exports/)、
+[结构体或枚举声明](../structs-and-enums/)或[全局声明](../globals/)。
 
 <SC>
-## Component Definitions
+## 组件定义
 
-A component definition has one of the following two forms: \{#sls.file.component.definition-forms}
+组件定义具有以下两种形式之一： \{#sls.file.component.definition-forms}
 
 ```slint no-test
 component Name { /* component body */ }
 component Name inherits Base { /* component body */ }
 ```
 
-The identifier following the `component` keyword is the _name_ of the component. \{#sls.file.component.name}
+`component` 关键字后面的标识符是组件的*名字*。 \{#sls.file.component.name}
 
-The first form defines a component with no explicit base;
-the second form defines a component that _inherits_ from the element type named by `Base`. \{#sls.file.component.inherits}
+第一种形式定义一个没有显式基类的组件；
+第二种形式定义一个从 `Base` 命名的元素类型*继承*的组件。 \{#sls.file.component.inherits}
 
-A component that inherits extends its base:
-an instance of the component is an element of type `Base`. \{#sls.file.component.inherits.meaning}
+继承的组件会扩展其基类：
+组件的实例是 `Base` 类型的元素。 \{#sls.file.component.inherits.meaning}
 
-The [bindings](../bindings/) of the component body apply to that element,
-and the elements instantiated in the component body become children of the element. \{#sls.file.component.inherits.body-applies}
+组件体的[绑定](../bindings/)应用于该元素，
+而在组件体中实例化的元素会成为该元素的子元素。 \{#sls.file.component.inherits.body-applies}
 
-The component has the properties of `Base` in addition to those [declared](../properties/) in its body,
-and a binding in the component body may bind them. \{#sls.file.component.inherits.properties}
+除了其主体中[声明](../properties/)的那些属性外，该组件还具有 `Base` 的属性，
+组件体中的绑定可以绑定它们。 \{#sls.file.component.inherits.properties}
 
-The identifier `Base` shall resolve to a built-in element, to a component defined earlier in the file, or to an [imported](../imports/) component. \{#sls.file.component.inherits.base}
+标识符 `Base` 应解析为内置元素、文件中先前定义的组件或[导入的](../imports/)组件。 \{#sls.file.component.inherits.base}
 
-The braces `{` and `}` delimit the _component body_. \{#sls.file.component.body-braces}
+花括号 `{` 和 `}` 界定*组件体*。 \{#sls.file.component.body-braces}
 
-## Component Bodies
+## 组件体
 
-A component body is a sequence of zero or more _element instantiations_, [bindings](../bindings/), and [property declarations](../properties/), separated only by whitespace and comments. \{#sls.file.component.body}
+组件体是零个或多个*元素实例化*、[绑定](../bindings/)和[属性声明](../properties/)的序列，仅由空白和注释分隔。 \{#sls.file.component.body}
 
-A component body that contains no element instantiations is well-formed. \{#sls.file.component.body.empty}
+不包含任何元素实例化的组件体格式良好。 \{#sls.file.component.body.empty}
 
-## Element Instantiations
+## 元素实例化
 
-An element instantiation has the form: \{#sls.file.element.instantiation-form}
+元素实例化具有以下形式： \{#sls.file.element.instantiation-form}
 
 ```slint no-test
 TypeName { /* element body */ }
 ```
 
-The identifier `TypeName` shall resolve to a built-in or user-defined component. \{#sls.file.element.instantiation-typename}
+标识符 `TypeName` 应解析为内置或用户定义的组件。 \{#sls.file.element.instantiation-typename}
 
-An instantiation may be preceded by an _id_ and `:=`, as in `foo := Rectangle { }`,
-naming the element within the component,
-so that a [reference](../expressions/#references) can reach its properties. \{#sls.file.element.id}
+实例化前可以带有一个 _id_ 和 `:=`，例如 `foo := Rectangle { }`，
+在组件内命名该元素，
+以便[引用](../expressions/#references)能够访问其属性。 \{#sls.file.element.id}
 
 ```slint
 export component Example inherits Window {
@@ -87,37 +87,34 @@ export component Example inherits Window {
 }
 ```
 
-An id is an [identifier](../lexical-structure/#sls.lex.identifier.classes),
-so two ids are the same id when their
-[normalized forms](../lexical-structure/#sls.lex.identifier.normalization) are equal. \{#sls.file.element.id.identifier}
+id 是一个[标识符](../lexical-structure/#sls.lex.identifier.classes)，
+因此当两个 id 的
+[规范化形式](../lexical-structure/#sls.lex.identifier.normalization)相等时，它们是同一个 id。 \{#sls.file.element.id.identifier}
 
-An id shall be unique within the component. \{#sls.file.element.id.unique}
+id 在组件内应唯一。 \{#sls.file.element.id.unique}
 
-<NotInSC>
-  The uniqueness rule covers the whole component, the elements inside `for` and
-  `if` subtrees included.
-</NotInSC>
+<NotInSC>唯一性规则涵盖整个组件，包括 `for` 和 `if` 子树内的元素。</NotInSC>
 
-The names `self`, `parent`, and `root` are reserved and shall not be used as an id. \{#sls.file.element.id.reserved}
+名字 `self`、`parent` 和 `root` 是保留的，不得用作 id。 \{#sls.file.element.id.reserved}
 
 <OnlyInSC>
-Neither `Window` nor a component that directly or indirectly inherits `Window` shall be instantiated as an element. \{#sls.file.element.no-window-instantiation}
+`Window` 以及直接或间接继承 `Window` 的组件都不得作为元素实例化。 \{#sls.file.element.no-window-instantiation}
 </OnlyInSC>
 </SC>
 
-Instantiating `Window`, or a component that inherits `Window`, as an element is deprecated:
-it does not create a separate window.
+将 `Window` 或继承 `Window` 的组件作为元素实例化已废弃：
+它不会创建单独的窗口。
 
 <SC>
-The braces delimit the *element body*.
-An element body is a sequence of zero or more nested element instantiations and [bindings](../bindings/), separated only by whitespace and comments. \{#sls.file.element.body}
+花括号界定*元素体*。
+元素体是零个或多个嵌套元素实例化和[绑定](../bindings/)的序列，仅由空白和注释分隔。 \{#sls.file.element.body}
 
-A nested element instantiation is a _child_ of the element instantiation in whose body it appears.
-The child relationship forms a tree rooted at the elements that appear directly in a component body. \{#sls.file.element.tree}
+嵌套的元素实例化是它所在元素体对应元素实例化的*子元素*。
+子元素关系构成一棵树，其根为直接出现在组件体中的元素。 \{#sls.file.element.tree}
 
-## Example
+## 示例
 
-The following is a complete, well-formed `.slint` source file: \{#sls.file.example.intro}
+下面是一个完整、格式良好的 `.slint` 源文件： \{#sls.file.example.intro}
 
 ```slint
 export component Hello inherits Window {
@@ -128,6 +125,6 @@ export component Hello inherits Window {
 }
 ```
 
-It exports one component, `Hello`, which inherits from `Window` and whose body contains two top-level `Rectangle` instantiations. \{#sls.file.example.description}
+它导出一个组件 `Hello`，该组件继承自 `Window`，其主体包含两个顶层 `Rectangle` 实例化。 \{#sls.file.example.description}
 
 </SC>

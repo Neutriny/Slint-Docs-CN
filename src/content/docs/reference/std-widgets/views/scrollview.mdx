@@ -1,6 +1,6 @@
 ---
 title: ScrollView
-description: ScrollView api.
+description: ScrollView API。
 ---
 
 import SlintProperty from '@slint/common-files/src/components/SlintProperty.astro';
@@ -27,27 +27,26 @@ export component Example inherits Window {
 ```
 </CodeSnippetMD>
 
-A ScrollView shows a view onto content that is bigger than the visible area and can be
-scrolled. Compared to a plain <Link type="Flickable"/> it has scrollbar to interact with.
+ScrollView 显示一个视口，用于查看比可见区域更大的内容，并且可以
+滚动。与普通的 <Link type="Flickable"/> 相比，它带有可交互的滚动条。
 
-The ScrollView is scrollable if the `content-width` and `content-height` properties
-are bigger than the size of the visible area.
+如果 `content-width` 和 `content-height` 属性
+大于可见区域的大小，ScrollView 则可滚动。
 
-If the ScrollView contains a layout, the default value for the `content-width` and
-`content-height` is the minimum size of that layout.
+如果 ScrollView 包含布局，`content-width` 和
+`content-height` 的默认值是该布局的最小尺寸。
 
-:::note[Note]
-A ScrollView will always instantiate all of its children, so its performance may degrade with large number of children, even if they are not visible.
-If you want to display a long list of items, use a <Link type="ListView"/> instead, which only instantiates visible children.
+:::note[注意]
+ScrollView 始终会实例化其所有子元素，因此当子元素数量很大时性能可能会下降，即使它们不可见。
+如果要显示一长串项，请改用 <Link type="ListView"/>，它只实例化可见的子元素。
 :::
 
-## Properties
+## 属性
 
 ### enabled
 
 <SlintProperty propName="enabled" typeName="bool" defaultValue="true">
-  Used to render the frame as disabled or enabled, but doesn't change behavior
-  of the widget.
+  用于将框架渲染为禁用或启用状态，但不改变 控件的行为。
 </SlintProperty>
 
 ### mouse-drag-pan-enabled
@@ -58,9 +57,8 @@ If you want to display a long list of items, use a <Link type="ListView"/> inste
   defaultValue="false"
   propertyVisibility="in"
 >
-  When true, the view can be scrolled by dragging with the mouse. Panning with a
-  touch screen and scrolling with the mouse wheel works regardless of this
-  property.
+  当为 true 时，可以通过用鼠标拖动来滚动视图。使用
+  触摸屏平移和使用鼠标滚轮滚动与此属性无关，始终可用。
 </SlintProperty>
 
 ### has-focus
@@ -71,8 +69,7 @@ If you want to display a long list of items, use a <Link type="ListView"/> inste
   defaultValue="false"
   propertyVisibility="in-out"
 >
-  Used to render the frame as focused or unfocused, but doesn't change the
-  behavior of the widget.
+  用于将框架渲染为聚焦或未聚焦状态，但不改变 控件的行为。
 </SlintProperty>
 
 ### content-width
@@ -82,9 +79,8 @@ If you want to display a long list of items, use a <Link type="ListView"/> inste
   typeName="length"
   propertyVisibility="in-out"
 >
-  The width of the scrollable content of the scrollview. This property was
-  formerly known as `viewport-width`, which is still available as a deprecated
-  alias.
+  滚动视图可滚动内容的宽度。此属性以前 称为
+  `viewport-width`，该名称仍作为已弃用的 别名可用。
 </SlintProperty>
 
 ### content-height
@@ -94,9 +90,8 @@ If you want to display a long list of items, use a <Link type="ListView"/> inste
   typeName="length"
   propertyVisibility="in-out"
 >
-  The height of the scrollable content of the scrollview. This property was
-  formerly known as `viewport-height`, which is still available as a deprecated
-  alias.
+  滚动视图可滚动内容的高度。此属性以前 称为
+  `viewport-height`，该名称仍作为已弃用的 别名可用。
 </SlintProperty>
 
 ### content-x
@@ -106,9 +101,8 @@ If you want to display a long list of items, use a <Link type="ListView"/> inste
   typeName="length"
   propertyVisibility="in-out"
 >
-  The `x` position of the scrollable content relative to the scrollview. This is
-  usually a negative value. This property was formerly known as `viewport-x`,
-  which is still available as a deprecated alias.
+  可滚动内容相对于滚动视图的 `x` 位置。通常 为负值。此属性以前称为
+  `viewport-x`， 该名称仍作为已弃用的别名可用。
 </SlintProperty>
 
 ### content-y
@@ -118,9 +112,8 @@ If you want to display a long list of items, use a <Link type="ListView"/> inste
   typeName="length"
   propertyVisibility="in-out"
 >
-  The `y` position of the scrollable content relative to the scrollview. This is
-  usually a negative value. This property was formerly known as `viewport-y`,
-  which is still available as a deprecated alias.
+  可滚动内容相对于滚动视图的 `y` 位置。通常 为负值。此属性以前称为
+  `viewport-y`， 该名称仍作为已弃用的别名可用。
 </SlintProperty>
 
 ### visible-width
@@ -130,7 +123,7 @@ If you want to display a long list of items, use a <Link type="ListView"/> inste
   typeName="length"
   propertyVisibility="out"
 >
-  The width of the visible area of the ScrollView (not including the scrollbar)
+  ScrollView 可见区域的宽度（不包括滚动条）
 </SlintProperty>
 
 ### visible-height
@@ -140,7 +133,7 @@ If you want to display a long list of items, use a <Link type="ListView"/> inste
   typeName="length"
   propertyVisibility="out"
 >
-  The height of the visible area of the ScrollView (not including the scrollbar)
+  ScrollView 可见区域的高度（不包括滚动条）
 </SlintProperty>
 
 ### vertical-scrollbar-policy
@@ -151,7 +144,7 @@ If you want to display a long list of items, use a <Link type="ListView"/> inste
   enumName="ScrollBarPolicy"
   defaultValue="as-needed"
 >
-  The vertical scroll bar visibility policy.
+  垂直滚动条的可见性策略。
 </SlintProperty>
 
 ### horizontal-scrollbar-policy
@@ -162,14 +155,14 @@ If you want to display a long list of items, use a <Link type="ListView"/> inste
   enumName="ScrollBarPolicy"
   defaultValue="as-needed"
 >
-  The horizontal scroll bar visibility policy.
+  水平滚动条的可见性策略。
 </SlintProperty>
 
-## Callbacks
+## 回调
 
 ### scrolled()
 
-Invoked when `content-x` or `content-y` is changed by a user action (dragging, scrolling).
+当 `content-x` 或 `content-y` 因用户操作（拖动、滚动）而改变时调用。
 
 ```slint {11-14}
 ScrollView {

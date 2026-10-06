@@ -3,15 +3,15 @@ title: 具名插槽
 description: 实验性具名插槽，可向多个插入点填充内容
 ---
 
-A `slot` is a named insertion point where a component renders content supplied by its user.
-It generalizes the built-in `@children` placeholder: instead of a single anonymous block of children, a component can declare several slots and place each one at a distinct location in its own layout.
+`slot` 是一个具名插入点，组件在其中渲染由其使用者提供的内容。
+它是对内置 `@children` 占位符的推广：组件不再只能有一个匿名的子元素块，而是可以声明多个插槽，并将每个插槽放置在自己布局中的不同位置。
 
-> **Note**: named slots are experimental and subject to change.
-> Tracking issue: [slint-ui/slint#6258](https://github.com/slint-ui/slint/issues/6258).
+> **注意**：具名插槽是实验性的，可能会发生变化。
+> 跟踪 issue：[slint-ui/slint#6258](https://github.com/slint-ui/slint/issues/6258)。
 
-## Declaring a slot
+## 声明插槽
 
-Use the `slot` keyword inside a component to declare a slot, then render it at the desired location by writing the slot's name as an empty element.
+在组件内使用 `slot` 关键字声明一个插槽，然后将插槽名称作为空元素写出，即可在所需位置渲染它。
 
 ```slint
 export component Base inherits Rectangle {
@@ -26,13 +26,13 @@ export component Base inherits Rectangle {
 }
 ```
 
-A declared slot must be rendered exactly once.
-`@children` continues to work as before and represents the default, unnamed slot.
+已声明的插槽必须且只能渲染一次。
+`@children` 仍像以前一样工作，代表默认的、未命名的插槽。
 
-## Assigning a slot
+## 赋值插槽
 
-The user of a component fills a slot with the `<<` operator, naming the slot on the left and the content on the right.
-Content that is not assigned to a named slot goes to `@children`, as usual.
+组件的使用者用 `<<` 运算符填充插槽，左侧写出插槽名称，右侧写出内容。
+未赋值给具名插槽的内容照常进入 `@children`。
 
 ```slint no-test
 export component App inherits Rectangle {
@@ -44,12 +44,12 @@ export component App inherits Rectangle {
 }
 ```
 
-Assigning a slot is optional.
-An unassigned slot renders nothing.
+插槽赋值是可选的。
+未赋值的插槽不渲染任何内容。
 
-## Referencing a slot
+## 引用插槽
 
-The name bound to a slot is a regular element reference, so its properties can be read like any other element.
+绑定到插槽的名称是常规的元素引用，因此可以像读取任何其他元素一样读取它的属性。
 
 ```slint no-test
 export component App inherits Rectangle {
@@ -60,10 +60,10 @@ export component App inherits Rectangle {
 }
 ```
 
-## Forwarding a slot
+## 转发插槽
 
-A component can forward one of its own slots to a slot of a child component, again with the `<<` operator.
-This lets a wrapper expose a nested component's slots as its own.
+组件可以通过 `<<` 运算符将自己的某个插槽转发给子组件的插槽。
+这让包装组件能够将嵌套组件的插槽作为自己的插槽暴露出来。
 
 ```slint
 export component SlotHost inherits Rectangle {
@@ -83,7 +83,7 @@ export component Outer inherits Rectangle {
 }
 ```
 
-## Full example
+## 完整示例
 
 ```slint
 export component Card inherits Rectangle {
@@ -106,14 +106,14 @@ export component App inherits Window {
 }
 ```
 
-## Current limitations
+## 当前限制
 
-The named slot feature is in its early stages. The following restrictions apply:
+具名插槽功能尚处于早期阶段。以下限制适用：
 
-- The name `children` is reserved for the default slot. Use `@children` to render it.
+- 名称 `children` 保留给默认插槽。使用 `@children` 渲染它。
 
-- A declared slot must be rendered exactly once, and it may not be placed inside a `for`, `if`, or `match` element.
+- 已声明的插槽必须且只能渲染一次，并且不能放置在 `for`、`if` 或 `match` 元素内部。
 
-- A slot cannot be placed inside a `PopupWindow` or a `ComponentContainer`.
+- 插槽不能放置在 `PopupWindow` 或 `ComponentContainer` 内部。
 
-- Slot assignment and forwarding are only valid on components, and each slot may be assigned at most once.
+- 插槽赋值和转发只对组件有效，并且每个插槽最多只能赋值一次。

@@ -6,43 +6,43 @@ next: false
 
 <!-- cSpell: ignore libx libxcursor libxkbcommon -->
 
-The Winit backend uses the [winit](https://docs.rs/winit/latest/winit/) library to interact with the
-windowing system.
+Winit 后端使用 [winit](https://docs.rs/winit/latest/winit/) 库与
+窗口系统交互。
 
-The Winit backend supports practically all relevant operating systems and windowing systems, including
-macOS, Windows, Linux with Wayland and X11.
+Winit 后端几乎支持所有相关的操作系统和窗口系统，包括
+macOS、Windows、带 Wayland 和 X11 的 Linux。
 
-The Winit backend supports different renderers. They can be explicitly selected for use through the
-`SLINT_BACKEND` environment variable.
+Winit 后端支持不同的渲染器。可以通过
+`SLINT_BACKEND` 环境变量显式选择使用它们。
 
-| Renderer name  | Supported/Required Graphics APIs                  | `SLINT_BACKEND` value to select renderer |
-| -------------- | ------------------------------------------------- | ---------------------------------------- |
-| FemtoVG        | OpenGL                                            | `winit-femtovg`                          |
-| FemtoVG (WGPU) | Metal, Direct3D, Vulkan with (http://wgpu.rs)     | `winit-femtovg-wgpu`                     |
-| Skia           | OpenGL, Metal, Direct3D, Software-rendering       | `winit-skia`                             |
-| Skia Software  | Software-only rendering with Skia                 | `winit-skia-software`                    |
-| Skia OpenGL    | OpenGL rendering with Skia (not supported on iOS) | `winit-skia-opengl`                      |
-| software       | Software-rendering, no GPU required               | `winit-software`                         |
+| 渲染器名称     | 支持/所需的图形 API                            | 用于选择渲染器的 `SLINT_BACKEND` 值 |
+| -------------- | ---------------------------------------------- | ----------------------------------- |
+| FemtoVG        | OpenGL                                         | `winit-femtovg`                     |
+| FemtoVG (WGPU) | Metal、Direct3D、Vulkan，配合 (http://wgpu.rs) | `winit-femtovg-wgpu`                |
+| Skia           | OpenGL、Metal、Direct3D、软件渲染              | `winit-skia`                        |
+| Skia 软件      | 使用 Skia 的纯软件渲染                         | `winit-skia-software`               |
+| Skia OpenGL    | 使用 Skia 的 OpenGL 渲染（iOS 上不支持）       | `winit-skia-opengl`                 |
+| software       | 软件渲染，不需要 GPU                           | `winit-software`                    |
 
-If no renderer is explicitly set, the backend will first try to use the Skia renderer, if it was enabled at compile time.
-If that fails, it will fall back to the FemtoVG renderer, and if that also fails, it will use the software renderer.
+如果没有显式设置渲染器，后端会首先尝试使用 Skia 渲染器（如果它在编译时已启用）。
+如果失败，它会回退到 FemtoVG 渲染器；如果也失败，则使用软件渲染器。
 
-## Configuration Options
+## 配置选项
 
-The Winit backend reads and interprets the following environment variables:
+Winit 后端会读取并解释以下环境变量：
 
-| Name               | Accepted Values | Description                                                        |
-| ------------------ | --------------- | ------------------------------------------------------------------ |
-| `SLINT_FULLSCREEN` | any value       | If this variable is set, every window is shown in fullscreen mode. |
+| 名称               | 接受的值 | 描述                                         |
+| ------------------ | -------- | -------------------------------------------- |
+| `SLINT_FULLSCREEN` | 任意值   | 如果设置了此变量，每个窗口都以全屏模式显示。 |
 
-## Linux Dependencies
+## Linux 依赖项
 
-On Linux, the Winit backend requires either X11 or Wayland to be available.
-Support of either can be enabled or disabled at compile time by setting the
-`backend-winit-x11` or `backend-winit-wayland` features (instead of `backend-winit`).
+在 Linux 上，Winit 后端要求 X11 或 Wayland 之一可用。
+可以通过在编译时设置
+`backend-winit-x11` 或 `backend-winit-wayland` feature（而不是 `backend-winit`）来启用或禁用对其中任一的支持。
 
-For X11 the following runtime dependencies are required: libx11-xcb, xinput, libxcursor, libxkbcommon-x11, libx11.
-On Debian-based systems, these can be installed with:
+对于 X11，需要以下运行时依赖项：libx11-xcb、xinput、libxcursor、libxkbcommon-x11、libx11。
+在基于 Debian 的系统上，可以使用以下命令安装它们：
 
 ```sh
 sudo apt install libx11-xcb-dev xinput libxcursor-dev libxkbcommon-x11-dev libx11-dev

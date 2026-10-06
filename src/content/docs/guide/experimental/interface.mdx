@@ -3,16 +3,16 @@ title: 接口
 description: 实验性 interface 关键字与 implement 语句
 ---
 
-An `interface` describes a contract that a component can promise to fulfill.
-It lists the properties, callbacks, and functions that an implementing component must provide.
-This lets you write code that works with any component that implements the interface, without caring about the concrete type.
+`interface` 描述组件承诺履行的一份契约。
+它列出了实现该接口的组件必须提供的属性、回调和函数。
+这让你可以编写与任何实现了该接口的组件都能协作的代码，而无需关心具体类型。
 
-> **Note**: `interface` and `implement` are experimental and subject to change.
-> Tracking issue: [slint-ui/slint#1870](https://github.com/slint-ui/slint/issues/1870).
+> **注意**：`interface` 和 `implement` 是实验性的，可能会发生变化。
+> 跟踪 issue：[slint-ui/slint#1870](https://github.com/slint-ui/slint/issues/1870)。
 
-## Declaring an interface
+## 声明接口
 
-Use the `interface` keyword followed by a body that lists the contract.
+使用 `interface` 关键字，后跟列出该契约的主体。
 
 ```slint no-test
 interface TextInterface {
@@ -22,26 +22,26 @@ interface TextInterface {
 }
 ```
 
-An interface body may contain:
+接口主体可以包含：
 
-- Properties with visibility `in`, `out`, or `in-out`.
-  Default values are not permitted.
-- Callbacks, with any signature except `init`.
-- Function declarations without a body.
-  They must be `public` and can be `pure`.
+- 可见性为 `in`、`out` 或 `in-out` 的属性。
+  不允许有默认值。
+- 回调，可以是除 `init` 之外的任何签名。
+- 不带主体的函数声明。
+  它们必须是 `public`，并且可以是 `pure`。
 
-An interface body may **not** contain bindings, child elements, layouts, `states`, two-way bindings, `animate` blocks, or private properties.
-An interface can be exported with `export interface`.
+接口主体**不能**包含绑定、子元素、布局、`states`、双向绑定、`animate` 块或私有属性。
+接口可以用 `export interface` 导出。
 
-## Implementing an interface
+## 实现接口
 
-A component declares that it implements an interface with an `implement I <=> self;` statement in its body.
-The component must declare or inherit every property, callback, and function listed in the interface, matching
-type, visibility, and purity. If a member is missing or doesn't match the interface, the compiler reports it as an error.
+组件通过在其主体中写入 `implement I <=> self;` 语句来声明它实现了某个接口。
+组件必须声明或继承接口中列出的每一个属性、回调和函数，并且要匹配
+类型、可见性和纯性。如果某个成员缺失或与接口不匹配，编译器会将其报告为错误。
 
-An `implement` statement's target must be `self` or the id of a child element (see delegation below), and the statement
-is only allowed directly in a component's root element, not in a nested child element. `root` and `parent` are not valid
-targets: since `implement` is root-only, `root` and `self` refer to the same element there, so use `self` instead.
+`implement` 语句的目标必须是 `self` 或某个子元素的 id（参见下面的委托），并且该语句
+只允许直接写在组件的根元素中，不能写在嵌套的子元素中。`root` 和 `parent` 不是有效的
+目标：由于 `implement` 只能用于根元素，在那里 `root` 和 `self` 指代同一个元素，因此请改用 `self`。
 
 ```slint no-test
 export component MyText {
@@ -59,7 +59,7 @@ export component MyText {
 }
 ```
 
-A component can combine `implement` with `inherits`:
+组件可以将 `implement` 与 `inherits` 结合使用：
 
 ```slint no-test
 component MyText inherits Rectangle {
@@ -68,13 +68,13 @@ component MyText inherits Rectangle {
 }
 ```
 
-A component can implement more than one interface, each with its own `implement` statement. Multiple `implement`
-statements exposing properties, callbacks or functions with the same name is an error.
+一个组件可以实现多个接口，每个接口都通过自己的 `implement` 语句实现。多个 `implement`
+语句暴露同名的属性、回调或函数是错误的。
 
-## Delegating to a child with `implement <=> child`
+## 用 `implement <=> child` 委托给子元素
 
-Sometimes a component does not implement an interface itself but contains a child that does.
-`implement I <=> child-id;` exposes the child's interface on the parent, so users of the parent see the same properties, callbacks, and functions as if the parent implemented the interface directly.
+有时组件本身并不实现某个接口，但它包含的子元素实现了该接口。
+`implement I <=> child-id;` 将子元素的接口暴露到父组件上，因此父组件的使用者看到的属性、回调和函数，就如同父组件直接实现了该接口一样。
 
 ```slint no-test
 component Container {
@@ -83,9 +83,9 @@ component Container {
 }
 ```
 
-The named child must satisfy the interface API (directly or through its own delegation) the listed interface.
+指定的子元素必须满足所列接口的 API（直接满足，或通过它自己的委托满足）。
 
-## Full example
+## 完整示例
 
 ```slint
 interface Counter {
@@ -117,4 +117,4 @@ export component App {
 }
 ```
 
-`App` has a `value` property and an `increment` callback through the `Counter` interface, both provided by `button`.
+`App` 通过 `Counter` 接口拥有一个 `value` 属性和一个 `increment` 回调，两者都由 `button` 提供。

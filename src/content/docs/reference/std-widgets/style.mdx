@@ -1,44 +1,44 @@
 ---
 title: 组件样式
-description: std-widgets Style.
+description: std-widgets 样式。
 ---
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import SlintProperty from '../../../../components/SlintProperty.astro';
 import Link from '../../../../components/Link.astro';
 
-You can modify the look of these widgets by choosing a style.
+你可以通过选择样式来修改这些控件的外观。
 
-The styles available include:
+可用的样式包括：
 
-| Style Name  | Light Variant     | Dark Variant     | Description                                                                                                                                                                                             |
-| ----------- | ----------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `fluent`    | `fluent-light`    | `fluent-dark`    | These variants belong to the **Fluent** style, which is based on the [Fluent Design System](https://fluent2.microsoft.design/).                                                                         |
-| `material`  | `material-light`  | `material-dark`  | These variants are part of the **Material** style, which follows the [Material Design](https://m3.material.io).                                                                                         |
-| `cupertino` | `cupertino-light` | `cupertino-dark` | The **Cupertino** variants emulate the style used by macOS.                                                                                                                                             |
-| `cosmic`    | `cosmic-light`    | `cosmic-dark`    | The **Cosmic** variants emulate the style used by [Cosmic Desktop](https://github.com/pop-os/cosmic).                                                                                                   |
-| `qt`        |                   |                  | The **Qt** style uses [Qt](<https://en.wikipedia.org/wiki/Qt_(software)>) to render widgets. This style requires Qt to be installed on your system.                                                     |
-| `native`    |                   |                  | This is an alias to one of the other styles depending on the platform. It is `cupertino` on macOS, `fluent` on Windows, `material` on Android, `qt` on linux if Qt is available, or `fluent` otherwise. |
+| 样式名称    | 浅色变体          | 深色变体         | 描述                                                                                                                                                                         |
+| ----------- | ----------------- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `fluent`    | `fluent-light`    | `fluent-dark`    | 这些变体属于 **Fluent** 样式，其基于 [Fluent Design System](https://fluent2.microsoft.design/)。                                                                             |
+| `material`  | `material-light`  | `material-dark`  | 这些变体是 **Material** 样式的一部分，遵循 [Material Design](https://m3.material.io)。                                                                                       |
+| `cupertino` | `cupertino-light` | `cupertino-dark` | **Cupertino** 变体模拟 macOS 所使用的样式。                                                                                                                                  |
+| `cosmic`    | `cosmic-light`    | `cosmic-dark`    | **Cosmic** 变体模拟 [Cosmic Desktop](https://github.com/pop-os/cosmic) 所使用的样式。                                                                                        |
+| `qt`        |                   |                  | **Qt** 样式使用 [Qt](<https://en.wikipedia.org/wiki/Qt_(software)>) 来渲染控件。此样式需要在系统上安装 Qt。                                                                  |
+| `native`    |                   |                  | 这是一个别名，根据平台指向其他样式之一。在 macOS 上为 `cupertino`，在 Windows 上为 `fluent`，在 Android 上为 `material`，在 Linux 上如果 Qt 可用则为 `qt`，否则为 `fluent`。 |
 
-By default, the styles automatically adapt to the system's dark or light color setting. Select a `-light` or `-dark` variant to override the system setting and always show either dark or light colors.
+默认情况下，样式会自动适应系统的深色或浅色配色设置。选择 `-light` 或 `-dark` 变体可覆盖系统设置，始终显示深色或浅色。
 
-The widget style is determined at your project's compile time. The method to select a style depends on how you use Slint.
+控件样式在项目的编译时确定。选择样式的方法取决于你如何使用 Slint。
 
-If no style is selected, `fluent` is the default on all platforms.
+如果未选择样式，则 `fluent` 是所有平台上的默认样式。
 
 <Tabs syncKey="dev-language">
 <TabItem label="Rust" icon="seti:rust">
 
-You can select the style before starting your compilation by setting the `SLINT_STYLE` environment variable to the name of your chosen style.
+你可以在开始编译之前，将 `SLINT_STYLE` 环境变量设置为你所选样式的名称来选择样式。
 
-When using the `slint_build` API, call the [`slint_build::compile_with_config()`](https://docs.rs/slint-build/newest/slint_build/fn.compile_with_config.html) function.
+使用 `slint_build` API 时，调用 [`slint_build::compile_with_config()`](https://docs.rs/slint-build/newest/slint_build/fn.compile_with_config.html) 函数。
 
-When using the `slint_interpreter` API, call the [`slint_interpreter::ComponentCompiler::set_style()`](https://docs.rs/slint-interpreter/newest/slint_interpreter/struct.ComponentCompiler.html#method.set_style) function.
+使用 `slint_interpreter` API 时，调用 [`slint_interpreter::ComponentCompiler::set_style()`](https://docs.rs/slint-interpreter/newest/slint_interpreter/struct.ComponentCompiler.html#method.set_style) 函数。
 
 </TabItem>
 <TabItem label="C++" icon="seti:cpp">
 
-Define a `SLINT_STYLE` CMake cache variable to contain the style name as a string. This can be done, for instance, on the command line:
+定义一个 `SLINT_STYLE` CMake 缓存变量，将样式名称作为字符串包含在其中。例如，可以在命令行上完成：
 
 ```sh
 cmake -DSLINT_STYLE="material" /path/to/source
@@ -47,7 +47,7 @@ cmake -DSLINT_STYLE="material" /path/to/source
 </TabItem>
 <TabItem label="NodeJS" icon="node">
 
-You can select the style by setting the `style` property in [`LoadFileOptions`](slint-node:interfaces/LoadFileOptions) passed to [`loadFile`](slint-node:functions/loadFile):
+你可以通过在传递给 [`loadFile`](slint-node:functions/loadFile) 的 [`LoadFileOptions`](slint-node:interfaces/LoadFileOptions) 中设置 `style` 属性来选择样式：
 
 ```js
 import * as slint from 'slint-ui';
@@ -61,7 +61,7 @@ main.greeting = 'Hello friends';
 </TabItem>
 <TabItem label="Python" icon="seti:python">
 
-You can specify the style by setting the `SLINT_STYLE` environment variable in the beginning of your Python script:
+你可以通过在 Python 脚本开头设置 `SLINT_STYLE` 环境变量来指定样式：
 
 ```python
 import slint
@@ -84,9 +84,9 @@ main_window.run()
 </TabItem>
 </Tabs>
 
-## Using Style Properties In Your Own Components
+## 在自己的组件中使用样式属性
 
-The global <Link type="Palette"/> and <Link type="StyleMetrics"/> properties can be accessed and will be set to the appropriate values of the current style.
+可以访问全局 <Link type="Palette"/> 和 <Link type="StyleMetrics"/> 属性，它们将被设置为当前样式的相应值。
 
 ```slint playground
 import { Palette, StyleMetrics } from "std-widgets.slint";
@@ -101,7 +101,7 @@ export component Example inherits Window {
 }
 ```
 
-In situations where the specific property is not available you can detect the style via `Platform.style-name`.
+当特定属性不可用时，你可以通过 `Platform.style-name` 检测样式。
 
 ```slint playground
 import { Palette } from "std-widgets.slint";
@@ -116,15 +116,15 @@ export component Example inherits Window {
 }
 ```
 
-## Previewing Designs With `slint-viewer`
+## 使用 `slint-viewer` 预览设计
 
-Select the style either by setting the `SLINT_STYLE` environment variable, or by passing the style name with the `--style` argument:
+通过设置 `SLINT_STYLE` 环境变量，或使用 `--style` 参数传递样式名称来选择样式：
 
 slint-viewer --style material /path/to/design.slint
 
-## Previewing Designs With The Slint Visual Studio Code Extension
+## 使用 Slint Visual Studio Code 扩展预览设计
 
-To select the style, first open the Visual Studio Code settings editor:
+要选择样式，首先打开 Visual Studio Code 设置编辑器：
 
 <Tabs syncKey="dev-platform">
 <TabItem label="Windows" icon="seti:windows">
@@ -138,9 +138,9 @@ File > Preferences > Settings
 </TabItem>
 </Tabs>
 
-Then enter the style name in Extensions > Slint > Preview:Style
+然后在 Extensions > Slint > Preview:Style 中输入样式名称
 
-## Previewing Designs With The Generic LSP Process
+## 使用通用 LSP 进程预览设计
 
-Choose the style by setting the `SLINT_STYLE` environment variable before launching the process.
-Alternatively, if your IDE integration allows for command line parameters, you can specify the style using `--style`.
+在启动进程之前，通过设置 `SLINT_STYLE` 环境变量来选择样式。
+或者，如果你的 IDE 集成允许命令行参数，你可以使用 `--style` 指定样式。

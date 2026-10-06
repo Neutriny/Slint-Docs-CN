@@ -1,6 +1,6 @@
 ---
-title: Language Integrations
-description: Connect the UI with business logic in your preferred language.
+title: 语言集成
+description: 用你偏好的语言将 UI 与业务逻辑连接起来。
 ---
 
 import { Card, CardGrid, LinkButton } from '@astrojs/starlight/components';
@@ -12,27 +12,31 @@ import {
   PYTHON_BASE_URL,
 } from '../../../utils/site-config';
 
-Slint provides first class integrations to various programming languages allowing you to implement the business logic of your Slint application in your preferred language.
+Slint 为各种编程语言提供一流的集成，让你可以用自己喜欢的语言实现 Slint 应用的业务逻辑。
 
 <CardGrid>
   <IconLinkCard title="C++" href={CPP_BASE_URL} icon="seti:cpp">
-    Browse C++ API docs
+    浏览 C++ API 文档
   </IconLinkCard>
   <IconLinkCard
     title="Rust"
     href="https://docs.slint.dev/latest/docs/rust/slint/"
     icon="seti:rust"
   >
-    Browse Rust API docs
+    浏览 Rust API 文档
   </IconLinkCard>
   <IconLinkCard
-    title="TypeScript (beta)"
+    title="TypeScript（测试版）"
     href={NODEJS_BASE_URL}
     icon="seti:typescript"
   >
-    Browse TypeScript / JavaScript API docs.
+    浏览 TypeScript / JavaScript API 文档。
   </IconLinkCard>
-  <IconLinkCard title="Python (beta)" href={PYTHON_BASE_URL} icon="seti:python">
-    Browse Python API docs.
+  <IconLinkCard
+    title="Python（测试版）"
+    href={PYTHON_BASE_URL}
+    icon="seti:python"
+  >
+    浏览 Python API 文档。
   </IconLinkCard>
 </CardGrid>

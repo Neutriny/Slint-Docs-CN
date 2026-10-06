@@ -1,52 +1,52 @@
 ---
 title: 导出
-description: Making components in a file available to other files.
+description: 让文件中的组件可供其他文件使用。
 SC: true
 ---
 
 import SC from '@slint/common-files/src/components/SC.astro';
 
 <SC>
-## Placement
+## 位置
 
-Export statements may appear at the top level of a `.slint` source file, interleaved with [component definitions](../file-structure/#sls.file.component.definition-forms). \{#sls.export.placement}
+`export` 语句可以出现在 `.slint` 源文件的顶层，与[组件定义](../file-structure/#sls.file.component.definition-forms)交错。 \{#sls.export.placement}
 
-## Privacy
+## 私有性
 
-Names defined in a `.slint` source file are private to that file by default.
-A name is visible to importers only if it is explicitly exported. \{#sls.export.default-private}
+默认情况下，在 `.slint` 源文件中定义的名字对该文件是私有的。
+只有当名字被显式导出时，导入者才能看到它。 \{#sls.export.default-private}
 
-## Form
+## 形式
 
-An export statement has one of the following forms: \{#sls.export.forms}
+`export` 语句具有以下形式之一： \{#sls.export.forms}
 
 ```slint no-test
 export component Name { /* ... */ }
 export { Name, ... }
 ```
 
-## Export at the Declaration Site
+## 在声明处导出
 
-The form `export component Name { ... }` defines a component and exports it in a single statement.
-The exported name is the component's own name. \{#sls.export.declaration-site}
+形式 `export component Name { ... }` 在单条语句中定义组件并导出它。
+导出的名字就是组件自身的名字。 \{#sls.export.declaration-site}
 
-## Export Lists
+## 导出列表
 
-The form `export { Name, ... }` exports one or more names already defined in the current file.
-A trailing comma is permitted. \{#sls.export.list}
+形式 `export { Name, ... }` 导出当前文件中已定义的一个或多个名字。
+允许尾随逗号。 \{#sls.export.list}
 
-An export list item is either a bare identifier `Name` or a renaming of the form `Name as Other`.
-A renaming exports the locally-defined `Name` under the external name `Other`.
-The local name `Name` remains defined in the current file. \{#sls.export.rename}
+导出列表项要么是裸标识符 `Name`，要么是 `Name as Other` 形式的改名。
+改名会以对外名字 `Other` 导出本地定义的 `Name`。
+本地名字 `Name` 仍保留在当前文件中定义。 \{#sls.export.rename}
 
-Each identifier on the left of `as`, and each bare identifier, shall refer to a name defined in the current file. \{#sls.export.left-must-exist}
+`as` 左侧的每个标识符，以及每个裸标识符，都应指向当前文件中定义的名字。 \{#sls.export.left-must-exist}
 
-## Duplicate Exports
+## 重复导出
 
-A source file shall not export the same external name more than once.
-This includes the combination of any declaration-site export and any export-list entry. \{#sls.export.no-duplicates}
+源文件不得多次导出同一个对外名字。
+这包括在声明处导出与导出列表项的任何组合。 \{#sls.export.no-duplicates}
 
 </SC>
 
-An export statement with a `from` clause [re-exports](../imports/#re-exports) declarations from another file.
-Besides components, [structs, enums](../structs-and-enums/), and [globals](../globals/) can be exported.
+带 `from` 子句的 export 语句会[重新导出](../imports/#re-exports)另一个文件中的声明。
+除了组件之外，还可以导出[结构体、枚举](../structs-and-enums/)以及[全局对象](../globals/)。

@@ -1,6 +1,6 @@
 ---
 title: StandardButton
-description: StandardButton api.
+description: StandardButton API。
 ---
 
 import SlintProperty from '@slint/common-files/src/components/SlintProperty.astro';
@@ -19,27 +19,27 @@ export component Example inherits Window {
 ```
 </CodeSnippetMD>
 
-The StandardButton looks like a button, but instead of customizing with `text` and `icon`,
-it can used one of the pre-defined `kind` and the text and icon will depend on the style.
+StandardButton 看起来像一个按钮，但无需使用 `text` 和 `icon` 进行自定义，
+它可以采用预定义的 `kind` 之一，文本和图标将取决于样式。
 
-## Properties
+## 属性
 
 ### enabled
 
 <SlintProperty typeName="bool" propName="enabled" defaultValue="true">
-  Defaults to true. When false, the button can't be pressed
+  默认为 true。当为 false 时，按钮无法被按下
 </SlintProperty>
 
 ### has-focus
 
 <SlintProperty typeName="bool" propName="has-focus" propertyVisibility="out">
-  Set to true when the button currently has the focus
+  当按钮当前具有焦点时设置为 true
 </SlintProperty>
 
 ### kind
 
 <SlintProperty typeName="enum" propName="kind" defaultValue="ok" enumName="StandardButtonKind" >
-The kind of button, one of `ok` `cancel`, `apply`, `close`, `reset`, `help`, `yes`, `no,` `abort`, `retry` or `ignore`
+按钮的种类，为 `ok` `cancel`、`apply`、`close`、`reset`、`help`、`yes`、`no,`、`abort`、`retry` 或 `ignore` 之一
 
 ```slint "kind: ok;"
 StandardButton {
@@ -52,20 +52,20 @@ StandardButton {
 ### primary
 
 <SlintProperty propName="primary" typeName="bool" defaultValue="false">
-  If set to true the button is displayed with the primary accent color.
+  如果设置为 true，按钮将使用主强调色显示。
 </SlintProperty>
 
 ### pressed
 
 <SlintProperty typeName="bool" propName="pressed" propertyVisibility="out">
-  Set to true when the button is pressed.
+  当按钮被按下时设置为 true。
 </SlintProperty>
 
-## Callbacks
+## 回调
 
 ### clicked()
 
-Invoked when clicked: A finger or the left mouse button is pressed, then released on this element.
+在以下情况调用：手指或鼠标左键在此元素上按下，然后释放。
 
 ```slint {2-4}
 StandardButton {

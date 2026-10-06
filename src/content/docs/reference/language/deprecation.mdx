@@ -1,11 +1,11 @@
 ---
 title: 废弃
-description: Marking a property, callback, or function as deprecated with @deprecated.
+description: 使用 @deprecated 将属性、回调或函数标记为弃用。
 ---
 
-The `@deprecated` annotation marks a property, callback, or function as deprecated.
-The compiler warns wherever the member is used from outside the component that declares it,
-and the warning carries the message the annotation gives it:
+`@deprecated` 注解将属性、回调或函数标记为已废弃。
+只要该成员在声明它的组件之外被使用，编译器就会发出警告，
+并且警告会携带该注解给出的消息：
 
 ```slint
 component Inner {
@@ -20,14 +20,14 @@ export component Example {
 }
 ```
 
-The annotation affects diagnostics only.
-A deprecated member keeps the type, visibility and behavior its declaration gives it,
-and the compiled result is the same as without the annotation.
+该注解仅影响诊断信息。
+已废弃的成员保留其声明赋予它的类型、可见性和行为，
+编译结果与没有该注解时相同。
 
-## Form
+## 形式
 
-`@deprecated` precedes the declaration, ahead of any visibility or purity modifier,
-and takes the message in parentheses:
+`@deprecated` 位于声明之前，在任何可见性或纯性修饰符之前，
+并将消息放在括号中：
 
 ```slint
 @deprecated("Compute it from 'new-prop' instead") in-out property <int> older-prop: 42;
@@ -35,20 +35,20 @@ and takes the message in parentheses:
 @deprecated("Use 'new-function' instead") public pure function old-function() -> int { 1 }
 ```
 
-- The message is mandatory.
-  `@deprecated` without parentheses is a compile error.
-- The message must be a plain string literal.
-  A `\{}` template expression in it is a compile error.
-- A declaration may carry `@deprecated` only once.
+- 消息是必需的。
+  不带括号的 `@deprecated` 会构成编译错误。
+- 消息必须是普通的字符串字面量。
+  其中的 `\{}` 模板表达式会构成编译错误。
+- 声明只能带有一次 `@deprecated`。
 
-An empty message, `@deprecated("")`, deprecates the member without advising on a replacement.
-The warning then names the member and stops, as in `The property 'old-prop' has been deprecated`.
+空消息 `@deprecated("")` 会将成员标记为已废弃，但不建议替代者。
+此时警告只给出成员名字并结束，例如 `The property 'old-prop' has been deprecated`。
 
-## Warnings
+## 警告
 
-Using a deprecated member is a warning, never an error, so code written against it keeps compiling.
-Reading it, assigning to it, binding it on an element, aliasing it with `<=>`, animating it,
-calling it, and setting a handler for it each warn.
+使用已废弃的成员是警告，而绝不是错误，因此针对它编写的代码仍可继续编译。
+读取它、向它赋值、在元素上绑定它、用 `<=>` 为它设置别名、为它应用动画、
+调用它以及为它设置处理程序，都会发出警告。
 
-Uses within the component that declares the member don't warn,
-since that component still has to implement it.
+在声明该成员的组件内部使用不会发出警告，
+因为该组件仍然必须实现它。

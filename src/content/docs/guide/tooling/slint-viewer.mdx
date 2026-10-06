@@ -5,30 +5,30 @@ description: 预览 `.slint` 文件、生成截图与从命令行检查文件
 
 import Link from '@slint/common-files/src/components/Link.astro';
 
-The `slint-viewer` command-line tool opens and previews `.slint` files.
-Use it to iterate on a UI with live reload, render screenshots, or check that a file compiles.
+`slint-viewer` 命令行工具用于打开并预览 `.slint` 文件。
+使用它可以实时重载地迭代 UI、渲染截图，或检查文件是否能编译。
 
-## Installation
+## 安装
 
-Install the binary from crates.io with a Rust toolchain:
+使用 Rust 工具链从 crates.io 安装该二进制文件：
 
 ```sh
 cargo install slint-viewer
 ```
 
-Alternatively, download a pre-built binary for Linux or Windows:
+或者，下载适用于 Linux 或 Windows 的预构建二进制文件：
 
-1. Go to [the latest Slint release](https://github.com/slint-ui/slint/releases/latest).
-2. From "Assets" download `slint-viewer-linux.tar.gz` for Linux or `slint-viewer-windows-x86_64.zip` for Windows.
-3. Uncompress the archive and run `slint-viewer`.
+1. 转到 [最新的 Slint 版本](https://github.com/slint-ui/slint/releases/latest)。
+2. 从 "Assets" 下载适用于 Linux 的 `slint-viewer-linux.tar.gz` 或适用于 Windows 的 `slint-viewer-windows-x86_64.zip`。
+3. 解压该压缩包并运行 `slint-viewer`。
 
-On Debian-like systems, install the runtime dependencies with:
+在类 Debian 系统上，使用以下命令安装运行时依赖：
 
 ```sh
 sudo apt install -y libx11-xcb1 libxcb1 libxkbcommon0 libinput10 libgbm1
 ```
 
-The Slint Viewer app is also available for Android on Google Play and for iOS, iPadOS, and macOS on the App Store:[^trademarks]
+Slint Viewer 应用也可在 Google Play 上供 Android 使用，并在 App Store 上供 iOS、iPadOS 和 macOS 使用：[^trademarks]
 
 <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
   <a
@@ -37,7 +37,7 @@ The Slint Viewer app is also available for Android on Google Play and for iOS, i
   >
     <img
       src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
-      alt="Get it on Google Play"
+      alt="在 Google Play 上获取"
       style={{ height: '60px' }}
     />
   </a>
@@ -47,70 +47,70 @@ The Slint Viewer app is also available for Android on Google Play and for iOS, i
   >
     <img
       src="https://toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/black/en-us"
-      alt="Download on the App Store"
+      alt="在 App Store 下载"
       style={{ height: '40px', marginLeft: '10px' }}
     />
   </a>
 </div>
 
-These apps run in remote mode: see [Remote Viewer](#remote-viewer) for how to connect them to the live preview in your editor.
+这些应用以远程模式运行：请参阅[远程查看器](#remote-viewer)了解如何将它们连接到编辑器中的实时预览。
 
-[^trademarks]: Google Play and the Google Play logo are trademarks of Google LLC. Apple and the Apple logo are trademarks of Apple Inc., registered in the U.S. and other countries and regions. App Store is a service mark of Apple Inc.
+[^trademarks]: Google Play 和 Google Play 标志是 Google LLC 的商标。Apple 和 Apple 标志是 Apple Inc. 在美国及其他国家和地区注册的商标。App Store 是 Apple Inc. 的服务标志。
 
-## Opening a File
+## 打开文件
 
-Pass a path to preview a `.slint` file:
+传入路径即可预览 `.slint` 文件：
 
 ```sh
 slint-viewer path/to/myfile.slint
 ```
 
-Use `-` instead of a path to read from standard input.
+使用 `-` 代替路径可从标准输入读取。
 
-Add `--auto-reload` to watch the file on disk and reload the preview whenever it changes, so you can iterate without restarting the viewer:
+添加 `--auto-reload` 可监视磁盘上的文件，并在其更改时重新加载预览，这样你就可以无需重启查看器即可迭代：
 
 ```sh
 slint-viewer --auto-reload path/to/myfile.slint
 ```
 
-## Rendering a Screenshot
+## 渲染截图
 
-`--screenshot` renders the component to an image and exits, with no window:
+`--screenshot` 将组件渲染为图像并退出，不显示窗口：
 
 ```sh
 slint-viewer --screenshot screenshot.png path/to/myfile.slint
 ```
 
-The image format follows the file extension (such as `.png` or `.jpg`).
-Use `-` to write a PNG to standard output.
-Set the `SLINT_SCALE_FACTOR` environment variable to override the default scale factor of `1`.
+图像格式由文件扩展名决定（如 `.png` 或 `.jpg`）。
+使用 `-` 将 PNG 写入标准输出。
+设置 `SLINT_SCALE_FACTOR` 环境变量可覆盖默认缩放系数 `1`。
 
-## Checking a File
+## 检查文件
 
-`--check` compiles the file, prints any diagnostics, and exits without opening a window.
-The exit status is `1` on error and `0` otherwise; warnings still print.
+`--check` 编译文件、打印任何诊断信息，然后退出而不打开窗口。
+出错时退出状态为 `1`，否则为 `0`；警告仍会打印。
 
 ```sh
 slint-viewer --check path/to/myfile.slint
 ```
 
-## Loading and Saving Property Data
+## 加载和保存属性数据
 
-`--save-data` writes the component's public properties to a JSON file when the viewer exits:
+`--save-data` 在查看器退出时将组件的公共属性写入 JSON 文件：
 
 ```sh
 slint-viewer --save-data output.json path/to/myfile.slint
 ```
 
-`--load-data` sets them from a JSON file at startup:
+`--load-data` 在启动时从 JSON 文件设置这些属性：
 
 ```sh
 slint-viewer --load-data input.json path/to/myfile.slint
 ```
 
-Each works on its own; pass both to load initial values and write the result back. Only properties whose types serialize to JSON are read or written, and `--save-data` is incompatible with `--auto-reload`.
+两者各自独立工作；同时传入可加载初始值并将结果写回。只有类型可序列化为 JSON 的属性才会被读取或写入，并且 `--save-data` 与 `--auto-reload` 不兼容。
 
-For a component with these properties:
+对于具有以下属性的组件：
 
 ```slint
 export component Form inherits Window {
@@ -119,7 +119,7 @@ export component Form inherits Window {
 }
 ```
 
-the JSON file looks like:
+JSON 文件如下所示：
 
 ```json
 {
@@ -128,60 +128,64 @@ the JSON file looks like:
 }
 ```
 
-## Remote Viewer
+<a id="remote-viewer"></a>
 
-`--remote` starts the viewer in remote mode.
-Instead of loading a file, the viewer waits for the live preview in your editor to connect over the network and push the UI to it.
-Use it to preview a `.slint` file on another machine or a device while you edit on your computer.
+## 远程查看器
+
+`--remote` 以远程模式启动查看器。
+查看器不加载文件，而是等待编辑器中的实时预览通过网络连接并将 UI 推送给它。
+使用它可以在你于电脑上编辑时，在另一台机器或设备上预览 `.slint` 文件。
 
 ```sh
 slint-viewer --remote
 ```
 
-The viewer shows an idle screen with its name and the address to connect to, and advertises itself on the local network so editors can discover it.
-By default it listens on an automatically assigned port on all network interfaces.
-Pass `--remote-address <address>` to choose a specific address and port.
+查看器会显示一个空闲屏幕，其中包含其名称和要连接的地址，并在局域网上广播自身，以便编辑器可以发现它。
+默认情况下，它监听所有网络接口上自动分配的端口。
+传入 `--remote-address <address>` 可选择特定的地址和端口。
 
-To connect, open the live preview of a `.slint` file in your editor, then pick **Remote** from the combobox in the top-right corner of the preview and enter the address the viewer shows.
-The viewer then displays a four-digit code; type it into the editor to confirm the connection.
-It only asks once per viewer run, so reconnecting later doesn't interrupt you.
-The editor compiles the `.slint` file and sends the result to the remote viewer, reloading it as you edit, while debug output from the previewed UI is sent back to the editor.
+要连接，请在编辑器中打开 `.slint` 文件的实时预览，然后在预览右上角的组合框中选择 **Remote**，并输入查看器显示的地址。
+随后查看器会显示一个四位数的代码；将其输入编辑器以确认连接。
+每次查看器运行只询问一次，因此之后重新连接不会打扰你。
+编辑器编译 `.slint` 文件并将结果发送到远程查看器，随着你编辑而重新加载它，同时被预览 UI 的调试输出会发送回编辑器。
 
-`--remote` doesn't take a file path, and can't be combined with `--screenshot` or `--check`.
+`--remote` 不接受文件路径，也不能与 `--screenshot` 或 `--check` 组合使用。
 
-## Command-Line Options
+## 命令行选项
 
-Run `slint-viewer --help` for the authoritative, always-current list. The common options:
+运行 `slint-viewer --help` 可获取权威且始终最新的列表。常用选项：
 
-| Option                       | Description                                                                                                                                   |
-| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| `<path>`                     | The `.slint` file to load. Required unless `--remote` is given.                                                                               |
-| `--auto-reload`              | Watch the file system and reload when the file changes.                                                                                       |
-| `--load-data <file>`         | Load the values of public properties from a JSON file.                                                                                        |
-| `--save-data <file>`         | On exit, write the values of public properties to a JSON file. Incompatible with `--auto-reload`.                                             |
-| `--screenshot <file>`        | Render the component to an image and exit.                                                                                                    |
-| `--check`                    | Compile the file, print diagnostics, and exit without opening a window. Incompatible with the options above.                                  |
-| `--remote`                   | Start in remote mode and wait for the editor to connect. See [Remote Viewer](#remote-viewer).                                                 |
-| `--remote-address <address>` | Address and port to listen on in remote mode. Defaults to an auto-assigned port on all interfaces.                                            |
-| `--pairing-code <code>`      | Always require this four-digit pairing code instead of showing a generated one, for devices with no usable display.                           |
-| `--no-pairing`               | Accept any connection without pairing or encryption. Only for networks you control; the editor warns before each connection to such a viewer. |
-| `--component <name>`         | Load the component with this name. Defaults to the last exported component.                                                                   |
-| `--style <style>`            | Set the widget style. Defaults to `fluent`.                                                                                                   |
-| `--backend <backend>`        | Override the Slint rendering <Link type="backends_and_renderers" label="backend"/>.                                                           |
-| `-I <path>`                  | Add an include path for imported `.slint` files or images.                                                                                    |
-| `-L <library=path>`          | Add a library path for `@library` imports.                                                                                                    |
-| `--on <callback> <handler>`  | Run a shell command when a callback is invoked. See [Callback Handlers](#callback-handlers).                                                  |
+| 选项                         | 描述                                                                                               |
+| ---------------------------- | -------------------------------------------------------------------------------------------------- |
+| `<path>`                     | 要加载的 `.slint` 文件。除非给出 `--remote`，否则为必填项。                                        |
+| `--auto-reload`              | 监视文件系统并在文件更改时重新加载。                                                               |
+| `--load-data <file>`         | 从 JSON 文件加载公共属性的值。                                                                     |
+| `--save-data <file>`         | 退出时将公共属性的值写入 JSON 文件。与 `--auto-reload` 不兼容。                                    |
+| `--screenshot <file>`        | 将组件渲染为图像并退出。                                                                           |
+| `--check`                    | 编译文件、打印诊断信息，然后退出而不打开窗口。与上述选项不兼容。                                   |
+| `--remote`                   | 以远程模式启动并等待编辑器连接。参见[远程查看器](#remote-viewer)。                                 |
+| `--remote-address <address>` | 远程模式下要监听的地址和端口。默认为所有接口上自动分配的端口。                                     |
+| `--pairing-code <code>`      | 始终要求此四位数配对代码，而不是显示生成的代码，适用于没有可用显示器的设备。                       |
+| `--no-pairing`               | 接受任何连接，无需配对或加密。仅适用于你控制的网络；编辑器在每次连接到此类查看器之前都会发出警告。 |
+| `--component <name>`         | 加载具有此名称的组件。默认为最后一个导出的组件。                                                   |
+| `--style <style>`            | 设置控件样式。默认为 `fluent`。                                                                    |
+| `--backend <backend>`        | 覆盖 Slint 渲染<Link type="backends_and_renderers" label="后端"/>。                                |
+| `-I <path>`                  | 为导入的 `.slint` 文件或图像添加包含路径。                                                         |
+| `-L <library=path>`          | 为 `@library` 导入添加库路径。                                                                     |
+| `--on <callback> <handler>`  | 在调用回调时运行 shell 命令。参见[回调处理器](#callback-handlers)。                                |
 
-Use `-` in place of a file path to read from standard input or write to standard output.
+使用 `-` 代替文件路径可从标准输入读取或写入标准输出。
 
-A viewer built with the `gettext` feature also accepts `--translation-domain <domain>`, `--translation-dir <dir>`, and `--no-default-translation-context` to resolve `@tr(...)` strings against gettext catalogs.
+使用 `gettext` 特性构建的查看器还接受 `--translation-domain <domain>`、`--translation-dir <dir>` 和 `--no-default-translation-context`，以便根据 gettext 目录解析 `@tr(...)` 字符串。
 
-## Callback Handlers
+<a id="callback-handlers"></a>
 
-`--on` runs a shell command when a callback is invoked, followed by the callback name and the command.
-In the command, `$1`, `$2`, … are replaced by the callback arguments, shell-escaped.
+## 回调处理器
 
-Given a `.slint` file with an `open-url` callback:
+`--on` 在调用回调时运行 shell 命令，后跟回调名称和命令。
+在命令中，`$1`、`$2`、…… 会被回调参数替换（经过 shell 转义）。
+
+给定一个带有 `open-url` 回调的 `.slint` 文件：
 
 ```slint
 export component MyApp inherits Window {
@@ -190,34 +194,34 @@ export component MyApp inherits Window {
 }
 ```
 
-Wire the callback to a command:
+将该回调连接到命令：
 
 ```sh
 slint-viewer --on open-url 'xdg-open $1' myfile.slint
 ```
 
-Use single quotes, or escape the `$`, so the shell does not expand `$1`.
+使用单引号，或转义 `$`，这样 shell 就不会展开 `$1`。
 
-## Dialogs
+## 对话框
 
-When the root element is a `Dialog`, the standard buttons close it if no callback is set on the button:
+当根元素是 `Dialog` 时，如果按钮上未设置回调，标准按钮会关闭它：
 
-- `ok`, `yes`, and `close` accept the dialog.
-- `cancel` and `no` reject the dialog.
+- `ok`、`yes` 和 `close` 接受对话框。
+- `cancel` 和 `no` 拒绝对话框。
 
-## Exit Codes
+## 退出代码
 
-| Code | Meaning                                                                                                                              |
-| ---- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| `0`  | A window was closed, or a dialog was accepted with `Ok`, `Close`, or `Yes`.                                                          |
-| `1`  | A dialog was rejected with `Cancel`, `No`, or the window's close button. Also a compilation error under `--check` or `--screenshot`. |
-| `2`  | Command-line argument parsing or validation failed.                                                                                  |
-| `-1` | Compilation failed (except under `--check` or `--screenshot`).                                                                       |
+| 代码 | 含义                                                                                                |
+| ---- | --------------------------------------------------------------------------------------------------- |
+| `0`  | 窗口被关闭，或对话框通过 `Ok`、`Close` 或 `Yes` 被接受。                                            |
+| `1`  | 对话框通过 `Cancel`、`No` 或窗口的关闭按钮被拒绝。在 `--check` 或 `--screenshot` 下也代表编译错误。 |
+| `2`  | 命令行参数解析或验证失败。                                                                          |
+| `-1` | 编译失败（`--check` 或 `--screenshot` 下除外）。                                                    |
 
-## Driving a UI From a Shell Script
+## 从 Shell 脚本驱动 UI
 
-`slint-viewer` can display a GUI from a shell script.
-Read `.slint` from standard input with `-`, and write the property values back as JSON on exit with `--save-data -`, so a script can collect user input from a dialog.
+`slint-viewer` 可以从 shell 脚本显示 GUI。
+使用 `-` 从标准输入读取 `.slint`，并在退出时使用 `--save-data -` 将属性值以 JSON 写回，这样脚本就可以从对话框收集用户输入。
 
-For a walkthrough, see the blog post [Showing GUIs from shell scripts](https://slint.dev/blog/showing-guis-from-shell-scripts).
-Ready-to-run examples live in the [examples/bash](https://github.com/slint-ui/slint/tree/master/examples/bash) folder.
+有关完整演示，请参见博文 [Showing GUIs from shell scripts](https://slint.dev/blog/showing-guis-from-shell-scripts)。
+可直接运行的示例位于 [examples/bash](https://github.com/slint-ui/slint/tree/master/examples/bash) 文件夹中。

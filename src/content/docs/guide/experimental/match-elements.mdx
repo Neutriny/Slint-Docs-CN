@@ -3,13 +3,13 @@ title: 匹配元素
 description: 实验性 match 元素，用于条件渲染元素
 ---
 
-A `match` element conditionally renders elements from a set of cases based on the value of an expression (the subject).
-It is a more readable alternative to a chain of `if` elements when you need to select between several mutually exclusive states.
+`match` 元素根据表达式（主体）的值，从一组分支中条件性地渲染元素。
+当你需要在若干互斥状态之间进行选择时，它比一连串 `if` 元素更具可读性。
 
-> **Note**: `match` is experimental and subject to change.
-> Tracking issue: [slint-ui/slint#1307](https://github.com/slint-ui/slint/issues/1307).
+> **注意**：`match` 是实验性的，可能会发生变化。
+> 跟踪 issue：[slint-ui/slint#1307](https://github.com/slint-ui/slint/issues/1307)。
 
-## Syntax
+## 语法
 
 ```slint no-test
 match <match-subject> {
@@ -19,15 +19,15 @@ match <match-subject> {
 }
 ```
 
-Each `<case-value>` is a literal that is compared against the `<match-subject>`.
-When the subject equals a case value, that case's element is rendered.
-If a wildcard case `*` is present, it renders when none of the explicit cases match.
+每个 `<case-value>` 都是一个字面量，会与 `<match-subject>` 进行比较。
+当主体等于某个分支值时，就渲染该分支的元素。
+如果存在通配分支 `*`，则在没有任何显式分支匹配时渲染它。
 
-## Examples
+## 示例
 
-### Matching on an integer
+### 匹配整数
 
-Every value an `int` can take cannot be listed, so a wildcard `*` case is required.
+`int` 可以取的每个值无法一一列出，因此需要通配 `*` 分支。
 
 ```slint
 export component StatusIndicator {
@@ -42,9 +42,9 @@ export component StatusIndicator {
 }
 ```
 
-### Matching on a boolean
+### 匹配布尔值
 
-`true` and `false` cover every value a `bool` can take, so no wildcard is needed.
+`true` 和 `false` 覆盖了 `bool` 可以取的每一个值，因此不需要通配符。
 
 ```slint
 export component Toggle {
@@ -57,10 +57,10 @@ export component Toggle {
 }
 ```
 
-### Matching on an enum
+### 匹配枚举
 
-When the subject's type is a known enum, case values may use the enum variant name directly, without qualifying it with the enum name.
-Listing every variant covers the enum exhaustively, so no wildcard is needed.
+当主体的类型是已知枚举时，分支值可以直接使用枚举变体名，而无需用枚举名限定。
+列出每个变体就能穷尽覆盖该枚举，因此不需要通配符。
 
 ```slint
 enum Mode { View, Edit, Preview }
@@ -76,7 +76,7 @@ export component Editor {
 }
 ```
 
-### Matching on a string
+### 匹配字符串
 
 ```slint
 export component Greeting {
@@ -91,10 +91,10 @@ export component Greeting {
 }
 ```
 
-## Wildcard case
+## 通配分支
 
-The `*` case acts as a catch-all that renders when no explicit case matches the subject.
-It must appear as the last case, so any case written after it can never be reached and is an error.
+`*` 分支充当兜底分支，在没有任何显式分支匹配主体时渲染。
+它必须作为最后一个分支出现，因此写在它之后的任何分支都永远无法到达，属于错误。
 
 ```slint no-test
 match answer {
@@ -103,18 +103,18 @@ match answer {
 }
 ```
 
-## Exhaustiveness
+## 穷尽性
 
-A `match` must handle every value its subject can take.
+`match` 必须处理其主体可以取的每一个值。
 
-- For `bool` and enum subjects, either list all values explicitly or provide a `*` case. A missing value is an error (for example, `Non-exhaustive match on bool: missing 'false'`).
-- For all other types (`int`, `string`, `color`, `length`, …) the set of values is unbounded, so a `*` case is required.
+- 对于 `bool` 和枚举主体，要么显式列出所有值，要么提供一个 `*` 分支。缺少某个值是错误（例如 `Non-exhaustive match on bool: missing 'false'`）。
+- 对于所有其他类型（`int`、`string`、`color`、`length`……），值的集合是无限的，因此需要 `*` 分支。
 
-A literal subject (for example `match 1 { … }`) warns, because the same case always applies.
+字面量主体（例如 `match 1 { … }`）会发出警告，因为总是应用同一个分支。
 
-## Duplicate cases
+## 重复分支
 
-Each case value must be distinct. A value that is already covered by an earlier case is an error, including values that are equal after conversion (for example `2` and `2.0`, or `1s` and `1000ms`).
+每个分支值都必须互不相同。已被更早分支覆盖的值是错误，包括转换后相等的值（例如 `2` 和 `2.0`，或 `1s` 和 `1000ms`）。
 
 ```slint no-test
 match count {
@@ -124,9 +124,9 @@ match count {
 }
 ```
 
-## Empty element
+## 空元素
 
-Any case that evaluates to the empty element `{ }` renders nothing. Any case can be empty, including the wildcard case.
+任何求值为空元素 `{ }` 的分支都不渲染任何内容。任何分支都可以为空，包括通配分支。
 
 ```slint no-test
 match show {
@@ -143,13 +143,13 @@ match toggle {
 }
 ```
 
-## Restrictions
+## 限制
 
-The match element feature is in its early stages. The following restrictions apply:
+match 元素功能尚处于早期阶段。以下限制适用：
 
-- A `match` must contain at least one case.
+- `match` 必须至少包含一个分支。
 
-- Cases must be literal values. Computed expressions, property references, and function calls are not allowed as case values. Only plain literals (integers, floats, booleans, strings, enum variants, colors, lengths), optionally negated, are accepted.
+- 分支必须是字面量值。计算表达式、属性引用和函数调用不允许作为分支值。只接受普通字面量（整数、浮点数、布尔值、字符串、枚举变体、颜色、长度），可选择取负。
 
   ```slint no-test
   // Property reference as a case value
@@ -163,8 +163,8 @@ The match element feature is in its early stages. The following restrictions app
   }
   ```
 
-- Float comparisons produce a warning. Comparing floating-point values for exact equality is not reliable, so the compiler emits a warning for each fractional float case value.
+- 浮点数比较会产生警告。对浮点值进行精确相等比较并不可靠，因此编译器会为每个带小数的浮点分支值发出警告。
 
-- `@children` cannot appear inside a match case.
+- `@children` 不能出现在 match 分支内部。
 
-- `match` cannot appear in global components or interfaces. Only regular components support match elements.
+- `match` 不能出现在全局组件或接口中。只有常规组件支持 match 元素。

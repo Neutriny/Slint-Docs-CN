@@ -1,6 +1,6 @@
 ---
 title: TextEdit
-description: TextEdit api.
+description: TextEdit API。
 ---
 
 {/* cSpell: ignore Lorem ipsum dolor sit amet consectetur adipisici elit */}
@@ -28,28 +28,28 @@ export component Example inherits Window {
 ````
 </CodeSnippetMD>
 
-Similar to <Link type="LineEdit" />, but can be used to enter several lines of text
+类似于 <Link type="LineEdit" />，但可用于输入多行文本
 
-## Properties
+## 属性
 
 ### font-size
 <SlintProperty propName="font-size" typeName="length" >
-The size of the font of the input text.
+输入文本的字体大小。
 </SlintProperty>
 
 ### font-family
 <SlintProperty propName="font-family" typeName="string" >
-The name of the font family selected for rendering the text.
+为渲染文本所选择的字体系列名称。
 </SlintProperty>
 
 ### font-italic
 <SlintProperty propName="font-italic" typeName="bool" defaultValue="false">
-The italic state of the font of the input text
+输入文本的字体斜体状态
 </SlintProperty>
 
 ### text
 <SlintProperty propName="text" typeName="string" propertyVisibility="in-out" >
-The text being edited
+正在编辑的文本
 
 ```slint 'text: "Initial text";'
 TextEdit {
@@ -62,20 +62,20 @@ TextEdit {
 ### has-focus
 
 <SlintProperty propName="has-focus" typeName="bool" propertyVisibility="out">
-  Set to true when the widget currently has the focus.
+  当控件当前具有焦点时设置为 true。
 </SlintProperty>
 
 ### enabled
 
 <SlintProperty propName="enabled" typeName="bool" defaultValue="true">
-  When false, nothing can be entered.
+  当为 false 时，无法输入任何内容。
 </SlintProperty>
 
 ### input-method-hints
 
 <SlintProperty propName="input-method-hints" typeName="struct" structName="InputMethodHints">
-Hints for the platform's input method (such as a soft keyboard), for example to configure auto-capitalization.
-The input method may take these hints into account, but might also ignore them.
+平台输入法（例如软键盘）的提示，例如用于配置自动大写。
+输入法可能会考虑这些提示，也可能忽略它们。
 ```slint "input-method-hints: { capitalization: CapitalizationMode.words };"
 TextEdit {
     input-method-hints: { capitalization: CapitalizationMode.words };
@@ -86,14 +86,14 @@ TextEdit {
 ### read-only
 
 <SlintProperty propName="read-only" typeName="bool" defaultValue="false">
-  When set to true, text editing via keyboard and mouse is disabled but
-  selecting text is still enabled as well as editing text programmatically.
+  设置为 true 时，通过键盘和鼠标进行的文本编辑被禁用，但
+  仍可选择文本，也可通过编程方式编辑文本。
 </SlintProperty>
 
 ### wrap
 
 <SlintProperty propName="wrap" typeName="enum" enumName="TextWrap">
-  The way the text wraps (default: word-wrap).
+  文本换行的方式（默认：word-wrap）。
 </SlintProperty>
 
 ### horizontal-alignment
@@ -103,7 +103,7 @@ TextEdit {
   typeName="enum"
   enumName="TextHorizontalAlignment"
 >
-  The horizontal alignment of the text.
+  文本的水平对齐方式。
 </SlintProperty>
 
 ### placeholder-text
@@ -113,7 +113,7 @@ TextEdit {
   typeName="string"
   propertyVisibility="in"
 >
-  A placeholder text being shown when there is no text in the edit field.
+  编辑字段中没有文本时显示的占位文本。
 </SlintProperty>
 
 ### content-width
@@ -123,9 +123,8 @@ TextEdit {
   typeName="length"
   propertyVisibility="in-out"
 >
-  The width of the scrollable content of the text edit. This property was
-  formerly known as `viewport-width`, which is still available as a deprecated
-  alias.
+  文本编辑可滚动内容的宽度。此属性以前 称为
+  `viewport-width`，该名称仍作为已弃用的 别名可用。
 </SlintProperty>
 
 ### content-height
@@ -135,9 +134,8 @@ TextEdit {
   typeName="length"
   propertyVisibility="in-out"
 >
-  The height of the scrollable content of the text edit. This property was
-  formerly known as `viewport-height`, which is still available as a deprecated
-  alias.
+  文本编辑可滚动内容的高度。此属性以前 称为
+  `viewport-height`，该名称仍作为已弃用的 别名可用。
 </SlintProperty>
 
 ### content-x
@@ -147,9 +145,8 @@ TextEdit {
   typeName="length"
   propertyVisibility="in-out"
 >
-  The `x` position of the scrollable content relative to the text edit. This is
-  usually a negative value. This property was formerly known as `viewport-x`,
-  which is still available as a deprecated alias.
+  可滚动内容相对于文本编辑的 `x` 位置。通常 为负值。此属性以前称为
+  `viewport-x`， 该名称仍作为已弃用的别名可用。
 </SlintProperty>
 
 ### content-y
@@ -159,9 +156,8 @@ TextEdit {
   typeName="length"
   propertyVisibility="in-out"
 >
-  The `y` position of the scrollable content relative to the text edit. This is
-  usually a negative value. This property was formerly known as `viewport-y`,
-  which is still available as a deprecated alias.
+  可滚动内容相对于文本编辑的 `y` 位置。通常 为负值。此属性以前称为
+  `viewport-y`， 该名称仍作为已弃用的别名可用。
 </SlintProperty>
 
 ### visible-width
@@ -171,7 +167,7 @@ TextEdit {
   typeName="length"
   propertyVisibility="out"
 >
-  The width of the visible area of the text edit (not including the scrollbar)
+  文本编辑可见区域的宽度（不包括滚动条）
 </SlintProperty>
 
 ### visible-height
@@ -181,56 +177,56 @@ TextEdit {
   typeName="length"
   propertyVisibility="out"
 >
-  The height of the visible area of the text edit (not including the scrollbar)
+  文本编辑可见区域的高度（不包括滚动条）
 </SlintProperty>
 
-## Functions
+## 函数
 
 ### focus()
 
-Call this function to focus the TextEdit and make it receive future keyboard events.
+调用此函数以聚焦 TextEdit 并使其接收后续键盘事件。
 
 ### clear-focus()
 
-Call this function to remove keyboard focus from this `TextEdit` if it currently has the focus. See also <Link type="FocusHandling" label="focus handling" />.
+调用此函数以从此 `TextEdit` 移除键盘焦点（如果它当前具有焦点）。另请参见 <Link type="FocusHandling" label="焦点处理" />。
 
 ### set-selection-offsets(anchor: int, focus: int)
 
-Selects the text between two UTF-8 offsets: `anchor` is the end of the selection that stays put and `focus` the end the cursor moves to, so `focus` may precede `anchor` to select backwards. Pass the same value for both to place the text cursor at that offset without selecting anything.
+选择两个 UTF-8 偏移之间的文本：`anchor` 是保持不动的选择端，`focus` 是光标移动到的端，因此 `focus` 可以先于 `anchor` 以反向选择。为两者传递相同的值可将文本光标放置在该偏移处而不选择任何内容。
 
 ### select-all()
 
-Selects all text.
+选择所有文本。
 
 ### clear-selection()
 
-Clears the selection. This function takes effect regardless of the `read-only` and `enabled` properties.
+清除选择。无论 `read-only` 和 `enabled` 属性如何，此函数都会生效。
 
 ### copy()
 
-Copies the selected text to the clipboard.
+将选中的文本复制到剪贴板。
 
 ### cut()
 
-Copies the selected text to the clipboard and removes it from the editable area. This function takes effect regardless of the `read-only` and `enabled` properties.
+将选中的文本复制到剪贴板并从可编辑区域中移除。无论 `read-only` 和 `enabled` 属性如何，此函数都会生效。
 
 ### paste()
 
-Pastes the text content of the clipboard at the cursor position. This function takes effect regardless of the `read-only` and `enabled` properties.
+将剪贴板的文本内容粘贴到光标位置。无论 `read-only` 和 `enabled` 属性如何，此函数都会生效。
 
 ### undo()
 
-Undoes the last text operation. This function takes effect regardless of the `read-only` and `enabled` properties.
+撤销上次文本操作。无论 `read-only` 和 `enabled` 属性如何，此函数都会生效。
 
 ### redo()
 
-Redoes the last undone text operation. This function takes effect regardless of the `read-only` and `enabled` properties.
+重做上次撤销的文本操作。无论 `read-only` 和 `enabled` 属性如何，此函数都会生效。
 
-## Callbacks
+## 回调
 
 ### edited(string)
 
-Emitted when the text has changed because the user modified it
+当文本因用户修改而发生变化时发出
 
 ```slint {2-4}
 TextEdit {
@@ -242,12 +238,12 @@ TextEdit {
 
 ### key-pressed(KeyEvent) -> EventResult
 
-Invoked when a key is pressed, the argument is a <Link type="KeyEvent" /> struct. Use this callback to
-handle keys before `TextEdit` does. Return `accept` to indicate that you've handled the event, or return
-`reject` to let `TextEdit` handle it.
+当按键被按下时调用，参数是一个 <Link type="KeyEvent" /> 结构体。使用此回调在 `TextEdit`
+处理键之前处理按键。返回 `accept` 表示你已处理该事件，或返回
+`reject` 让 `TextEdit` 处理它。
 
 ### key-released(KeyEvent) -> EventResult
 
-Invoked when a key is released, the argument is a <Link type="KeyEvent" /> struct. Use this callback to
-handle keys before `TextEdit` does. Return `accept` to indicate that you've handled the event, or return
-`reject` to let `TextEdit` handle it.
+当按键被释放时调用，参数是一个 <Link type="KeyEvent" /> 结构体。使用此回调在 `TextEdit`
+处理键之前处理按键。返回 `accept` 表示你已处理该事件，或返回
+`reject` 让 `TextEdit` 处理它。

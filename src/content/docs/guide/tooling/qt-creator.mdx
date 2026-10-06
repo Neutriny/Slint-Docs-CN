@@ -5,28 +5,28 @@ description: Qt Creator 的 Slint 配置
 
 import Link from '@slint/common-files/src/components/Link.astro';
 
-### Syntax Highlighting
+### 语法高亮
 
-Qt Creator supports the same format as Kate. Refer to the instructions for <Link type="KateSyntaxHighlighting" label="Kate"/> to set up syntax highlighting.
+Qt Creator 支持与 Kate 相同的格式。请参考 <Link type="KateSyntaxHighlighting" label="Kate"/> 的说明来设置语法高亮。
 
 ### LSP
 
-To install the Slint Language server, check the <Link type="SlintLSP" label="LSP Documentation"/>.
+要安装 Slint Language Server，请查看 <Link type="SlintLSP" label="LSP 文档"/>。
 
-To setup the lsp:
+要设置 LSP：
 
-1.  Install the `slint-lsp` binary
-2.  Then in Qt creator, go to _Tools > Option_ and select the _Language Client_ section.
-3.  Click _Add_
-4.  As a name, use "Slint"
-5.  use `*.slint` as a file pattern. (don't use MIME types)
-6.  As executable, select the `slint-lsp` binary (no arguments required)
-7.  Click _Apply_ or _Ok_
+1.  安装 `slint-lsp` 二进制文件
+2.  然后在 Qt creator 中，转到 _Tools > Option_ 并选择 _Language Client_ 部分。
+3.  点击 _Add_
+4.  名称使用 "Slint"
+5.  文件模式使用 `*.slint`。（不要使用 MIME 类型）
+6.  作为可执行文件，选择 `slint-lsp` 二进制文件（无需参数）
+7.  点击 _Apply_ 或 _Ok_
 
-![Qt Creator LSP Configuration](../../../../assets/guide/tooling/qt-creator-lsp-setup.webp)
+![Qt Creator LSP 配置](../../../../assets/guide/tooling/qt-creator-lsp-setup.webp)
 
-### Live Preview
+### 实时预览
 
-Once you have set up the LSP, in order to **preview a component**, when you have a .slint file open, place your cursor to
-the name of the component you would like to preview and press _Alt + Enter_ to open
-the code action menu. Select _Show Preview_ from that menu.
+设置好 LSP 后，要**预览组件**，请在打开 .slint 文件时，将光标放在
+你想预览的组件名称上，然后按 _Alt + Enter_ 打开
+代码操作菜单。从该菜单中选择 _Show Preview_。

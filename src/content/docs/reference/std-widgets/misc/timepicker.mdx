@@ -1,12 +1,12 @@
 ---
 title: TimePickerPopup
-description: TimePickerPopup api.
+description: TimePickerPopup API。
 ---
 
 import SlintProperty from '@slint/common-files/src/components/SlintProperty.astro';
 import CodeSnippetMD from '@slint/common-files/src/components/CodeSnippetMD.astro';
 
-Use the timer picker to select the time, in either 24-hour or 12-hour mode (AM/PM).
+使用时间选择器选择时间，可采用 24 小时制或 12 小时制（AM/PM）。
 
 <CodeSnippetMD imagePath="/src/assets/generated/std-widgets-timepicker.png"  imageWidth="200" imageHeight="200"  imageAlt='std-widgets timepicker example'>
 ```slint
@@ -45,21 +45,21 @@ export component Example inherits Window {
 
 
 
-## Properties
+## 属性
 
 ### use-24-hour-format
 <SlintProperty propName="use-24-hour-format" typeName="bool" defaultValue="system default" >
-If set to `true` 24 hours are displayed otherwise it is displayed in AM/PM mode. (default: system default, if cannot be determined then `true`)
+如果设置为 `true`，则以 24 小时制显示，否则以 AM/PM 模式显示。（默认：系统默认，如果无法确定则为 `true`）
 </SlintProperty>
 
 ### title
 <SlintProperty propName="title" typeName="string" >
-The text that is displayed at the top of the picker.
+显示在选择器顶部的文本。
 </SlintProperty>
 
 ### time
 <SlintProperty propName="time" typeName="struct" structName="Time" >
-Set the initial displayed time.
+设置初始显示的时间。
 
 ```slint "time: { hour: 12, minute: 24 };"
 TimePickerPopup {
@@ -69,11 +69,11 @@ TimePickerPopup {
 
 </SlintProperty>
 
-## Callbacks
+## 回调
 
 ### canceled()
 
-The cancel button was clicked.
+取消按钮被点击。
 
 ```slint {2-4}
 time-picker := TimePickerPopup {
@@ -85,7 +85,7 @@ time-picker := TimePickerPopup {
 
 ### accepted(Time)
 
-The ok button was clicked.
+确定按钮被点击。
 
 ```slint {2-5}
 time-picker := TimePickerPopup {

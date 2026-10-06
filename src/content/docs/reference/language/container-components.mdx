@@ -1,12 +1,12 @@
 ---
 title: 容器组件
-description: Controlling where child elements are placed with @children.
+description: 使用 @children 控制子元素的放置位置。
 ---
 
-When a component is used in an element tree, the child elements written inside its use site belong to that component.
-By default they are appended to the children of the component's root element.
-The `@children` expression overrides that placement:
-it marks the single position within the component's own element hierarchy where those use-site children are inserted.
+当组件在元素树中使用时，写在其使用处内部的子元素属于该组件。
+默认情况下，它们会被追加到组件根元素的子元素之后。
+`@children` 表达式会覆盖这种放置方式：
+它标记组件自身元素层级中插入这些使用处子元素的唯一位置。
 
 ```slint
 component BoxWithLabel inherits GridLayout {
@@ -27,26 +27,26 @@ export component MyApp inherits Window {
 }
 ```
 
-`@children` is an expression that stands in for the use-site children, not a macro.
-It takes no arguments and appears on its own where a child element would appear.
-Writing anything other than `children` after `@` is a compile error.
+`@children` 是一个代表使用处子元素的表达式，而不是宏。
+它不接受参数，并单独出现在子元素应出现的位置。
+在 `@` 之后写 `children` 以外的任何内容都会构成编译错误。
 
-## Placement
+## 放置
 
-`@children` may appear directly inside any element of the component's tree, at the position among that element's children where the use-site children are to be inserted.
-The children are inserted as children of the element that encloses `@children`, at that exact position; siblings written before and after `@children` keep their order around them.
-In the example above the two rectangles become children of the second `Row` rather than direct children of `BoxWithLabel`.
+`@children` 可以直接出现在组件树中任何元素的内部，位于该元素子元素中要插入使用处子元素的位置。
+这些子元素会作为包围 `@children` 的元素的子元素，插入到那个确切位置；写在 `@children` 前后两侧的兄弟元素会保持它们周围的顺序。
+在上面的示例中，两个矩形成为第二个 `Row` 的子元素，而不是 `BoxWithLabel` 的直接子元素。
 
-At most one `@children` is allowed across the whole component hierarchy.
-A second `@children` in the same element is a compile error, and a `@children` in one element when another element in the same component already has one is also a compile error.
+整个组件层级中至多允许一个 `@children`。
+同一元素中的第二个 `@children` 是编译错误，当同一组件中另一个元素已经有 `@children` 时，某元素中再出现一个 `@children` 也是编译错误。
 
-`@children` cannot appear inside a [repeated element](../repetition-and-conditional-elements/) (`for`), a [conditional element](../repetition-and-conditional-elements/) (`if`), or a `match` element; each is a compile error.
-It also cannot appear inside a `ComponentContainer`.
+`@children` 不能出现在[重复元素](../repetition-and-conditional-elements/)（`for`）、[条件元素](../repetition-and-conditional-elements/)（`if`）或 `match` 元素内部；每一种都会构成编译错误。
+它也不能出现在 `ComponentContainer` 内部。
 
-A component that contains no `@children` still accepts use-site children; they are appended after the root element's own children.
+不包含 `@children` 的组件仍然接受使用处子元素；它们会被追加到根元素自身子元素之后。
 
-## Layout and parenting
+## 布局与父子关系
 
-The inserted children participate in the enclosing element exactly as if they had been written there directly.
-When that element is a layout, they become cells of that layout and are laid out by it.
-Their bindings and callbacks are evaluated in the scope of the use site where they were written, not the scope of the component that contains `@children`.
+插入的子元素会参与包围元素的布局，就像它们直接被写在那里一样。
+当该元素是布局时，它们会成为该布局的单元格，并由该布局进行布局。
+它们的绑定和回调在使用处（即它们被书写的位置）的作用域中求值，而不是在包含 `@children` 的组件的作用域中求值。

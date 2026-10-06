@@ -1,42 +1,42 @@
 ---
 title: 记忆牌面
-description: Memory Tile
+description: 记忆牌面
 ---
 
 import { Code } from '@astrojs/starlight/components';
 import { extractLines } from '../../../utils/utils.ts';
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-With the skeleton code in place, this step looks at the first element of the game, the memory tile. It's the
-visual building block that consists of an underlying filled rectangle background, the icon image. Later steps add a covering rectangle that acts as a curtain.
+有了骨架代码之后，这一步来看游戏的第一个元素——记忆牌。它是
+一个可视化构建块，由底层填充的矩形背景和图标图像组成。后续步骤会添加一个作为帘幕的覆盖矩形。
 
-You declare the background rectangle as 64 logical pixels wide and tall
-filled with a soothing tone of blue.
+你将背景矩形声明为 64 个逻辑像素宽和高，
+并填充一种柔和的蓝色调。
 
-Lengths in Slint have a unit, here, the `px` suffix.
-This makes the code easier to read and the compiler can detect when you accidentally
-mix values with different units attached to them.
+Slint 中的长度带有单位，这里使用 `px` 后缀。
+这让代码更易读，编译器也能检测出你何时意外
+混合了带有不同单位的数值。
 
-Copy the following code into `ui/app-window.slint` file, replacing the current content:
+将以下代码复制到 `ui/app-window.slint` 文件中，替换当前内容：
 
 import memoryTile from '/src/content/code/memory_tile.slint?raw';
 
 <Code code={extractLines(memoryTile, 5, 19)} lang="slint" />
 
-This exports the <span class="hljs-title">MainWindow</span> component so that the game logic code can access it later.
+这会导出 <span class="hljs-title">MainWindow</span> 组件，以便游戏逻辑代码稍后可以访问它。
 
-Inside the <span class="hljs-built_in">Rectangle</span> place an <span class="hljs-built_in">Image</span> element that
-loads an icon with the <span class="hljs-built_in">@image-url()</span> macro. The path is relative to the location of `ui/app-window.slint`.
+在 <span class="hljs-built_in">Rectangle</span> 内部放置一个 <span class="hljs-built_in">Image</span> 元素，
+它使用 <span class="hljs-built_in">@image-url()</span> 宏加载一个图标。路径相对于 `ui/app-window.slint` 的位置。
 
-You need to install this icon and others you use later first. You can download a pre-prepared
-[Zip archive](https://slint.dev/blog/memory-game-tutorial/icons.zip) to the `ui` folder,
+你需要先安装这个图标以及稍后使用的其他图标。你可以下载一个预先准备好的
+[Zip 归档](https://slint.dev/blog/memory-game-tutorial/icons.zip) 到 `ui` 文件夹，
 
-If you are on Linux or macOS, download and extract it with the following commands:
+如果你在 Linux 或 macOS 上，使用以下命令下载并解压它：
 
 <Tabs syncKey="dev-platform">
 <TabItem label="Windows" icon="seti:windows">
 
-If you are on Windows, use the following commands:
+如果你在 Windows 上，使用以下命令：
 
 ```powershell title="PowerShell"
 cd ui
@@ -45,7 +45,7 @@ powershell Expand-Archive -Path icons.zip -DestinationPath .
 cd ..
 ```
 
-This unpacks an `icons` directory containing several icons.
+这会解压出一个包含若干图标的 `icons` 目录。
 
 </TabItem>
 <TabItem label="macOS" icon="apple">
@@ -55,7 +55,7 @@ curl -O https://slint.dev/blog/memory-game-tutorial/icons.zip
 unzip icons.zip
 cd ..
 ```
-This unpacks an `icons` directory containing several icons.
+这会解压出一个包含若干图标的 `icons` 目录。
 </TabItem>
 <TabItem label="Linux" icon="linux">
 
@@ -66,7 +66,7 @@ unzip icons.zip
 cd ..
 ```
 
-This unpacks an `icons` directory containing several icons.
+这会解压出一个包含若干图标的 `icons` 目录。
 
 </TabItem>
 </Tabs>
@@ -74,24 +74,24 @@ This unpacks an `icons` directory containing several icons.
 <Tabs syncKey="dev-language">
 <TabItem label="Rust" icon="seti:rust">
 
-Running the program with `cargo run` opens a window that shows the icon of a bus on a blue background.
+使用 `cargo run` 运行程序会打开一个窗口，在蓝色背景上显示一个公交车的图标。
 
 </TabItem>
 <TabItem label="C++" icon="seti:cpp">
 
-Compiling the program with `cmake --build build` and running with the `./build/my_application` opens a window that shows the icon of a bus on a blue background.
+使用 `cmake --build build` 编译程序并用 `./build/my_application` 运行，会打开一个窗口，在蓝色背景上显示一个公交车的图标。
 
 </TabItem>
 <TabItem label="NodeJS" icon="node">
 
-Running the program with `npm start` opens a window that shows the icon of a bus on a blue background.
+使用 `npm start` 运行程序会打开一个窗口，在蓝色背景上显示一个公交车的图标。
 
 </TabItem>
 <TabItem label="Python" icon="seti:python">
 
-Running the program with `uv run main.py` opens a window that shows the icon of a bus on a blue background.
+使用 `uv run main.py` 运行程序会打开一个窗口，在蓝色背景上显示一个公交车的图标。
 
 </TabItem>
 </Tabs>
 
-![Screenshot of the first tile](https://slint.dev/blog/memory-game-tutorial/memory-tile.png 'Memory Tile Screenshot')
+![第一张牌的截图](https://slint.dev/blog/memory-game-tutorial/memory-tile.png 'Memory Tile Screenshot')

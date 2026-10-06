@@ -9,21 +9,20 @@ import Link from '@slint/common-files/src/components/Link.astro';
 
 ## Vim
 
-To install the Slint Language server, check the <Link type="SlintLSP" label="LSP Documentation"/>.
+要安装 Slint Language Server，请查看 <Link type="SlintLSP" label="LSP 文档"/>。
 
-Vim support the Language Server Protocol via its [Conquer of Completion](https://github.com/neoclide/coc.nvim)
-plugin. Together with the Slint LSP server, this enables inline diagnostics and code completion when
-editing `.slint` files.
+Vim 通过其 [Conquer of Completion](https://github.com/neoclide/coc.nvim)
+插件支持 Language Server Protocol。结合 Slint LSP 服务器，这可以在编辑 `.slint` 文件时提供内联诊断和代码补全。
 
-After installing the extension, for example via [vim-plug](https://github.com/junegunn/vim-plug),
-two additional configuration changes are needed to integrate the LSP server with vim:
+安装扩展后（例如通过 [vim-plug](https://github.com/junegunn/vim-plug)），
+还需要进行两处额外的配置更改，才能将 LSP 服务器与 vim 集成：
 
-1. Make vim recognize the `.slint` files with the correct file type
+1. 让 vim 以正确的文件类型识别 `.slint` 文件
 
-Install the [`slint-ui/vim-slint`](https://github.com/slint-ui/vim-slint) plugin.
+安装 [`slint-ui/vim-slint`](https://github.com/slint-ui/vim-slint) 插件。
 
-Alternatively you can add the following to your vim configuration file (e.g. `vimrc`) to
-enable automatic recognition of `.slint` files:
+或者，你可以将以下内容添加到你的 vim 配置文件（例如 `vimrc`）中，
+以启用对 `.slint` 文件的自动识别：
 
 {/* cSpell: disable */}
 
@@ -33,13 +32,12 @@ autocmd BufEnter *.slint :setlocal filetype=slint
 
 {/* cSpell: enable */}
 
-2. Make sure the slint language server is installed and can be found in PATH.
+2. 确保 slint 语言服务器已安装并能在 PATH 中找到。
 
-3. Configure Conquer of Completion to use the Slint LSP server
+3. 配置 Conquer of Completion 以使用 Slint LSP 服务器
 
-Start `vim` and run the `:CocConfig` command to bring up the buffer that allows editing
-the JSON configuration file (`coc-settings.json`), and make sure the following mapping
-exists under the `language` server section:
+启动 `vim` 并运行 `:CocConfig` 命令，调出允许编辑
+JSON 配置文件（`coc-settings.json`）的缓冲区，并确保在 `language` 服务器部分下存在以下映射：
 
 ```json
 {
@@ -54,38 +52,38 @@ exists under the `language` server section:
 
 ## Neovim
 
-Follow step 1. of the Vim section to get support for `.slint` files.
+按照 Vim 部分的第 1 步操作，即可获得对 `.slint` 文件的支持。
 
-The easiest way to use the language server in Neovim is via the [`neovim/nvim-lspconfig`](https://github.com/neovim/nvim-lspconfig) plugin.
+在 Neovim 中使用该语言服务器最简单的方式是通过 [`neovim/nvim-lspconfig`](https://github.com/neovim/nvim-lspconfig) 插件。
 
-To install the language server you can:
+要安装该语言服务器，你可以：
 
-- <Link type="SlintLSP" label="install and configure manually" />
-- install [Mason](https://github.com/mason-org/mason.nvim) and run `:MasonInstall slint-lsp` (on Windows, Linux and macOS)
+- <Link type="SlintLSP" label="手动安装并配置" />
+- 安装 [Mason](https://github.com/mason-org/mason.nvim) 并运行 `:MasonInstall slint-lsp`（在 Windows、Linux 和 macOS 上）
 
-### Live Preview
+### 实时预览
 
-Once the `slint-lsp` language server is installed and running, you can open the live preview
-by placing the caret over a component name and triggering the code actions (bound to `gra` by default).
-Depending on your configuration, this action might be bound to something else, so please check your configuration for the appropriate key binding (`vim.lsp.buf.code_action()`).
+`slint-lsp` 语言服务器安装并运行后，你可以打开实时预览：
+将光标放在组件名称上并触发代码操作（默认绑定到 `gra`）。
+根据你的配置，此操作可能绑定到其他按键，因此请检查你的配置以找到合适的按键绑定（`vim.lsp.buf.code_action()`）。
 
-You may also want to install a plugin that indicates when code actions are available like [kosayoda/nvim-lightbulb](https://github.com/kosayoda/nvim-lightbulb).
+你可能还想安装一个用于指示代码操作何时可用的插件，例如 [kosayoda/nvim-lightbulb](https://github.com/kosayoda/nvim-lightbulb)。
 
-**Example with nvim-lightbulb**:
+**使用 nvim-lightbulb 的示例**：
 
-![Opening Live Preview from Neovim](../../../../assets/guide/tooling/nvim-show-preview.webp)
+![从 Neovim 打开实时预览](../../../../assets/guide/tooling/nvim-show-preview.webp)
 
-#### Highlighting elements from Neovim
+#### 从 Neovim 高亮元素
 
-To highlight elements in the live preview from Neovim directly, either:
-Use the "hover" LSP action (`K` by default) or enable the [document-highlight](<https://neovim.io/doc/user/lsp/#vim.lsp.buf.document_highlight()>) feature.
-When document highlighting is enabled, moving the caret over an element will automatically highlight it in the live preview, and moving the caret away will remove the highlight.
+要直接从 Neovim 高亮实时预览中的元素，可以：
+使用 "hover" LSP 操作（默认 `K`），或启用 [document-highlight](<https://neovim.io/doc/user/lsp/#vim.lsp.buf.document_highlight()>) 特性。
+启用文档高亮后，将光标移到某个元素上会自动在实时预览中高亮它，将光标移开则会移除高亮。
 
-:::tip[Personal Recommendation]
-The [akioweh/lsp-document-highlight](https://github.com/akioweh/lsp-document-highlight.nvim) plugin provides an easy way to configure the the document-highlight action without the flickering the default configuration will create.
+:::tip[个人建议]
+[akioweh/lsp-document-highlight](https://github.com/akioweh/lsp-document-highlight.nvim) 插件提供了一种简单的方式来配置 document-highlight 操作，而不会产生默认配置会造成的闪烁。
 :::
 
 ### Tree-sitter
 
-If you use `nvim-treesitter` you can install the Tree Sitter parser for Slint using `TSInstall slint`
-for syntax highlighting and indentation support.
+如果你使用 `nvim-treesitter`，可以使用 `TSInstall slint` 安装 Slint 的 Tree Sitter 解析器，
+以获得语法高亮和缩进支持。

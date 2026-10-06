@@ -1,14 +1,14 @@
 ---
 title: 结尾
-description: Conclusion
+description: 总结
 next: false
 ---
 
-This tutorial showed you how to combine built-in Slint elements with C++, Rust, or NodeJS code to build a
-game. There is much more to Slint, such as layouts, widgets, or styling.
+本教程向你展示了如何将 Slint 内置元素与 C++、Rust 或 NodeJS 代码结合起来构建一个
+游戏。Slint 还有更多内容，例如布局、控件或样式。
 
-We recommend the following links to continue:
+我们推荐以下链接以继续学习：
 
-- [Examples](https://github.com/slint-ui/slint/tree/master/examples): The Slint repository has several demos and examples. These are a great starting point to learn how to use many Slint features.
-  - [Todo Example](https://github.com/slint-ui/slint/tree/master/examples/todo): This is one of the examples that implements a classic use-case.
-  - [Memory Puzzle](https://github.com/slint-ui/slint/tree/master/examples/memory): This is a slightly more polished version of the code in this example and you can <a href="https://slint.dev/demos/memory/" target="_blank">play the wasm version</a> in your browser.
+- [示例](https://github.com/slint-ui/slint/tree/master/examples)：Slint 仓库中有若干演示和示例。它们是学习如何使用众多 Slint 特性的绝佳起点。
+  - [Todo 示例](https://github.com/slint-ui/slint/tree/master/examples/todo)：这是实现经典用例的示例之一。
+  - [记忆拼图](https://github.com/slint-ui/slint/tree/master/examples/memory)：这是本示例代码略加打磨后的版本，你可以在浏览器中 <a href="https://slint.dev/demos/memory/" target="_blank">游玩 wasm 版本</a>。

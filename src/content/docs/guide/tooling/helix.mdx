@@ -7,15 +7,15 @@ description: Helix 的 Slint 配置
 
 import Link from '@slint/common-files/src/components/Link.astro';
 
-To install the Slint Language server, check the <Link type="SlintLSP" label="LSP Documentation"/>.
+要安装 Slint Language Server，请查看 <Link type="SlintLSP" label="LSP 文档"/>。
 
-[Helix](https://helix-editor.com/) works out of the box without further configuration. To check if Helix detects Slint Language server successfully, run this command:
+[Helix](https://helix-editor.com/) 开箱即用，无需进一步配置。要检查 Helix 是否成功检测到 Slint Language Server，请运行以下命令：
 
 ```sh
 hx --health slint
 ```
 
-The output should be like:
+输出应类似：
 
 ```
 Configured language servers:
@@ -27,9 +27,9 @@ Textobject queries: ✓
 Indent queries: ✓
 ```
 
-### Live Preview
+### 实时预览
 
-To open the live preview, place the caret over a component name and trigger the code actions (bound to `<space>a` by default).
-Depending on your configuration, this action might be bound to something else, so please check your configuration for the appropriate key binding (`code_action`).
+要打开实时预览，请将光标放在组件名称上并触发代码操作（默认绑定到 `<space>a`）。
+根据你的配置，此操作可能绑定到其他按键，因此请检查你的配置以找到合适的按键绑定（`code_action`）。
 
 ![Opening a live Preview from Helix](../../../../assets/guide/tooling/helix-show-preview.webp)

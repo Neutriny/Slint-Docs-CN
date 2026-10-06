@@ -1,30 +1,28 @@
 ---
 title: Palette
-description: Property reference for the Palette global.
+description: Palette 全局对象的属性参考。
 ---
 
 import SlintProperty from '@slint/common-files/src/components/SlintProperty.astro';
 import Link from '@slint/common-files/src/components/Link.astro';
 
-Use `Palette` to create custom widgets that match the colors of
-the selected style e.g. fluent, cupertino, material, or qt.
+使用 `Palette` 创建与所选样式（例如 fluent、cupertino、material 或 qt）
+颜色匹配的自定义控件。
 
-See <Link type="StyleWidgets" label="Widget Styles"/> for details on the available styles.
+有关可用样式的详细信息，请参见 <Link type="StyleWidgets" label="控件样式"/>。
 
-## Properties
+## 属性
 
 ### background
 
 <SlintProperty propName="background" typeName="brush" propertyVisibility="out">
-  Defines the default background brush. Use this if none of the more specialized
-  background brushes apply.
+  定义默认背景画刷。如果更专门的 背景画刷均不适用，请使用此项。
 </SlintProperty>
 
 ### foreground
 
 <SlintProperty propName="foreground" typeName="brush" propertyVisibility="out">
-  Defines the foreground brush that is used for content that is displayed on
-  `background` brush.
+  定义用于在 `background` 画刷上 显示内容的前景画刷。
 </SlintProperty>
 
 ### alternate-background
@@ -34,8 +32,7 @@ See <Link type="StyleWidgets" label="Widget Styles"/> for details on the availab
   typeName="brush"
   propertyVisibility="out"
 >
-  Defines an alternate background brush that is used for example for text input
-  controls or panels like a side bar.
+  定义备用背景画刷，例如用于文本输入 控件或侧边栏等面板。
 </SlintProperty>
 
 ### alternate-foreground
@@ -45,8 +42,7 @@ See <Link type="StyleWidgets" label="Widget Styles"/> for details on the availab
   typeName="brush"
   propertyVisibility="out"
 >
-  Defines the foreground brush that is used for content that is displayed on
-  `alternate-background` brush.
+  定义用于在 `alternate-background` 画刷上 显示内容的前景画刷。
 </SlintProperty>
 
 ### control-background
@@ -56,8 +52,7 @@ See <Link type="StyleWidgets" label="Widget Styles"/> for details on the availab
   typeName="brush"
   propertyVisibility="out"
 >
-  Defines the default background brush for controls, such as push buttons, combo
-  boxes, etc.
+  定义控件的默认背景画刷，例如按钮、组合框 等。
 </SlintProperty>
 
 ### control-foreground
@@ -67,8 +62,7 @@ See <Link type="StyleWidgets" label="Widget Styles"/> for details on the availab
   typeName="brush"
   propertyVisibility="out"
 >
-  Defines the foreground brush that is used for content that is displayed on
-  `control-background` brush.
+  定义用于在 `control-background` 画刷上 显示内容的前景画刷。
 </SlintProperty>
 
 ### accent-background
@@ -78,7 +72,7 @@ See <Link type="StyleWidgets" label="Widget Styles"/> for details on the availab
   typeName="brush"
   propertyVisibility="out"
 >
-  Defines the background brush for highlighted controls such as primary buttons.
+  定义高亮控件（如主按钮）的背景画刷。
 </SlintProperty>
 
 ### accent-foreground
@@ -88,8 +82,7 @@ See <Link type="StyleWidgets" label="Widget Styles"/> for details on the availab
   typeName="brush"
   propertyVisibility="out"
 >
-  Defines the foreground brush that is used for content that is displayed on
-  `accent-background` brush.
+  定义用于在 `accent-background` 画刷上 显示内容的前景画刷。
 </SlintProperty>
 
 ### selection-background
@@ -99,8 +92,7 @@ See <Link type="StyleWidgets" label="Widget Styles"/> for details on the availab
   typeName="brush"
   propertyVisibility="out"
 >
-  Defines the background brush that is used to highlight a selection such as a
-  text selection.
+  定义用于高亮选择（如文本选择）的 背景画刷。
 </SlintProperty>
 
 ### selection-foreground
@@ -110,15 +102,13 @@ See <Link type="StyleWidgets" label="Widget Styles"/> for details on the availab
   typeName="brush"
   propertyVisibility="out"
 >
-  Defines the foreground brush that is used for content that is displayed on
-  `selection-background` brush.
+  定义用于在 `selection-background` 画刷上 显示内容的前景画刷。
 </SlintProperty>
 
 ### border
 
 <SlintProperty propName="border" typeName="brush" propertyVisibility="out">
-  Defines the brush that is used for borders such as separators and widget
-  borders.
+  定义用于边框的画刷，例如分隔线和 控件边框。
 </SlintProperty>
 
 ### color-scheme
@@ -129,7 +119,7 @@ See <Link type="StyleWidgets" label="Widget Styles"/> for details on the availab
   enumName="ColorScheme"
   propertyVisibility="in-out"
 >
-  Read this property to determine the color scheme used by the palette. Set this
-  property to force a dark or light color scheme. All styles except for the Qt
-  style support setting a dark or light color scheme.
+  读取此属性以确定调色板所使用的配色方案。设置此
+  属性可强制使用深色或浅色配色方案。除 Qt 样式外，
+  所有样式都支持设置深色或浅色配色方案。
 </SlintProperty>

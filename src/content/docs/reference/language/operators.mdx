@@ -1,6 +1,6 @@
 ---
 title: 运算符
-description: The operators of the Slint language.
+description: Slint 语言的运算符。
 SC: true
 ---
 
@@ -8,35 +8,35 @@ import SC from '@slint/common-files/src/components/SC.astro';
 import OnlyInSC from '@slint/common-files/src/components/OnlyInSC.astro';
 import NotInSC from '@slint/common-files/src/components/NotInSC.astro';
 
-Slint has arithmetic, comparison, logical, and ternary operators, plus member access and indexing.
-Every operator requires operands of specific types; Slint applies no implicit coercions beyond the
-few listed here, and mismatched operand types are a compile error.
+Slint 具有算术、比较、逻辑和三元运算符，以及成员访问和索引。
+每个运算符都要求特定类型的操作数；除这里列出的少数几种外，Slint 不应用任何隐式强制转换，
+操作数类型不匹配会构成编译错误。
 
-## Precedence and associativity
+## 优先级与结合性
 
-The following table lists all operators from loosest to tightest binding.
-Operators on the same row share a precedence level.
+下表按从最松散到最紧密的绑定顺序列出所有运算符。
+同一行上的运算符共享同一优先级。
 
-| Operators                   | Description                         | Associativity   |
-| --------------------------- | ----------------------------------- | --------------- |
-| `? :`                       | Ternary conditional                 | right           |
-| `\|\|` `&&`                 | Logical _or_, logical _and_         | non-associative |
-| `==` `!=` `<` `>` `<=` `>=` | Comparison                          | non-associative |
-| `+` `-`                     | Addition/concatenation, subtraction | left            |
-| `*` `/`                     | Multiplication, division            | left            |
-| `+` `-` `!` (unary)         | Plus, negation, logical _not_       | prefix          |
-| `.` `[]`                    | Member access, indexing             | left            |
+| 运算符                      | 描述                 | 结合性 |
+| --------------------------- | -------------------- | ------ |
+| `? :`                       | 三元条件             | 右结合 |
+| `\|\|` `&&`                 | 逻辑*或*、逻辑*与*   | 非结合 |
+| `==` `!=` `<` `>` `<=` `>=` | 比较                 | 非结合 |
+| `+` `-`                     | 加法/拼接、减法      | 左结合 |
+| `*` `/`                     | 乘法、除法           | 左结合 |
+| `+` `-` `!`（一元）         | 正号、取负、逻辑*非* | 前缀   |
+| `.` `[]`                    | 成员访问、索引       | 左结合 |
 
-Parentheses group a nested expression to override precedence.
-There is no modulo operator; use [`Math.mod`](../../global-functions/math/) instead.
-A `%` after a number is a unit (percent), not an operator.
-Slint has no bitwise, shift, increment, decrement, or assignment operators; a binding uses `:` and a
-[two-way binding](../two-way-bindings/) uses `<=>`.
+括号用于对嵌套表达式进行分组以覆盖优先级。
+没有取模运算符；请改用 [`Math.mod`](../../global-functions/math/)。
+数字后的 `%` 是单位（百分比），而不是运算符。
+Slint 没有按位、移位、自增、自减或赋值运算符；绑定使用 `:`，
+[双向绑定](../two-way-bindings/)使用 `<=>`。
 
-Comparison operators are non-associative: writing `a == b == c` or `a < b < c` is an error, and the
-operands must be parenthesized to disambiguate.
-`&&` and `||` are likewise non-associative with respect to each other: `a && b || c` is an error, and
-one side must be parenthesized.
+比较运算符是非结合的：书写 `a == b == c` 或 `a < b < c` 是一个错误，
+必须用括号括起操作数以消除歧义。
+`&&` 和 `||` 彼此之间同样是非结合的：`a && b || c` 是一个错误，
+必须将其中一侧用括号括起。
 
 ```slint
 export component Example {
@@ -45,30 +45,30 @@ export component Example {
 ```
 
 <SC>
-## Arithmetic operators
+## 算术运算符
 
 <OnlyInSC>
-An arithmetic expression combines two operands with `+`, `-`, or `*`. \{#sls.op.form}
+算术表达式用 `+`、`-` 或 `*` 组合两个操作数。 \{#sls.op.form}
 
-`+` and `-` require both operands to have the same type. \{#sls.op.additive}
+`+` 和 `-` 要求两个操作数具有相同的类型。 \{#sls.op.additive}
 
-`*` multiplies a value by a number. \{#sls.op.multiplicative}
+`*` 将值与数字相乘。 \{#sls.op.multiplicative}
 
-`*` binds tighter than `+` and `-`. \{#sls.op.precedence}
+`*` 的绑定比 `+` 和 `-` 更紧密。 \{#sls.op.precedence}
 
-Arithmetic saturates at the bounds of the value's type. \{#sls.op.saturating}
+算术在值类型的边界处饱和。 \{#sls.op.saturating}
 
 </OnlyInSC>
 <NotInSC>
-The binary operators `+`, `-`, `*`, and `/` operate on numbers (`int`, `float`, `percent`) and on
-types that carry a unit (`length`, `physical-length`, `duration`, `angle`, `rem`).
+二元运算符 `+`、`-`、`*` 和 `/` 作用于数字（`int`、`float`、`percent`）以及
+带单位的类型（`length`、`physical-length`、`duration`、`angle`、`rem`）。
 
-- `+` and `-` require both operands to be the same type, or one operand to be a plain number.
-  Values of two different units cannot be added or subtracted.
-- `*` multiplies a value by a number, or two values with units, producing a unit product
-  (for example `1px * 1px` has type `px²`).
-- `/` divides a value by a number, or by another value.
-  Dividing two values of the same unit yields a plain number, so `self.width / 1px` is the width as a `float`.
+- `+` 和 `-` 要求两个操作数为同一类型，或一个操作数为普通数字。
+  两个不同单位的值不能相加或相减。
+- `*` 将值与数字相乘，或将两个带单位的值相乘，得到一个单位乘积
+  （例如 `1px * 1px` 的类型为 `px²`）。
+- `/` 将值除以数字或另一个值。
+  两个相同单位的值相除得到普通数字，因此 `self.width / 1px` 是作为 `float` 的宽度。
 
 </NotInSC>
 
@@ -90,12 +90,12 @@ export component Example {
 }
 ```
 
-## String concatenation
+## 字符串拼接
 
-The `+` operator also concatenates strings: if either operand is a `string`, the result is a `string`.
-A number operand (`int` or `float`) is converted to its string form.
-No other type is coerced to `string`, so combining a `string` with, for example, a `length` is an error;
-use a [string template](../../property-types/strings/#string) to interpolate other types.
+`+` 运算符也可用于拼接字符串：如果任一操作数是 `string`，结果就是 `string`。
+数字操作数（`int` 或 `float`）会转换为其字符串形式。
+没有其他类型会被强制转换为 `string`，因此将 `string` 与例如 `length` 组合是一个错误；
+请使用[字符串模板](../../property-types/strings/#string)来插入其他类型。
 
 ```slint
 export component Example {
@@ -104,19 +104,19 @@ export component Example {
 ```
 
 <SC>
-## Comparison operators
+## 比较运算符
 
-The operators `==`, `!=`, `<`, `>`, `<=`, and `>=` compare two operands of a common type and
-produce a `bool`. \{#sls.op.comparison}
+运算符 `==`、`!=`、`<`、`>`、`<=` 和 `>=` 比较两个同一类型的操作数，
+并产生 `bool`。 \{#sls.op.comparison}
 
-`==` and `!=` test whether the operands are equal. \{#sls.op.comparison.equality}
+`==` 和 `!=` 测试操作数是否相等。 \{#sls.op.comparison.equality}
 
 <OnlyInSC>
-`<`, `>`, `<=`, and `>=` order two numbers or lengths. \{#sls.op.comparison.ordering}
+`<`、`>`、`<=` 和 `>=` 对两个数字或长度排序。 \{#sls.op.comparison.ordering}
 </OnlyInSC>
 <NotInSC>
-`<`, `>`, `<=`, and `>=` order numbers, unit-bearing types, and strings; ordering values of any
-other type is an error.
+`<`、`>`、`<=` 和 `>=` 对数字、带单位的类型和字符串排序；对任何
+其他类型的值排序是一个错误。
 </NotInSC>
 
 ```slint
@@ -133,14 +133,14 @@ export component Example inherits Window {
 </SC>
 
 <SC>
-## Logical operators
+## 逻辑运算符
 
-The binary operators `&&` and `||` combine two boolean operands into a boolean:
-`&&` is true when both operands are true, `||` when either is. \{#sls.op.logical}
+二元运算符 `&&` 和 `||` 将两个布尔操作数组合为一个布尔值：
+当两个操作数都为 true 时 `&&` 为 true，`||` 则在任一为 true 时为 true。 \{#sls.op.logical}
 
-The unary operator `!` negates a boolean. \{#sls.op.not}
+一元运算符 `!` 对布尔值取非。 \{#sls.op.not}
 
-The operands must be `bool`; no other type is coerced to `bool`. \{#sls.op.bool-operands}
+操作数必须是 `bool`；其他任何类型都不会被强制转换为 `bool`。 \{#sls.op.bool-operands}
 
 ```slint
 export component Example inherits Window {
@@ -153,19 +153,18 @@ export component Example inherits Window {
 ```
 
 <NotInSC>
-  `&&` and `||` short-circuit: the right operand is evaluated only when the left
-  does not already determine the result.
+  `&&` 和 `||` 会短路：仅当左侧尚未确定结果时， 才会对右侧操作数求值。
 </NotInSC>
 
-## Unary operators
+## 一元运算符
 
-The prefix operators are `+`, `-`, and `!`. \{#sls.op.prefix}
+前缀运算符为 `+`、`-` 和 `!`。 \{#sls.op.prefix}
 
 <OnlyInSC>
-A unary `+` or `-` applies to a number or a length, and `-` negates it. \{#sls.op.unary}
+一元 `+` 或 `-` 作用于数字或长度，`-` 对其取负。 \{#sls.op.unary}
 </OnlyInSC>
 <NotInSC>
-`+` and `-` apply to numbers and unit-bearing types, and `!` applies to `bool`.
+`+` 和 `-` 作用于数字和带单位的类型，`!` 作用于 `bool`。
 </NotInSC>
 
 ```slint
@@ -180,15 +179,15 @@ export component Example inherits Window {
 </SC>
 
 <SC>
-## Ternary operator
+## 三元运算符
 
-`condition ? value1 : value2` evaluates `condition`, a boolean,
-and yields `value1` when it is true and `value2` otherwise. \{#sls.op.ternary}
+`condition ? value1 : value2` 对 `condition`（一个布尔值）求值，
+当它为 true 时产生 `value1`，否则产生 `value2`。 \{#sls.op.ternary}
 
-Both branches have the same type, which becomes the type of the whole expression. \{#sls.op.ternary.type}
+两个分支具有相同的类型，该类型成为整个表达式的类型。 \{#sls.op.ternary.type}
 
-A conditional associates to the right,
-so `a ? b : c ? d : e` groups as `a ? b : (c ? d : e)`. \{#sls.op.ternary.assoc}
+条件表达式是右结合的，
+因此 `a ? b : c ? d : e` 分组为 `a ? b : (c ? d : e)`。 \{#sls.op.ternary.assoc}
 
 ```slint
 export component Example inherits Window {
@@ -201,10 +200,12 @@ export component Example inherits Window {
 
 </SC>
 
-## Member access and indexing
+<a id="member-access-and-indexing"></a>
 
-A `.` accesses a property, function, or callback of an element by [name](../name-resolution/),
-and a field of a [struct](../structs-and-enums/) value:
+## 成员访问与索引
+
+`.` 按[名字](../name-resolution/)访问元素的属性、函数或回调，
+以及[结构体](../structs-and-enums/)值的字段：
 
 ```slint
 export component Example {
@@ -215,5 +216,5 @@ export component Example {
 }
 ```
 
-An `[index]` in square brackets accesses an element of an [array](../../property-types/arrays-and-models/) by
-a zero-based integer index.
+方括号中的 `[index]` 通过从零开始的整数索引访问
+[数组](../../property-types/arrays-and-models/)的元素。

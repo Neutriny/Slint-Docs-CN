@@ -1,50 +1,50 @@
 ---
 title: 重复与条件元素
-description: Instantiating elements with for and if.
+description: 使用 for 和 if 实例化元素。
 ---
 
-A _repeated element_ and a _conditional element_ instantiate a single element,
-zero or more times, driven by a model or a boolean condition.
-Both appear only as a child within the body of another element.
-Neither can be the root of a component, and neither may appear in a [global](../globals/) or interface;
-each is a compile error.
+_重复元素_ 和 _条件元素_ 会根据模型或布尔条件，
+将单个元素实例化零次或多次。
+两者只能作为另一个元素体内的子元素出现。
+两者都不能作为组件的根，也都不能出现在[全局对象](../globals/)或接口中；
+每一种都会构成编译错误。
 
-## Repetition
+## 重复
 
-A `for`-`in` construct instantiates its element once for each entry of a model:
+`for`-`in` 构造为模型的每个条目实例化其元素一次：
 
 ```slint no-test
 for name[index] in model : id := Element { }
 ```
 
-The parts are:
+各部分为：
 
-- `name` is an optional identifier bound to the model entry for the current instance.
-  It behaves like a read-only pseudo-property in scope within the element and its children.
-- `[index]` is optional.
-  When present, its identifier is bound to the zero-based position of the current instance and has type `int`.
-- `model` is the expression that drives the repetition.
-- `id :=` is optional and names the instantiated element as usual.
-- `Element { }` is the element to instantiate, and it is a single element.
-  That element may itself contain children, including further `for` and `if` elements.
+- `name` 是可选标识符，绑定到当前实例的模型条目。
+  它的行为类似于元素及其子元素作用域内的只读伪属性。
+- `[index]` 是可选的。
+  存在时，其标识符绑定到当前实例从零开始的位置，类型为 `int`。
+- `model` 是驱动重复的表达式。
+- `id :=` 是可选的，像通常一样命名实例化的元素。
+- `Element { }` 是要实例化的元素，并且是单个元素。
+  该元素本身可以包含子元素，包括进一步的 `for` 和 `if` 元素。
 
-Both `name` and `[index]` are optional and independent; either, both, or neither may be given.
+`name` 和 `[index]` 都是可选且相互独立的；可以给出其中之一、两者或都不给出。
 
-The `model` is evaluated in the scope surrounding the `for`, not inside it,
-so `name` and `index` are not in scope within the `model` expression itself.
-When the model value changes the element is instantiated, removed, or updated to match.
+`model` 在 `for` 周围的作用域中求值，而不是在其内部求值，
+因此 `name` 和 `index` 不在 `model` 表达式自身的作用域内。
+当模型值变化时，元素会相应地被实例化、移除或更新以匹配。
 
-### Model
+### 模型
 
-The `model` may be:
+`model` 可以是：
 
-- an integer, in which case the element is repeated that many times and `name`, if given, is the
-  index of the instance and has type `int`;
-- an [array or model](../../property-types/arrays-and-models/), in which case the element is
-  instantiated once per entry and `name`, if given, is the entry and has the array's element type;
-- an array literal such as `[a, b, c]`, which is one form of the array case.
+- 一个整数，此时元素被重复该次数，并且 `name`（如果给出）是
+  实例的索引，类型为 `int`；
+- 一个[数组或模型](../../property-types/arrays-and-models/)，此时元素
+  为每个条目实例化一次，并且 `name`（如果给出）是该条目，具有数组的元素类型；
+- 诸如 `[a, b, c]` 的数组字面量，它是数组情况的一种形式。
 
-A model of any other type is an error.
+任何其他类型的模型都是一个错误。
 
 ```slint
 export component Example inherits Window {
@@ -76,20 +76,20 @@ export component Example inherits Window {
 }
 ```
 
-Inside a `for` element, the right-hand side of a [two-way binding](../two-way-bindings/) may reference
-the model value, which then stays in sync with the model entry.
+在 `for` 元素内，[双向绑定](../two-way-bindings/)的右侧可以引用
+模型值，该值随后会与模型条目保持同步。
 
-## Conditional Elements
+## 条件元素
 
-An `if` construct instantiates its element only while a boolean condition is true:
+`if` 构造仅在布尔条件为 true 时实例化其元素：
 
 ```slint no-test
 if condition : id := Element { }
 ```
 
-The `condition` must be a boolean expression.
-The element is instantiated when the condition becomes true and removed when it becomes false.
-`id :=` is optional, and the body is a single element that may contain children.
+`condition` 必须是布尔表达式。
+元素在条件变为 true 时被实例化，在变为 false 时被移除。
+`id :=` 是可选的，主体是单个元素，可以包含子元素。
 
 ```slint
 export component Example inherits Window {
@@ -101,8 +101,8 @@ export component Example inherits Window {
 }
 ```
 
-## Restrictions
+## 限制
 
-- The `@children` placeholder cannot appear inside a repeated or conditional element; this is a compile error.
-- A `ListView` may have a single `for` element as its only child.
-  Any other child, including a second `for`, a plain element, or a conditional element, is a compile error.
+- `@children` 占位符不能出现在重复或条件元素内部；这会构成编译错误。
+- `ListView` 可以有一个 `for` 元素作为其唯一的子元素。
+  任何其他子元素，包括第二个 `for`、普通元素或条件元素，都会构成编译错误。

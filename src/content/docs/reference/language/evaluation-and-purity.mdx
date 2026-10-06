@@ -1,61 +1,63 @@
 ---
 title: 求值与纯度
-description: How bindings are evaluated, dependency tracking, and pure contexts.
+description: 绑定的求值方式、依赖追踪以及纯性上下文。
 ---
 
-## Dependency Tracking
+## 依赖跟踪
 
-A [binding](../bindings/) is evaluated lazily: its expression runs when the property's value is queried, not when the binding is set.
+[绑定](../bindings/)是惰性求值的：其表达式在查询属性值时才运行，而不是在设置绑定时运行。
 
-While a binding's expression is evaluated, every property it reads is registered as a dependency of that binding.
-When any of those properties changes, the binding is marked dirty.
-The next query of the property re-evaluates the expression and rebuilds its dependency set from the properties read during that evaluation.
-A binding whose expression reads no properties is never marked dirty and is evaluated at most once.
+在求值绑定的表达式时，它读取的每个属性都会注册为该绑定的依赖项。
+当其中任何属性发生变化时，该绑定会被标记为脏。
+下次查询该属性时会重新求值表达式，并根据该次求值期间读取的属性重建其依赖集合。
+表达式不读取任何属性的绑定永远不会被标记为脏，并且至多求值一次。
 
-The dependency set is rebuilt on each evaluation, so it always reflects the properties read on the most recent run.
-A property read on a path that a later evaluation does not take is not a dependency of that evaluation.
+依赖集合在每次求值时都会重建，因此它始终反映最近一次运行时读取的属性。
+在后续求值不会走的分支上读取的属性不是该次求值的依赖项。
 
-## Overwritten Bindings
+## 被覆盖的绑定
 
-A property holds at most one binding.
-Setting a new binding on a property replaces any previous one; the last binding wins.
+一个属性至多持有一个绑定。
+在属性上设置新绑定会替换任何先前的绑定；最后一个绑定生效。
 
-A binding is active only as long as the property is assigned with a binding expression (`x: other.value`) or a [two-way binding](../two-way-bindings/) (`<=>`).
-An imperative [assignment](../statements/#assignment) (`foo.bar = 42;`) removes the binding:
-from that point on the property no longer reacts to the values it was bound to.
-The property can still be updated through further assignments, but its automatic reactivity is lost.
+仅当属性通过绑定表达式（`x: other.value`）或[双向绑定](../two-way-bindings/)（`<=>`）赋值时，绑定才处于活动状态。
+命令式[赋值](../statements/#assignment)（`foo.bar = 42;`）会移除绑定：
+从那一刻起，属性不再对它曾绑定到的值作出反应。
+该属性仍可通过后续赋值更新，但会失去其自动响应性。
 
-An assignment intercepted by a two-way binding is the exception: it writes through the link and leaves the binding in place.
+被双向绑定拦截的赋值是例外：它通过链接写入，并保留该绑定。
 
-This also applies to most built-in `in-out` properties, such as the `text` property of a `TextInput`:
-user interaction writes the property like an imperative assignment and removes an existing binding to it.
+这也适用于大多数内置的 `in-out` 属性，例如 `TextInput` 的 `text` 属性：
+用户交互会像命令式赋值一样写入该属性，并移除对它的现有绑定。
 
-To keep reactivity in such cases, use a two-way binding,
-or track updates with a [change callback](../callbacks/#change-callbacks).
+在这种情况下，为保持响应性，请使用双向绑定，
+或使用[变更回调](../callbacks/#change-callbacks)跟踪更新。
 
-## Purity
+<a id="purity"></a>
 
-Evaluating a property binding must not change any observable state other than the property itself.
-An expression with this quality is _pure_; otherwise it has side effects.
-Because bindings are evaluated lazily, the order of side effects and whether they happen at all are not defined, so bindings must be pure.
+## 纯性
 
-The compiler enforces that code in a _pure context_ is free of side effects.
-The pure contexts are:
+求值属性绑定不得改变除该属性本身以外的任何可观察状态。
+具有这种性质的表达式是*纯的*；否则它就有副作用。
+由于绑定是惰性求值的，副作用的顺序以及它们是否会发生都是未定义的，因此绑定必须是纯的。
 
-- Property binding expressions.
-- Model expressions of a [`for` element](../repetition-and-conditional-elements/).
-- The body of a function or callback declared `pure`.
+编译器强制要求*纯上下文*中的代码没有副作用。
+纯上下文包括：
 
-In a pure context, the following are compile errors:
+- 属性绑定表达式。
+- [`for` 元素](../repetition-and-conditional-elements/)的模型表达式。
+- 声明为 `pure` 的函数或回调的主体。
 
-- An assignment or self-assignment (`=`, `+=`, `-=`, `*=`, `/=`) to a property.
-- A call to a callback that is not `pure`.
-- A call to a function that is not pure.
-- A call to a built-in function that has side effects.
+在纯上下文中，以下内容会构成编译错误：
 
-The `pure` keyword annotates [callbacks](../callbacks/) and [functions](../functions/)
-so they may be called from a pure context.
-A `pure` callback's handler and a `pure` function's body are themselves pure contexts, and are checked accordingly.
+- 对属性的赋值或自赋值（`=`、`+=`、`-=`、`*=`、`/=`）。
+- 调用不是 `pure` 的回调。
+- 调用不是纯的函数。
+- 调用有副作用的内置函数。
+
+`pure` 关键字用于标注[回调](../callbacks/)和[函数](../functions/)，
+以便它们可以从纯上下文中调用。
+`pure` 回调的处理程序和 `pure` 函数的主体本身就是纯上下文，并会据此检查。
 
 ```slint
 export component Example {
@@ -66,11 +68,11 @@ export component Example {
 }
 ```
 
-The purity of a private function is inferred: the compiler treats it as pure exactly when its body contains no side effects.
-A private function may still be declared `pure` to have the compiler reject a body that has side effects.
+私有函数的纯性会被推断：当且仅当其主体不包含副作用时，编译器才将其视为纯的。
+私有函数仍可声明为 `pure`，以便让编译器拒绝有副作用的主体。
 
-A function that implements a `pure` function from an interface must itself be pure; declaring it impure is a compile error.
-The reverse is allowed: a pure implementation may satisfy an impure declaration.
+实现接口中 `pure` 函数的函数本身必须是纯的；将其声明为非纯会构成编译错误。
+反之则允许：纯的实现可以满足非纯的声明。
 
-Purity must match across a [callback alias](../callbacks/#aliases) or a callback [two-way binding](../two-way-bindings/):
-both sides must be `pure` or both impure, otherwise it is a compile error.
+纯性在[回调别名](../callbacks/#aliases)或回调[双向绑定](../two-way-bindings/)中必须匹配：
+两边必须都是 `pure` 或都是非纯，否则会构成编译错误。

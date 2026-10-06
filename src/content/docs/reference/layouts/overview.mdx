@@ -1,25 +1,25 @@
 ---
 title: 通用属性
-description: Layout Common Properties
+description: 布局通用属性
 ---
 
 import Link from '../../../../components/Link.astro';
 import SlintProperty from '../../../../components/SlintProperty.astro';
 
-## Properties
+## 属性
 
-These properties are valid on all visible items and can be used to specify constraints when used in layouts:
+这些属性对所有可见项有效，并且可以在布局中使用时指定约束：
 
 ### col, row
 
 <SlintProperty propName="col, row" typeName="int" defaultValue="0">
-  See <Link type="GridLayout" />.
+  参见 <Link type="GridLayout" />。
 </SlintProperty>
 
 ### colspan, rowspan
 
 <SlintProperty propName="colspan, rowspan" typeName="int">
-  See <Link type="GridLayout" />.
+  参见 <Link type="GridLayout" />。
 </SlintProperty>
 
 ### cross-axis-self-alignment
@@ -30,9 +30,9 @@ These properties are valid on all visible items and can be used to specify const
   enumName="CrossAxisAlignment"
   defaultValue="auto"
 >
-  Overrides the container's `cross-axis-alignment` for this element. Valid on
-  the children of a <Link type="HorizontalLayout" />,{' '}
-  <Link type="VerticalLayout" />, or <Link type="FlexboxLayout" />.
+  覆盖容器对此元素的 `cross-axis-alignment`。对 <Link type="HorizontalLayout" />
+  、 <Link type="VerticalLayout" /> 或 <Link type="FlexboxLayout" />{' '}
+  的子元素有效。
 </SlintProperty>
 
 ### horizontal-stretch, vertical-stretch
@@ -42,35 +42,33 @@ These properties are valid on all visible items and can be used to specify const
   typeName="float"
   propertyVisibility="in-out"
 >
-  Specify how much relative space these elements are stretching in a layout.
-  When 0, this means that the elements won't be stretched unless all elements
-  are 0. Builtin widgets have a value of either 0 or 1.
+  指定这些元素在布局中拉伸的相对空间量。 当为 0
+  时，这意味着元素不会被拉伸，除非所有元素 都为 0。内置部件的值为 0 或 1。
 </SlintProperty>
 
 ### layout-order
 
 <SlintProperty propName="layout-order" typeName="int" defaultValue="0">
-  Controls the visual order of the elements: they are laid out in ascending
-  order value, and elements with the same value keep their declaration order.
-  Valid on the children of a <Link type="HorizontalLayout" />,{' '}
-  <Link type="VerticalLayout" />, or <Link type="FlexboxLayout" />. Only the
-  visual order changes: keyboard focus still moves in declaration order.
+  控制元素的视觉顺序：它们按值升序 布局，具有相同值的元素保持其声明顺序。 对{' '}
+  <Link type="HorizontalLayout" />、 <Link type="VerticalLayout" /> 或{' '}
+  <Link type="FlexboxLayout" /> 的子元素有效。只有
+  视觉顺序会改变：键盘焦点仍按声明顺序移动。
 </SlintProperty>
 
 ### max-width, max-height
 
 <SlintProperty propName="`max-width, `max-height" typeName="length">
-  The maximum size of an element.
+  元素的最大尺寸。
 </SlintProperty>
 
 ### min-width, min-height
 
 <SlintProperty propName="`min-width, `min-height" typeName="length">
-  The minimum size of an element.
+  元素的最小尺寸。
 </SlintProperty>
 
 ### preferred-width, preferred-height
 
 <SlintProperty propName="`preferred-width, `preferred-height" typeName="length">
-  The preferred size of an element.
+  元素的首选尺寸。
 </SlintProperty>

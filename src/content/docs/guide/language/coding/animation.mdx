@@ -3,9 +3,8 @@ title: 动画
 description: 为属性变更添加动画
 ---
 
-Animate a property change by declaring an animation for it with the
-`animate` keyword: every change of that property then plays the animation —
-no matter whether it comes from a binding, a state change, or your business logic.
+用 `animate` 关键字为属性声明动画，即可为属性变更添加动画：
+此后该属性的每次变化都会播放动画——无论它来自绑定、状态变化，还是你的业务逻辑。
 
 ```slint
 export component Example inherits Window {
@@ -21,16 +20,14 @@ export component Example inherits Window {
 }
 ```
 
-This animates the color property for 250ms whenever it changes.
+这会在颜色属性变化时为其播放 250ms 的动画。
 
-Fine-tune the animation with `delay`, `duration`, `iteration-count`, `easing`,
-`direction`, and `enabled`, and animate several properties with the same animation:
+用 `delay`、`duration`、`iteration-count`、`easing`、`direction` 和 `enabled` 微调动画，
+并让多个属性共用同一个动画：
 
 ```slint
 animate x, y { duration: 100ms; easing: ease-out-bounce; }
 ```
 
-The [Animations](../../../../reference/language/animations/) chapter of the language
-reference describes every parameter, and the
-[`easing` type](../../../../reference/property-types/other-types/#easing) lists the
-available easing curves.
+语言参考中的[动画](../../../../reference/language/animations/)章节描述了每个参数，
+[`easing` 类型](../../../../reference/property-types/other-types/#easing)列出了可用的缓动曲线。

@@ -3,9 +3,9 @@ title: 属性
 description: 用属性存储与绑定值
 ---
 
-All elements have properties.
-Built-in elements come with common properties such as color or dimensional properties.
-You can assign values or entire expressions to them:
+所有元素都有属性。
+内置元素自带诸如颜色或尺寸之类的公共属性。
+你可以给它们赋值或赋整个表达式：
 
 ```slint
 export component Example inherits Window {
@@ -16,13 +16,13 @@ export component Example inherits Window {
 }
 ```
 
-When you assign an expression, it becomes a _binding_:
-Slint re-evaluates it automatically whenever one of the properties it depends on changes.
-This is what makes the user interface [reactive](../../concepts/reactivity/) —
-you declare the relationship once, and the value stays up to date.
+当你赋一个表达式时，它就成为一个*绑定*：
+每当其所依赖的某个属性发生变化时，Slint 都会自动重新求值。
+这正是让用户界面具有[响应式](../../concepts/reactivity/)的原因——
+你只需声明一次关系，值便会保持最新。
 
-A binding can also be a code block with multiple statements.
-These two bindings are equivalent:
+绑定也可以是包含多条语句的代码块。
+这两个绑定是等价的：
 
 ```slint no-test
 background: touch-area.is-pressed ? red : blue;
@@ -36,9 +36,9 @@ background: {
 }
 ```
 
-## Declaring Your Own Properties
+## 声明你自己的属性
 
-Define extra properties on a component by specifying the type, the name, and optionally a default value:
+通过指定类型、名字以及可选的默认值，在组件上定义额外的属性：
 
 ```slint
 export component Example {
@@ -50,8 +50,8 @@ export component Example {
 }
 ```
 
-Use a qualifier to declare who may read and write the property.
-Think of it as the interface of your component:
+使用限定符来声明谁可以读写该属性。
+把它看作组件的接口：
 
 ```slint
 export component Button {
@@ -67,10 +67,10 @@ export component Button {
 }
 ```
 
-All properties declared at the top level of a component that aren't `private`
-are accessible from the outside when using the component as an element,
-and via the language bindings from the business logic.
+在组件顶层声明的、所有非 `private` 的属性，
+在把该组件用作元素时都可以从外部访问，
+也可以通过语言绑定从业务逻辑访问。
 
-For the exact rules, see the [Properties](../../../../reference/language/properties/) and
-[Bindings](../../../../reference/language/bindings/) chapters of the language reference;
-[Property Types](../../../../reference/property-types/) lists every type a property can have.
+关于确切的规则，参见语言参考中的[属性](../../../../reference/language/properties/)和
+[绑定](../../../../reference/language/bindings/)章节；
+[属性类型](../../../../reference/property-types/)列出了属性可以具有的每一种类型。

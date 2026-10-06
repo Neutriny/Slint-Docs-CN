@@ -1,13 +1,13 @@
 ---
 title: 全局函数
-description: Builtin Functions
+description: 内置函数
 ---
 
 ## animation-tick() -> duration
 
-This function returns a monotonically increasing time, which can be used for animations.
-Calling this function from a binding will constantly re-evaluate the binding.
-It can be used like so: `x: 1000px + sin(animation-tick() / 1s * 360deg) * 100px;` or `y: 20px * mod(animation-tick(), 2s) / 2s `
+此函数返回单调递增的时间，可用于动画。
+从绑定中调用此函数会不断重新求值该绑定。
+可以这样使用：`x: 1000px + sin(animation-tick() / 1s * 360deg) * 100px;` 或 `y: 20px * mod(animation-tick(), 2s) / 2s `
 
 ```slint playground
 export component Example inherits Window {
@@ -32,4 +32,4 @@ export component Example inherits Window {
 
 ## debug(...)
 
-The debug function can take one or multiple values as arguments, prints them, and returns nothing.
+debug 函数可以接受一个或多个值作为参数，打印它们，并返回空。

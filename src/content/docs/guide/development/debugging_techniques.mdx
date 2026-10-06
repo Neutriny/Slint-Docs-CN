@@ -5,15 +5,15 @@ description: 调试 Slint 应用与 `.slint` 文件的技巧
 
 import Link from '@slint/common-files/src/components/Link.astro';
 
-On this page we share different techniques and tools we've built into Slint that help you track down different issues you may be running into, during the design and development.
+本页分享我们在 Slint 中构建的各种技巧和工具，帮助你在设计与开发过程中排查可能遇到的各种问题。
 
-## Debugging Property Values
+## 调试属性值
 
-Use the <Link type="DebugFn" label="debug()" /> function to print the values of properties to stderr.
-It supports multiple arguments and different types. Non-scalar types (e.g. `struct` types) are usually
-represented as a single line `json` string.
+使用 <Link type="DebugFn" label="debug()" /> 函数将属性值打印到 stderr。
+它支持多个参数和不同类型。非标量类型（例如 `struct` 类型）通常
+表示为单行 `json` 字符串。
 
-**Example**
+**示例**
 
 ```slint
 TouchArea {
@@ -33,42 +33,42 @@ TouchArea {
 }
 ```
 
-## Slow Motion Animations
+## 慢动作动画
 
-Animations in the user interface need to be carefully designed to have the correct duration and changes in element positioning or size need to follow an easing curve.
+用户界面中的动画需要经过精心设计，以具有正确的持续时间，元素位置或大小的变化也需要遵循缓动曲线。
 
-To inspect the animations in your application, set the `SLINT_SLOW_ANIMATIONS` environment variable before running the program. This variable accepts an unsigned integer value that is the factor by which to globally slow down the steps of all animations, automatically. This means that you don't have to make any manual changes to the `.slint` markup and recompile. For example,`SLINT_SLOW_ANIMATIONS=4` slows down animations by a factor of four.
+要检查应用中的动画，请在运行程序前设置 `SLINT_SLOW_ANIMATIONS` 环境变量。该变量接受一个无符号整数值，表示自动将所有动画的步骤全局放慢的倍数。这意味着你无需手动修改 `.slint` 标记并重新编译。例如，`SLINT_SLOW_ANIMATIONS=4` 会将动画放慢四倍。
 
-## User Interface Scaling
+## 用户界面缩放
 
-The use of logical pixel lengths throughout `.slint` files lets Slint compute the number of physical pixels, dynamically, depending on the device-pixel ratio of the screen. To get an impression of how the individual elements look like when rendered on a screen with a different device-pixel ratio, set the `SLINT_SCALE_FACTOR` environment variable before running the program. This variable accepts a floating pointer number that is used to convert logical pixel lengths to physical pixel lengths. For example, `SLINT_SCALE_FACTOR=2` renders the user interface in a way where every logical pixel has twice the width and height.
+在整个 `.slint` 文件中使用逻辑像素长度，让 Slint 能够根据屏幕的设备像素比动态计算物理像素的数量。要了解各个元素在不同设备像素比的屏幕上渲染时的效果，请在运行程序前设置 `SLINT_SCALE_FACTOR` 环境变量。该变量接受一个浮点数，用于将逻辑像素长度转换为物理像素长度。例如，`SLINT_SCALE_FACTOR=2` 会以每个逻辑像素的宽高都变为两倍的方式渲染用户界面。
 
-_Note_: This override is applied at the backend level, independently of the renderer. It is honored by the winit and linuxkms backends.
+_注意_：此覆盖在后端层面应用，与渲染器无关。winit 和 linuxkms 后端支持它。
 
-## Debugging for Performance Improvements
+## 为提升性能而调试
 
-Slint attempts to use hardware-acceleration to ensure that rendering the user interface consumes a minimal amount of CPU resources while maintaining smooth animations. However, depending on the complexity of the user interface, quality of the graphics drivers, or the power of the GPU in your system, you may hit limits and experience slowness. To address this
-issue, set the `SLINT_DEBUG_PERFORMANCE` environment variable before running the program, to inspect the frame rate. The following options affect the frame rate inspection and reporting:
+Slint 尝试利用硬件加速，确保在保持动画流畅的同时，渲染用户界面消耗的 CPU 资源最少。然而，根据用户界面的复杂度、图形驱动程序的质量或系统中 GPU 的性能，你可能会遇到瓶颈并感到卡顿。要解决这个问题，
+请在运行程序前设置 `SLINT_DEBUG_PERFORMANCE` 环境变量，以检查帧率。以下选项会影响帧率的检查和报告：
 
-- `refresh_lazy`: The frame rate is measured only when an actual frame is rendered, for example due to a running animation, user interaction, or some other state change that results in a visual difference in the user interface. If
-  there is no change, a low frame rate is reported. Use this option to verify that no unnecessary repainting happens when there are no visual changes. For example, in a user interface that shows a text input field with a cursor that blinks once per second, the reported frame rate should be two.
-- `refresh_full_speed`: The user interface is continuously refreshed, even if nothing is changed. This continuous refresh results in a higher load on the system. Use this option to identify any bottlenecks that prevent you from achieving smooth animations. Also disables partial rendering with the software renderer.
-- `console`: The frame rate is printed to `stderr` on the console.
-- `overlay`: The frame rate is as an overlay text label on top of the user interface in each window.
+- `refresh_lazy`：仅在渲染实际帧时测量帧率，例如由于正在运行的动画、用户交互，或其他导致用户界面出现视觉差异的状态变化。如果
+  没有变化，则报告较低的帧率。使用此选项可以验证在没有视觉变化时不会发生不必要的重绘。例如，在一个显示带有一秒闪烁一次光标的文本输入框的用户界面中，报告的帧率应为 2。
+- `refresh_full_speed`：即使没有任何变化，用户界面也会持续刷新。这种持续刷新会导致系统负载升高。使用此选项可以找出妨碍你实现流畅动画的任何瓶颈。它还会禁用软件渲染器的局部渲染。
+- `console`：帧率会打印到控制台的 `stderr`。
+- `overlay`：帧率会作为覆盖文本标签显示在每个窗口的用户界面之上。
 
-Use these options in combination, separated by a comma. You must select a combination of one frame rate measurement method and a reporting method. For example, `SLINT_DEBUG_PERFORMANCE=refresh_full_speed,overlay` repeatedly re-renders the entire user interface in each window and prints the achieved frame rate in the top-left corner. In comparison, `SLINT_DEBUG_PERFORMANCE=refresh_lazy,console,overlay` measures the frame rate only when something in the user interface changes and the measured value is printed to `stderr` as well as rendered as an overlay text label.
+将这些选项组合使用，用逗号分隔。你必须选择一种帧率测量方法与一种报告方法的组合。例如，`SLINT_DEBUG_PERFORMANCE=refresh_full_speed,overlay` 会在每个窗口中反复重新渲染整个用户界面，并在左上角打印达到的帧率。相比之下，`SLINT_DEBUG_PERFORMANCE=refresh_lazy,console,overlay` 仅在用户界面中发生变化时测量帧率，测得的数值既会打印到 `stderr`，也会作为覆盖文本标签渲染。
 
-The environment variable must be set before running the program. If the application runs on a microcontroller without the standard library, the environment variable must be set during compilation.
+环境变量必须在运行程序之前设置。如果应用运行在没有标准库的微控制器上，则必须在编译期间设置该环境变量。
 
-## Tuning Rendering Performance
+## 调优渲染性能
 
-If you're not satisfied with the performance, it might be worthwhile to descend into a low-level investigation. Tools such as [RenderDoc](https://renderdoc.org) permit recording the rendering output
-of your application and can give you detailed insight into the OpenGL/Vulkan commands Slint's renderers produce for your user interface.
+如果你对性能不满意，可能值得深入进行低层次调查。诸如 [RenderDoc](https://renderdoc.org) 这样的工具允许记录应用的渲染输出，
+并能让你详细了解 Slint 的渲染器为用户界面生成的 OpenGL/Vulkan 命令。
 
-As a general rule of thumb, it's best to minimize the number of commands per frame. With OpenGL you'll see `glDrawArrays()` and `glDrawElementsInstanced*` calls filling the color buffers. Reducing
-the number of calls tends to improve performance.
+一般经验法则是，最好尽量减少每帧的命令数量。在 OpenGL 中，你会看到 `glDrawArrays()` 和 `glDrawElementsInstanced*` 调用填充颜色缓冲区。减少
+调用数量通常能提升性能。
 
-For example, if you draw a series of bar charts by filling rectangles with a gradient, you'll observe that each rectangle is a draw call on its own:
+例如，如果你通过用渐变填充矩形来绘制一系列柱状图，你会观察到每个矩形本身就是一次绘制调用：
 
 ```slint
 component BarChart inherits Rectangle {
@@ -85,11 +85,11 @@ component BarChart inherits Rectangle {
 }
 ```
 
-For example when using the Skia renderer, if you replace the gradient with a plain color, the calls will all be batched together into one call. But when the
-UI design requires the use of a gradient, that's not possible. But there might be another way. If the underlying data for your bar chart rarely changes, it
-might be worthwhile to render the entire chart once into a texture and therefore replace multiple calls with just one. This can be done by setting the
+例如，在使用 Skia 渲染器时，如果你用纯色替换渐变，这些调用会全部批处理为一次调用。但当
+UI 设计要求使用渐变时，就无法这样做。不过也许还有另一种方法。如果柱状图的底层数据很少变化，
+可能值得将整个图表一次性渲染到纹理中，从而用一次调用替换多次调用。这可以通过将
 
-<Link type="cache-rendering-hint" /> to `true` on the `BarChar` itself, which
-surrounds and captures the individual bar charts.
+<Link type="cache-rendering-hint" /> 设置在 `BarChar` 自身上为 `true` 来实现，
+它会包围并捕获各个柱状图。
 
-Note that extensive use of this technique comes at the expense of increased GPU memory usage and memory throughput.
+请注意，大量使用此技术会增加 GPU 内存占用和内存吞吐量。

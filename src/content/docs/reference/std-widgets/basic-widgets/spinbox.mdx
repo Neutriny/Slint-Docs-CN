@@ -1,6 +1,6 @@
 ---
 title: SpinBox
-description: SpinBox api.
+description: SpinBox API。
 ---
 
 import SlintProperty from '@slint/common-files/src/components/SlintProperty.astro';
@@ -26,21 +26,21 @@ export component Example inherits Window {
 ````
 </CodeSnippetMD>
 
-## Properties
+## 属性
 
 ### enabled
 <SlintProperty propName="enabled" typeName="bool" defaultValue="true">
-You can't interact with the spinbox if enabled is false.
+如果 enabled 为 false，则无法与微调框交互。
 </SlintProperty>
 
 ### has-focus
 <SlintProperty propName="has-focus" typeName="bool" propertyVisibility="out">
-Set to true when the spinbox currently has the focus.
+当微调框当前具有焦点时设置为 true。
 </SlintProperty>
 
 ### value
 <SlintProperty propName="value" typeName="int" defaultValue="0" propertyVisibility="in-out">
-The value. Defaults to the minimum.
+值。默认为最小值。
 ```slint "value: 50;"
 SpinBox {
     value: 50;
@@ -52,7 +52,7 @@ SpinBox {
 ### minimum
 
 <SlintProperty propName="minimum" typeName="int" defaultValue="0">
-The minimum value.
+最小值。
 ```slint "minimum: 10;"
 SpinBox {
     minimum: 10;
@@ -64,7 +64,7 @@ SpinBox {
 ### maximum
 
 <SlintProperty propName="maximum" typeName="int" defaultValue="100">
-The maximum value.
+最大值。
 ```slint "maximum: 10;"
 SpinBox {
     maximum: 10;
@@ -76,13 +76,13 @@ SpinBox {
 ### read-only
 
 <SlintProperty propName="read-only" typeName="bool" defaultValue="false">
-  If true, the user can't modify the value.
+  如果为 true，用户无法修改值。
 </SlintProperty>
 
 ### step-size
 
 <SlintProperty propName="step-size" typeName="int" defaultValue="1">
-  The size that is used on increment or decrement of `value`.
+  递增或递减 `value` 时使用的步长。
 </SlintProperty>
 
 ### horizontal-alignment
@@ -93,14 +93,14 @@ SpinBox {
   enumName="TextHorizontalAlignment"
   defaultValue="left"
 >
-  The horizontal alignment of the text.
+  文本的水平对齐方式。
 </SlintProperty>
 
-## Callbacks
+## 回调
 
 ### edited(int)
 
-Emitted when the value has changed because the user modified it
+当值因用户修改而发生变化时发出
 
 ```slint {2-4}
 SpinBox {

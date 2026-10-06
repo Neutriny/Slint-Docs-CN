@@ -1,6 +1,6 @@
 ---
 title: 其他类型
-description: The keys, easing, data-transfer, and mouse cursor types.
+description: 按键、缓动、数据传输和鼠标光标类型。
 ---
 
 import SlintProperty from '../../../../components/SlintProperty.astro';
@@ -9,38 +9,40 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
 import LangRefLink from '../../../../components/LangRefLink.astro';
 import BuiltInMouseCursor from '/src/content/docs/generated/reference/enums/_BuiltInMouseCursor.md';
 
-## Keyboard input
+## 键盘输入
+
+<a id="keys"></a>
 
 ### keys
 
 <SlintProperty propName="keys" typeName="keys" defaultValue='empty keys'>
-A keys represents a key combined with a list of modifiers.
-This is the primitive type used to detect if a KeyEvent should trigger a given key binding.
+keys 表示一个键与修饰键列表的组合。
+这是用于检测 KeyEvent 是否应触发给定按键绑定的原始类型。
 
-Key bindings in Slint are based on **logical keys** — the character a key produces on the current keyboard layout — not the physical position of a key on the keyboard.
-See <Link type="KeyBindingOverview" label="Key Bindings" /> for details.
+Slint 中的按键绑定基于**逻辑键**——键在当前键盘布局上产生的字符——而不是键在键盘上的物理位置。
+详情请参见 <Link type="KeyBindingOverview" label="按键绑定" />。
 
 <Tabs syncKey="dev-language">
 <TabItem label="Rust" icon="seti:rust">
-In Rust, properties or struct fields of the keys type are mapped to <LangRefLink lang="rust-slint" relpath="struct.Keys.html">`slint::Keys`</LangRefLink>.
+在 Rust 中，keys 类型的属性或结构体字段映射到 <LangRefLink lang="rust-slint" relpath="struct.Keys.html">`slint::Keys`</LangRefLink>。
 </TabItem>
 <TabItem label="C++" icon="seti:cpp">
-In C++, properties or struct fields of the keys type are mapped to <LangRefLink lang="cpp" relpath="api/slint/keys/">`slint::Keys`</LangRefLink>.
+在 C++ 中，keys 类型的属性或结构体字段映射到 <LangRefLink lang="cpp" relpath="api/slint/keys/">`slint::Keys`</LangRefLink>。
 </TabItem>
 <TabItem label="NodeJS" icon="node">
-In JavaScript, properties or struct fields of the keys type are mapped to the <LangRefLink lang="nodejs" relpath="api/classes/keys/">`Keys`</LangRefLink> class.
+在 JavaScript 中，keys 类型的属性或结构体字段映射到 <LangRefLink lang="nodejs" relpath="api/classes/keys/">`Keys`</LangRefLink> 类。
 </TabItem>
 <TabItem label="Python" icon="seti:python">
-In Python, properties or struct fields of the keys type are mapped to <LangRefLink lang="python" relpath="api/classes/keys/">`Keys`</LangRefLink>.
+在 Python 中，keys 类型的属性或结构体字段映射到 <LangRefLink lang="python" relpath="api/classes/keys/">`Keys`</LangRefLink>。
 </TabItem>
 </Tabs>
 </SlintProperty>
 
-`keys` values have the following member function:
+`keys` 值具有以下成员函数：
 
 #### to-string() -> string
 
-Returns a platform-native description of the key combination.
+返回键组合的平台原生描述。
 
 ```slint
 export component KeysToString inherits FocusScope {
@@ -58,14 +60,16 @@ export component KeysToString inherits FocusScope {
 
 ```
 
-## Animation
+## 动画
+
+<a id="easing"></a>
 
 ### easing
 
 <SlintProperty propName="easing" typeName="easing" defaultValue='linear'>
-The `easing` type allows defining an easing curve for animations.
+`easing` 类型允许为动画定义缓动曲线。
 
-To specify an easing curve, use the values from the `Easing` namespace. For example you can use `Easing.ease-out` or `Easing.ease-in-quad`. The namespace consists of the following names (see [`easings.net`](https://easings.net/) for a visual reference):
+要指定缓动曲线，请使用 `Easing` 命名空间中的值。例如可以使用 `Easing.ease-out` 或 `Easing.ease-in-quad`。该命名空间包含以下名称（可视化参考见 [`easings.net`](https://easings.net/)）：
 
     -   `linear`
     -   `ease-in-quad`
@@ -99,10 +103,10 @@ To specify an easing curve, use the values from the `Easing` namespace. For exam
     -   `ease-in-bounce`
     -   `ease-out-bounce`
     -   `ease-in-out-bounce`
-    -   `cubic-bezier(a, b, c, d)` as in CSS
-    -   `spring(bounce)` as defined in <Link type="Spring Animation" label="Spring Animations" />
+    -   `cubic-bezier(a, b, c, d)`，与 CSS 中相同
+    -   `spring(bounce)`，如 <Link type="Spring Animation" label="弹簧动画" /> 中所定义
 
-Additionally, in expressions of type `easing`, those names are available directly.
+此外，在 `easing` 类型的表达式中，这些名称可以直接使用。
 
 ```slint
 struct AnimationData {
@@ -124,50 +128,48 @@ component Custom inherits Rectangle {
 
 </SlintProperty>
 
-## Interaction Types
+## 交互类型
 
 ### data-transfer
 
 <SlintProperty propName="data" typeName="data-transfer" defaultValue='an empty data-transfer'>
 
-A `data-transfer` value is the payload carried by drag-and-drop and clipboard operations.
-It abstracts over the file-type transfer mechanisms supported by each platform.
-It can carry plain text, an image, and a list of local file paths simultaneously.
+`data-transfer` 值是拖放和剪贴板操作携带的负载。
+它抽象了各平台支持的文件类型传输机制。
+它可以同时携带纯文本、图像和本地文件路径列表。
 
-The type is opaque in Slint code:
-construct a `data-transfer` value and read its content via callbacks implemented in the host language.
-See <Link type="DragAndDrop" /> for an end-to-end example.
+该类型在 Slint 代码中是不透明的：
+构造一个 `data-transfer` 值，并通过宿主语言实现的回调读取其内容。
+端到端示例参见 <Link type="DragAndDrop" />。
 
 <Tabs syncKey="dev-language">
   <TabItem label="Rust" icon="seti:rust">
-    In Rust, properties or struct fields of the data-transfer type are mapped to{' '}
+    在 Rust 中，data-transfer 类型的属性或结构体字段映射到{' '}
     <LangRefLink lang="rust-slint" relpath="struct.DataTransfer.html">
       `slint::DataTransfer`
     </LangRefLink>
-    .
+    。
   </TabItem>
   <TabItem label="C++" icon="seti:cpp">
-    In C++, properties or struct fields of the data-transfer type are mapped to{' '}
+    在 C++ 中，data-transfer 类型的属性或结构体字段映射到{' '}
     <LangRefLink lang="cpp" relpath="api/slint/datatransfer/">
       `slint::DataTransfer`
     </LangRefLink>
-    .
+    。
   </TabItem>
   <TabItem label="NodeJS" icon="node">
-    In JavaScript, properties or struct fields of the data-transfer type are
-    mapped to the{' '}
+    在 JavaScript 中，data-transfer 类型的属性或结构体字段 映射到{' '}
     <LangRefLink lang="nodejs" relpath="api/classes/datatransfer/">
       `DataTransfer`
     </LangRefLink>{' '}
-    class.
+    类。
   </TabItem>
   <TabItem label="Python" icon="seti:python">
-    In Python, properties or struct fields of the data-transfer type are mapped
-    to{' '}
+    在 Python 中，data-transfer 类型的属性或结构体字段映射 到{' '}
     <LangRefLink lang="python" relpath="api/classes/datatransfer/">
       `DataTransfer`
     </LangRefLink>
-    .
+    。
   </TabItem>
 </Tabs>
 
@@ -176,9 +178,9 @@ See <Link type="DragAndDrop" /> for an end-to-end example.
 ### MouseCursor
 
 <SlintProperty propName="mouse-cursor" typeName="MouseCursor" defaultValue='default'>
-The `MouseCursor` type is used in the <Link type="TouchArea" label="TouchArea element"/>.
+`MouseCursor` 类型用于 <Link type="TouchArea" label="TouchArea 元素"/>。
 
-Set to one of the built-in shapes by specifying the name:
+通过指定名称将其设置为内置形状之一：
 
 ```slint
 TouchArea {

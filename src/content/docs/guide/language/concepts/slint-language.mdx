@@ -8,7 +8,7 @@ description: Slint 语言的总体介绍
 import Link from '@slint/common-files/src/components/Link.astro';
 import CodeSnippetMD from '@slint/common-files/src/components/CodeSnippetMD.astro';
 
-This following section gives you an insight into the thinking behind the language and the core concepts it's made up from.
+以下内容将带你了解该语言背后的设计思路，以及构成它的核心概念。
 
 <iframe
   class="slint-video"
@@ -21,8 +21,7 @@ This following section gives you an insight into the thinking behind the languag
   allowfullscreen
 />
 
-As covered in the video above, the Slint declarative UI language is designed to be a simple, yet powerful way to create
-any user interface you can imagine.
+正如上面的视频所述，Slint 声明式 UI 语言旨在以简单却强大的方式创建你能想象到的任何用户界面。
 
 ```slint
 Text {
@@ -32,13 +31,13 @@ Text {
 }
 ```
 
-This example shows the core of how Slint works. Use elements with their name followed by open and closed braces,
-e.g. `Text {}`. Then within the braces customize it with properties e.g. `font-size: 24px`.
+这个示例展示了 Slint 工作原理的核心。使用元素时先写元素名，随后用一对花括号包裹，
+例如 `Text {}`。然后在花括号内用属性对其进行定制，例如 `font-size: 24px`。
 
-To nest elements inside each other place them within the parents braces. For example the following
-`Rectangle` has a `Text` element as its child.
+要将元素相互嵌套，把它们放在父元素的花括号内即可。例如下面的 `Rectangle` 有一个
+`Text` 元素作为其子元素。
 
-<CodeSnippetMD imagePath="/src/assets/generated/intro-nesting.png" scale="3" imageWidth="200" imageHeight="200" imageAlt='Image showing text nested inside a rectangle'>
+<CodeSnippetMD imagePath="/src/assets/generated/intro-nesting.png" scale="3" imageWidth="200" imageHeight="200" imageAlt='显示嵌套在矩形内文本的图片'>
 
 ```slint
 Rectangle {
@@ -57,7 +56,7 @@ Rectangle {
 
 </CodeSnippetMD>
 
-The final core part are binding expressions:
+最后一个核心部分是绑定表达式：
 
 ```slint showLineNumbers=true {10}
 property <int> counter: 0;
@@ -82,17 +81,16 @@ Rectangle {
 }
 ```
 
-In this example a property called `counter` is declared. Then the `Rectangle` has a
-`TouchArea` inside, that automatically fills its parent and responds to clicks or taps. On click
-it increments `counter`. Here is where the magic of fine grained reactivity comes in.
+在这个示例中声明了一个名为 `counter` 的属性。接着 `Rectangle` 内部有一个 `TouchArea`，
+它会自动填满父元素并响应点击或轻触。点击时会递增 `counter`。细粒度响应式的魔力就在这里。
 
-The `Text` element's `text` property depends on the `counter` property. When `counter` changes, the UI is automatically
-updated. There's no need to opt in. In Slint every expression is automatically re-evaluated. However this
-is done in a performant way that only updates expressions where the dependencies have changed.
+`Text` 元素的 `text` 属性依赖于 `counter` 属性。当 `counter` 变化时，UI 会自动更新。
+无需选择启用。在 Slint 中，每个表达式都会自动重新求值。不过这以高效的方式完成，
+只会更新依赖项发生变化的表达式。
 
-Slint makes it trivial to create your own components by composing together the built in elements or other components.
-`Text` and `Rectangles` can become buttons. Buttons and input fields can become forms or dialogs. Forms and dialogs can become Views.
-And finally Views combine to become applications.
+Slint 让你可以轻松地通过组合内置元素或其他组件来创建自己的组件。
+`Text` 和 `Rectangle` 可以变成按钮。按钮和输入框可以变成表单或对话框。表单和对话框可以变成视图。
+最终视图组合起来就构成了应用程序。
 
 ```slint no-test
 export component MyView {
@@ -106,25 +104,21 @@ export component MyView {
 }
 ```
 
-With practice you can reduce any level of complexity to simple, maintainable UI components.
+通过练习，你可以把任何复杂度的东西化简为简单、可维护的 UI 组件。
 
-## Why Slint?
+## 为什么选择 Slint？
 
-The objective of the concepts section of the guide is to give you an overview of the language from a high level. If you want to
-dive straight in the details then check out the <Link type="slintFile" label="coding section"/> and the language reference
-sections.
+指南中概念部分的目标是从高层次为你概述这门语言。如果你想直接深入了解细节，
+请查看 <Link type="slintFile" label="编码章节"/> 和语言参考各部分。
 
-The Slint language describes your application's User Interface in a declarative way.
+Slint 语言以声明式的方式描述应用程序的用户界面。
 
-A User Interface is quite different from abstract code. It's made up
-of text, images, colors, animations, and so on. Even though it's a mirage, the buttons and elements do not
-really exist in the physical world, it's meant to look and behave as if it does. Buttons have pressed effects,
-lists can be flicked and behave as if they had real inertia. When being designed they are described in terms
-of UI components, forms, and views.
+用户界面与抽象代码相当不同。它由文本、图像、颜色、动画等等构成。尽管只是幻象，
+按钮和元素并不真的存在于物理世界中，但它被设计得看起来、用起来都仿佛真实存在。按钮有按下效果，
+列表可以被轻拂，表现得仿佛具有真实的惯性。在设计时，它们用 UI 组件、表单和视图来描述。
 
-Meanwhile the world of code is a quite different abstraction. It's made up of functions, variables, and so on.
-Even when some aspects of a UI exist such as buttons and menus they also go hand in hand with a lot of code to
-manage the implementation details.
+与此同时，代码的世界是一种相当不同的抽象。它由函数、变量等等构成。
+即便 UI 的某些方面（例如按钮和菜单）存在，它们也总是伴随着大量用于管理实现细节的代码。
 
 ```js
 const button = document.createElement('button');
@@ -132,9 +126,9 @@ button.textContent = 'Click me';
 document.body.appendChild(button);
 ```
 
-Take this simple web example. A button is created. Then a property to show 'Click me' text is text. At this point
-technically the button exists, but it won't show up as its not attached to anything. So the final line
-makes it a child of the main view.
+以这个简单的 Web 示例为例。创建了一个按钮，然后设置一个属性来显示 'Click me' 文本。
+此时从技术上讲按钮已经存在，但由于没有附加到任何东西上，它不会显示出来。
+因此最后一行把它变成主视图的子元素。
 
 ```js
 const buttonWithListener = document.createElement('button');
@@ -145,22 +139,20 @@ buttonWithListener.addEventListener('click', () => {
 document.body.appendChild(buttonWithListener);
 ```
 
-In this second example a button is created and an event listener is added. Within that is a callback
-function to log out that the button is pressed. It's a lot of code to do simple things.
+在第二个示例中，创建了一个按钮并添加了事件监听器。其中包含一个回调函数，
+用于在按钮被按下时输出日志。要完成简单的事情却需要大量代码。
 
-It's quite abstract. For example once a few more buttons and components are added its almost impossible
-to be able to think how the real interface would look. It's hard to think about the design of a UI
-using this kind of code.
+它相当抽象。例如，一旦添加了更多按钮和组件，几乎不可能想象出真实界面会是什么样子。
+用这类代码来思考 UI 的设计非常困难。
 
-It's also too complex to edit without understanding how to code. This means UI designers cannot work
-hands on to ensure all their design intent is implemented. They are forced to use other tools and frameworks
-to create prototypes and design guides that may look or behave differently to the actual UI implementation.
-It doesn't have to be this way.
+如果不理解如何写代码，它也会因过于复杂而难以编辑。这意味着 UI 设计师无法亲自动手
+确保自己的所有设计意图都得到实现。他们被迫使用其他工具和框架来创建原型和设计指南，
+而这些可能与实际的 UI 实现看起来或行为上有所不同。其实不必如此。
 
-## Declarative Style
+## 声明式风格
 
-There have been attempts to make describing a UI in code more declarative. For example [React](https://reactjs.org/)
-and [SwiftUI](https://developer.apple.com/xcode/swiftui/).
+曾有人尝试让用代码描述 UI 变得更声明式。例如 [React](https://reactjs.org/)
+和 [SwiftUI](https://developer.apple.com/xcode/swiftui/)。
 
 ```jsx
 function ContentView() {
@@ -178,32 +170,28 @@ struct ContentView: View {
 }
 ```
 
-These languages take normal code and let it be used in a declarative way. But it's
-still functions with arguments that act as properties. It is simpler and behavior
-such as parent child relationships can be inferred.
+这些语言采用普通代码，并让其以声明式的方式使用。但它仍然是带参数、充当属性的函数。
+它更简单，而且诸如父子关系这样的行为可以被推断出来。
 
-For Slint, instead of tweaking a normal language to be more declarative, we
-created a pure declarative language from the ground up.
+对于 Slint，我们没有把一门普通语言调整得更声明式，而是从零开始创建了一门纯粹的声明式语言。
 
-## The Business Logic Problem
+## 业务逻辑问题
 
-One attempt to solve the problem of describing a UI in code has been to create a separate static markup language.
-Platforms such as Android and [WPF](https://docs.microsoft.com/en-us/dotnet/desktop/wpf/) have done this. The UI
-is described in an XML-like format. While the rest of the code is written in both a separate language and also
-separate files. Known as a code behind file. The issue here is that XML, despite claims to the contrary, is not
-human readable or editable. It's also too static and rigid and it can be frustrating to jump between the UI file
-and the separate code behind file to describe the behavior of the UI.
+解决用代码描述 UI 这一问题的一种尝试是创建一门独立的静态标记语言。
+Android 和 [WPF](https://docs.microsoft.com/en-us/dotnet/desktop/wpf/) 等平台就是这样做的。
+UI 用类似 XML 的格式描述。而其余代码既用另一门语言编写，也存放在单独的文件中，
+即所谓的代码隐藏文件。这里的问题在于，XML——尽管有人声称并非如此——并不易读或易编辑。
+它也过于静态和僵化，为了描述 UI 的行为而在 UI 文件和单独的代码隐藏文件之间来回跳转会令人沮丧。
 
-Meanwhile the React web framework has solved this problem by using JSX. HTML, CSS and JavaScript can be mixed
-together in a single file. On one hand this is great as it means you can use the same language to describe the UI
-layout and behavior. On the other hand there is no limit to what code you can put in a JSX file. Logic for handling
-network requests, processing data and pretty much anything quickly ends up mixed in with UI code. It leads to the
-issue where it can be fast to create an initial application, but it becomes so hard to maintain it that it's too
-slow or costly to evolve the application.
+与此同时，React Web 框架通过使用 JSX 解决了这个问题。HTML、CSS 和 JavaScript 可以混合在
+同一个文件中。一方面这很棒，因为这意味着你可以用同一门语言来描述 UI 的布局和行为。
+另一方面，JSX 文件中可以放入的代码没有限制。处理网络请求、处理数据以及几乎任何逻辑
+都会很快混入 UI 代码之中。这导致了一个问题：创建初始应用可能很快，但维护起来却变得如此困难，
+以至于演进应用的代价过高或过于缓慢。
 
-## A True Declarative UI Language
+## 真正的声明式 UI 语言
 
-Slint provides a declarative language to describe an application's user interface
+Slint 提供了一门声明式语言来描述应用程序的用户界面
 
 ```slint showLineNumbers=true
 Rectangle {
@@ -216,30 +204,25 @@ Rectangle {
 }
 ```
 
-If you can understand this Slint code — you've already grasped a majority of how simple to use the language is.
-On line 2 we declare a `Button`. On line 3 we set its `text` property to `"Click me!"` and on line 4
-we set a callback to print out "Button clicked!" to the console via the built in `debug` function.
+如果你能看懂这段 Slint 代码——那么你已经掌握了这门语言用起来有多简单的大部分内容。
+第 2 行声明了一个 `Button`。第 3 行把它的 `text` 属性设置为 `"Click me!"`，第 4 行
+设置了一个回调，通过内置的 `debug` 函数把 "Button clicked!" 打印到控制台。
 
-The Slint compiler will take this code and see that it needs to generate a Rectangle that has a Button as a child.
-Similarly, when the clicked callback activates, it will run the `debug` function. There is no need to think
-about component and event listener life cycles.
+Slint 编译器会读取这段代码，发现需要生成一个以 Button 为子元素的 Rectangle。
+同样，当 clicked 回调被触发时，它会运行 `debug` 函数。无需考虑组件和事件监听器的生命周期。
 
-With the Slint language you can think much more closely to how a user interface looks and behaves. Instead of
-describing the 'how', the how should the details be implemented in traditional code, you "declare" how
-the interface should look and behave. Hence Slint being a 'declarative UI language'.
+有了 Slint 语言，你可以更贴近用户界面的外观和行为来思考。你不是去描述「如何」——
+即细节应当如何用传统代码实现——而是「声明」界面应当看起来怎样、行为如何。
+因此 Slint 才被称为「声明式 UI 语言」。
 
-It's not only simpler for software developers to use, it's also now something designers can potentially edit or
-more easily contribute to.
+它不仅对软件开发者来说更简单，如今也是设计师有可能编辑、或更容易参与贡献的东西。
 
-Slint isn't the first declarative UI language, but it takes advantage of being able to learn from earlier more
-complex attempts that hinted at the potential of a declarative UI language to finalize into a modern and complete
-system.
+Slint 并非第一门声明式 UI 语言，但它得益于能够从早期那些更复杂、却暗示了声明式 UI 语言潜力的
+尝试中学习，从而最终形成一个现代而完整的系统。
 
-At first glance it has the simplicity of a static markup language, but with a modern take that removes things like
-angle brackets and tags. But also dynamic features such as complex property expressions, functions, callbacks,
-and automatic reactivity. However these can only be used in the context of what helps a UI component. If you want
-to make network requests, process data, or many other things that count as 'business logic' then those have to live
-in separate files written in Rust, C++, JavaScript, etc. Slint allows you to express any UI and only the UI.
+乍看之下，它具备静态标记语言的简洁，却采用现代的做法，去掉了尖括号和标签之类的东西。
+同时也具备动态特性，例如复杂的属性表达式、函数、回调以及自动响应式。不过这些只能在
+有助于 UI 组件的语境中使用。如果你想发起网络请求、处理数据，或做许多其他算作「业务逻辑」的事情，
+那就必须放在用 Rust、C++、JavaScript 等编写的单独文件中。Slint 让你能表达任何 UI，且只表达 UI。
 
-It then provides a system of adapters to allow the business logic side of the app to easily communicate with the UI
-and visa versa.
+随后它提供了一套适配器系统，让应用业务逻辑一侧能够轻松地与 UI 通信，反之亦然。

@@ -3,11 +3,10 @@ title: 焦点处理
 description: 在 `.slint` 文件中控制焦点行为
 ---
 
-Certain elements such as `TextInput` accept input from the mouse/finger and
-also key events originating from (virtual) keyboards. In order for an item to receive
-these events, it must have focus. This is visible through the `has-focus` (out) property.
+某些元素（如 `TextInput`）既接受来自鼠标/手指的输入，也接受来自（虚拟）键盘的按键事件。
+为了让某个项能够接收这些事件，它必须拥有焦点。这可以通过 `has-focus`（out）属性观察到。
 
-You can manually activate the focus on an element by calling `focus()`:
+你可以通过调用 `focus()` 手动将焦点激活到某个元素上：
 
 ```slint
 import { Button } from "std-widgets.slint";
@@ -26,7 +25,7 @@ export component App inherits Window {
 }
 ```
 
-Similarly, you can manually clear the focus on an element that's currently focused, by calling `clear-focus()`:
+同样，你可以通过调用 `clear-focus()` 手动清除当前聚焦元素的焦点：
 
 ```slint
 import { Button } from "std-widgets.slint";
@@ -45,12 +44,12 @@ export component App inherits Window {
 }
 ```
 
-After clearing the focus, keyboard input to the window is discarded until another element is explicitly
-focused. For example by calling `focus()`, an element acquiring focus when the user clicks on it, or when
-pressing tab and the first focusable element is found.
+清除焦点后，发送到窗口的键盘输入会被丢弃，直到另一个元素被显式聚焦。
+例如，通过调用 `focus()`、用户点击某个元素使其获得焦点，或者
+按下 tab 键并找到第一个可聚焦元素时。
 
-If you have wrapped the `TextInput` in a component, then you can forward such a focus activation
-using the `forward-focus` property to refer to the element that should receive it:
+如果你将 `TextInput` 包装在一个组件中，那么你可以使用 `forward-focus` 属性
+转发这种焦点激活，指向应该接收焦点的元素：
 
 ```slint
 import { Button } from "std-widgets.slint";
@@ -77,5 +76,5 @@ export component App inherits Window {
 }
 ```
 
-If you use the `forward-focus` property on a `Window` or a `PopupWindow`, then the specified element will receive
-the focus the first time the window receives the focus - it becomes the initial focus element.
+如果你在 `Window` 或 `PopupWindow` 上使用 `forward-focus` 属性，那么指定的元素将在
+窗口第一次获得焦点时接收焦点——它成为初始焦点元素。

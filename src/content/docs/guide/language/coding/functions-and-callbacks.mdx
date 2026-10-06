@@ -3,16 +3,15 @@ title: 函数与回调
 description: 在 Slint 中组织逻辑并与你的业务代码对接
 ---
 
-Slint gives you two ways to organize logic: _functions_ and _callbacks_.
-Both are callable blocks of code with parameters and return values —
-the difference is who implements them.
-A function is defined entirely in Slint.
-A callback's handler can be set from your business logic in Rust, C++, JavaScript, or Python.
-Use a callback when the native code needs to react; use a function otherwise.
+Slint 为你提供了两种组织逻辑的方式：*函数*和*回调*。
+两者都是带参数和返回值的可调用代码块——区别在于由谁来实现它们。
+函数完全在 Slint 中定义。
+回调的处理程序可以从 Rust、C++、JavaScript 或 Python 编写的业务逻辑中设置。
+当原生代码需要作出反应时使用回调；否则使用函数。
 
-## Functions
+## 函数
 
-Declare a function with the `function` keyword and call it like in other languages:
+用 `function` 关键字声明函数，并像其他语言那样调用它：
 
 ```slint
 export component Example {
@@ -24,8 +23,8 @@ export component Example {
 }
 ```
 
-By default, functions are private.
-Mark a root-level function `public` to call it from other components — or from your business logic:
+默认情况下，函数是私有的。
+把根级函数标记为 `public`，即可从其他组件——或从你的业务逻辑中调用它：
 
 ```slint
 export component HasFunction {
@@ -42,15 +41,15 @@ export component CallsFunction {
 }
 ```
 
-The `pure` keyword marks a function free of side effects,
-which makes it callable from property bindings;
-see [Purity](../../../../reference/language/evaluation-and-purity/#purity).
+`pure` 关键字标记函数没有副作用，
+这使它可以从属性绑定中调用；
+参见[纯度](../../../../reference/language/evaluation-and-purity/#purity)。
 
-## Callbacks
+## 回调
 
-Components declare callbacks to communicate changes of state to the outside.
-React to a callback by declaring a handler with the `=>` arrow syntax.
-Here the built-in `TouchArea` element's `clicked` callback is forwarded to a custom callback:
+组件声明回调，以把状态变化传达给外部。
+用 `=>` 箭头语法声明处理程序来响应回调。
+这里把内置 `TouchArea` 元素的 `clicked` 回调转发给一个自定义回调：
 
 ```slint
 export component Example inherits Rectangle {
@@ -67,7 +66,7 @@ export component Example inherits Rectangle {
 }
 ```
 
-Callbacks can take parameters and return values:
+回调可以带参数和返回值：
 
 ```slint
 export component Example inherits Rectangle {
@@ -77,7 +76,7 @@ export component Example inherits Rectangle {
 }
 ```
 
-And you can forward one callback to another with an alias, using the two-way binding syntax:
+你还可以用双向绑定语法，通过别名把一个回调转发给另一个回调：
 
 ```slint
 export component Example inherits Rectangle {
@@ -86,6 +85,6 @@ export component Example inherits Rectangle {
 }
 ```
 
-For visibility, name resolution, named arguments, and change callbacks in detail,
-see the [Functions](../../../../reference/language/functions/) and
-[Callbacks](../../../../reference/language/callbacks/) chapters of the language reference.
+关于可见性、名字解析、命名参数以及变更回调的详细信息，
+参见语言参考中的[函数](../../../../reference/language/functions/)和
+[回调](../../../../reference/language/callbacks/)章节。

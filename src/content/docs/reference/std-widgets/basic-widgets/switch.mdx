@@ -1,6 +1,6 @@
 ---
 title: Switch
-description: Switch api.
+description: Switch API。
 ---
 
 import SlintProperty from '@slint/common-files/src/components/SlintProperty.astro';
@@ -22,13 +22,13 @@ export component Example inherits Window {
 ````
 </CodeSnippetMD>
 
-A `Switch` is a representation of a physical switch that allows users to turn things on or off. Consider using a `CheckBox` instead if you want the user to select or deselect values, for example in a list with multiple options.
+`Switch` 是物理开关的表示形式，允许用户打开或关闭某物。如果希望用户选择或取消选择值（例如在具有多个选项的列表中），请考虑改用 `CheckBox`。
 
-## Properties
+## 属性
 
 ### checked
 <SlintProperty typeName="bool" propName="checked" defaultValue="false" propertyVisibility="in-out">
-Whether the switch is checked or not.
+开关是否已选中。
 
 ```slint "checked: true;"
 Switch {
@@ -42,19 +42,19 @@ Switch {
 ### enabled
 
 <SlintProperty typeName="bool" propName="enabled" defaultValue="true">
-  When false, the switch can't be pressed
+  当为 false 时，开关无法被按下
 </SlintProperty>
 
 ### has-focus
 
 <SlintProperty typeName="bool" propName="has-focus" propertyVisibility="out">
-  Set to true when the switch has keyboard focus
+  当开关具有键盘焦点时设置为 true
 </SlintProperty>
 
 ### text
 
 <SlintProperty typeName="string" propName="text" >
-The text written next to the switch.
+开关旁边显示的文本。
 
 ```slint 'text: "Switch with text";'
 Switch {
@@ -64,11 +64,11 @@ Switch {
 
 </SlintProperty>
 
-## Callbacks
+## 回调
 
 ### toggled()
 
-The switch value changed
+开关的值发生了变化
 
 ```slint {3-5}
 Switch {

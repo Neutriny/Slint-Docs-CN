@@ -1,6 +1,6 @@
 ---
 title: 回调
-description: Declaring callbacks, setting handlers, aliases, and change callbacks.
+description: 声明回调、设置处理程序、别名以及变更回调。
 SC: true
 ---
 
@@ -9,9 +9,9 @@ import OnlyInSC from '@slint/common-files/src/components/OnlyInSC.astro';
 import NotInSC from '@slint/common-files/src/components/NotInSC.astro';
 
 <SC>
-A *callback* is a member that carries an invocation from one place to another.
-It's declared with the `callback` keyword, invoked by calling it,
-and reacted to by a handler set with the `=>` arrow. \{#sls.callback.def}
+*回调*是一种成员，它将一次调用从一个地方传递到另一个地方。
+它使用 `callback` 关键字声明，通过调用它来触发，
+并由通过 `=>` 箭头设置的处理程序作出反应。 \{#sls.callback.def}
 
 ```slint
 export component Example inherits Window {
@@ -23,33 +23,32 @@ export component Example inherits Window {
 ```
 
 <NotInSC>
-  A callback may be declared in a component, on any element within a component,
-  or in a [global](../globals/).
+  回调可以在组件中声明、在组件内的任何元素上声明，
+  或在[全局对象](../globals/)中声明。
 </NotInSC>
 
-## Declaration
+## 声明
 
-A _callback declaration_ adds a callback to the element in whose body it appears.
-It consists of the keyword `callback`, a name, and `;`. \{#sls.callback.decl.form}
+_回调声明_ 会向其所在元素体内添加一个回调。
+它由关键字 `callback`、一个名字以及 `;` 组成。 \{#sls.callback.decl.form}
 
 <OnlyInSC>
-A callback shall only be declared on the root element,
-so that every callback of a component is one the application implements. \{#sls.callback.decl.root-only}
+回调应仅在根元素上声明，
+以便组件的每个回调都由应用来实现。 \{#sls.callback.decl.root-only}
 
-A callback shall have neither parameters nor a return value,
-so its declaration carries neither a parameter list nor a `->` return type. \{#sls.callback.decl.no-params}
+回调应既没有参数也没有返回值，
+因此其声明既不带参数列表也不带 `->` 返回类型。 \{#sls.callback.decl.no-params}
 
-A callback shall not be declared `pure`, and shall not be declared as an alias. \{#sls.callback.decl.plain}
+回调不应声明为 `pure`，也不应声明为别名。 \{#sls.callback.decl.plain}
 
 </OnlyInSC>
 
-A callback name shall not collide with another member of the same element:
-a declaration whose name matches an existing property, function, or callback is an error. \{#sls.callback.decl.unique}
+回调名字不得与同一元素的其他成员冲突：
+名字与现有属性、函数或回调匹配的声明是一个错误。 \{#sls.callback.decl.unique}
 
 </SC>
 
-Between the name and the `;`, a declaration may also carry the callback's parameter types and its
-return type:
+在名字与 `;` 之间，声明还可以带有回调的参数类型及其返回类型：
 
 ```slint
 export component Example {
@@ -59,35 +58,35 @@ export component Example {
 }
 ```
 
-The following forms are allowed:
+允许以下形式：
 
-- No parentheses declares a callback with no parameters, as in `callback plain;`.
-- Parentheses list the parameter types, as in `callback with-args(int, string);`.
-  A trailing comma after the last parameter is allowed.
-- A parameter may carry a name, written `name: type`, as in `callback c(foo: int, bar: string)`.
-  Names are optional and may be mixed with unnamed parameters.
-  The name carries no semantic value; a handler names its parameters independently.
-- A return type is written after `->` and requires the parentheses to be present,
-  even when there are no parameters: `callback c() -> int`.
-  Writing `-> type` without parentheses is a compile error.
+- 不带括号表示声明一个无参数的回调，例如 `callback plain;`。
+- 括号列出参数类型，例如 `callback with-args(int, string);`。
+  允许在最后一个参数后出现尾随逗号。
+- 参数可以带名字，写作 `name: type`，例如 `callback c(foo: int, bar: string)`。
+  名字是可选的，并且可以与无名字的参数混合使用。
+  名字不携带任何语义值；处理程序会独立地命名其参数。
+- 返回类型写在 `->` 之后，并且要求括号存在，
+  即使没有参数也是如此：`callback c() -> int`。
+  书写不带括号的 `-> type` 会构成编译错误。
 
-`pure` may precede `callback` to mark the callback as having no side effects (see [Purity](../evaluation-and-purity/#purity)).
-A `pure` callback may be called from a pure context, and its handler must itself be pure.
-Calling an impure callback from a pure context is a compile error.
+`pure` 可以放在 `callback` 之前，以将该回调标记为没有副作用（见[纯性](../evaluation-and-purity/#purity)）。
+`pure` 回调可以从纯上下文中调用，并且其处理程序本身必须是纯的。
+从纯上下文中调用非纯回调会构成编译错误。
 
-A duplicate callback declaration is a compile error.
+重复的回调声明会构成编译错误。
 
-A declaration may be preceded by a [`@deprecated` annotation](../deprecation/),
-which marks the callback as deprecated and points users at its replacement.
+声明前可以带有 [`@deprecated` 注解](../deprecation/)，
+它会将该回调标记为已废弃，并指引用户使用其替代者。
 
 <SC>
-## Calling
+## 调用
 
-A callback is invoked with call syntax:
-the callback, followed by parentheses holding the arguments. \{#sls.callback.call.form}
+回调使用调用语法来触发：
+回调，后跟包含参数的括号。 \{#sls.callback.call.form}
 
-Invoking a callback runs its handler.
-A callback without a handler does nothing when invoked. \{#sls.callback.call.handler}
+触发回调会运行其处理程序。
+没有处理程序的回调在被触发时不执行任何操作。 \{#sls.callback.call.handler}
 
 ```slint
 export component Example inherits Window {
@@ -99,8 +98,8 @@ export component Example inherits Window {
 ```
 
 <NotInSC>
-The number of arguments must match the declaration,
-and a callback with a return type returns the default value of that type when it has no handler:
+参数的数量必须与声明匹配，
+并且带返回类型的回调在没有处理程序时会返回该类型的默认值：
 
 ```slint
 export component Example {
@@ -111,25 +110,25 @@ export component Example {
 
 </NotInSC>
 
-## Handlers
+## 处理程序
 
-A _handler_ reacts to a callback's invocation.
-It's written as the callback's name, `=>`, and either a single expression or a code block. \{#sls.callback.handler.form}
+_处理程序_ 对回调的触发作出反应。
+它写作回调的名字、`=>`，以及单个表达式或代码块。 \{#sls.callback.handler.form}
 
-A callback has at most one handler;
-setting a second handler for the same callback is an error. \{#sls.callback.handler.one}
+一个回调至多有一个处理程序；
+为同一回调设置第二个处理程序是一个错误。 \{#sls.callback.handler.one}
 
-A handler may be set on a callback of a child element,
-such as `TouchArea`'s [`clicked`](../../gestures/toucharea/#sls.ref.toucharea.clicked). \{#sls.callback.handler.target}
+处理程序可以设置在子元素的回调上，
+例如 `TouchArea` 的 [`clicked`](../../gestures/toucharea/#sls.ref.toucharea.clicked)。 \{#sls.callback.handler.target}
 
 <OnlyInSC>
-A handler body shall consist of callback invocations and nothing else. \{#sls.callback.handler.body}
+处理程序体应仅由回调调用组成，不包括其他内容。 \{#sls.callback.handler.body}
 
-A handler shall not be set on a callback declared on the root element:
-the application implements those. \{#sls.callback.handler.not-root}
+处理程序不应设置在根元素上声明的回调上：
+那些由应用来实现。 \{#sls.callback.handler.not-root}
 
-Each invocation runs the handler of the callback,
-so a cycle of handlers, each invoking the next, is an error. \{#sls.callback.handler.no-cycle}
+每次调用都会运行回调的处理程序，
+因此，处理程序形成循环、每个都调用下一个，是一个错误。 \{#sls.callback.handler.no-cycle}
 
 </OnlyInSC>
 
@@ -148,10 +147,10 @@ export component Example inherits Window {
 
 </SC>
 
-- The handler names its parameters in parentheses.
-  These names are local to the handler body and are independent of any names in the declaration.
-  Parentheses may be omitted when the callback has no parameters.
-- The body's last expression is the return value; its type must match the callback's return type.
+- 处理程序在括号中命名其参数。
+  这些名字是处理程序体的局部名字，与声明中的任何名字无关。
+  当回调没有参数时，可以省略括号。
+- 主体的最后一个表达式是返回值；其类型必须与回调的返回类型匹配。
 
 ```slint
 export component Example {
@@ -160,21 +159,23 @@ export component Example {
 }
 ```
 
-A handler may also be set on a callback declared in the same component.
+处理程序也可以设置在同一组件中声明的回调上。
 
-### The `init` callback
+### `init` 回调
 
-`init` is a built-in callback present on every element.
-Its handler runs once when the element is instantiated.
-`init` handlers run from the outermost component inward, so a component's own `init` runs after
-the `init` of the elements it contains.
-Calling `init` explicitly does nothing and is deprecated.
+`init` 是存在于每个元素上的内置回调。
+其处理程序在元素实例化时运行一次。
+`init` 处理程序从最外层组件向内运行，因此组件自身的 `init` 会在
+它所包含元素的 `init` 之后运行。
+显式调用 `init` 不执行任何操作，并且已废弃。
 
-A [global](../globals/) can neither declare nor handle an `init` callback; both are compile errors.
+[全局对象](../globals/)既不能声明也不能处理 `init` 回调；两者都会构成编译错误。
 
-## Aliases
+<a id="aliases"></a>
 
-A callback alias forwards one callback to another, using the same `<=>` syntax as a [two-way binding](../two-way-bindings/):
+## 别名
+
+回调别名将一个回调转发到另一个回调，使用与[双向绑定](../two-way-bindings/)相同的 `<=>` 语法：
 
 ```slint
 export component Example {
@@ -183,18 +184,20 @@ export component Example {
 }
 ```
 
-- The alias must omit the parameter list; writing parentheses in an aliased declaration is a compile error.
-- Both callbacks must have the same signature.
-- Invoking either callback invokes the other, and a handler set on either responds to both.
+- 别名必须省略参数列表；在化名的声明中书写括号会构成编译错误。
+- 两个回调必须具有相同的签名。
+- 触发任一回调都会触发另一个，设置在任一方上的处理程序都会响应两者。
 
-An alias may target a [global](../globals/)'s callback, written `Global.callback`.
-A global may alias another global's callback; this is the supported way for one global to implement another's callback.
-A non-global element cannot set a handler on an alias that targets a global's callback,
-because the element may be instantiated many times while the global is a singleton; this is a compile error.
+别名可以指向[全局对象](../globals/)的回调，写作 `Global.callback`。
+全局对象可以为另一个全局对象的回调设置别名；这是受支持的方式，用于让一个全局对象实现另一个的回调。
+非全局元素不能为指向全局对象回调的别名设置处理程序，
+因为该元素可能被实例化多次，而全局对象是单例；这会构成编译错误。
 
-## Change Callbacks
+<a id="change-callbacks"></a>
 
-`changed <property> => { ... }` declares a handler that runs when a property's value changes:
+## 变更回调
+
+`changed <property> => { ... }` 声明一个在属性值变化时运行的处理程序：
 
 ```slint
 export component Example inherits Window {
@@ -203,19 +206,19 @@ export component Example inherits Window {
 }
 ```
 
-- The target must be a property that exists on the element; naming a callback, a function,
-  or a nonexistent member is a compile error.
-- A change callback cannot be set on a private property that belongs to another component; this is a compile error.
-- A property has at most one change callback per element; a duplicate is a compile error.
-- The handler body may have side effects; it is not required to be pure.
+- 目标必须是该元素上存在的属性；命名回调、函数
+  或不存在的成员会构成编译错误。
+- 变更回调不能设置在属于另一个组件的私有属性上；这会构成编译错误。
+- 一个属性在每个元素上至多有一个变更回调；重复会构成编译错误。
+- 处理程序体可以有副作用；不要求它是纯的。
 
-A change callback is not invoked immediately.
-It is queued and runs in a later iteration of the event loop.
-It runs only if the value actually differs from the value at the previous run:
-multiple changes within one cycle collapse to a single invocation,
-and a value that changes and reverts before the callback runs produces no invocation.
+变更回调不会立即被调用。
+它会被排队，并在事件循环的后续迭代中运行。
+仅当值确实与上一次运行时的值不同时才会运行：
+一个周期内的多次变化会合并为一次调用，
+而在回调运行之前先变化又恢复的值不会产生调用。
 
-Changing a property from within a change callback in a way that feeds back into the same property is undefined:
+在变更回调内部以反馈到同一属性的方式修改该属性是未定义行为：
 
 ```slint
 export component Example {
@@ -225,11 +228,11 @@ export component Example {
 }
 ```
 
-Such a chain, where one change callback triggers another, does not run unbounded.
-The runtime runs the queued change handlers in a loop that stops after ten passes,
-so a self-perpetuating sequence terminates without invoking the remaining handlers.
+这种一个变更回调触发另一个变更回调的链式反应不会无界运行。
+运行时会在一个循环中运行排队的变更处理程序，该循环在十轮之后停止，
+因此自我延续的序列会在不调用剩余处理程序的情况下终止。
 
-A change callback forces the property to be evaluated eagerly rather than [lazily](../evaluation-and-purity/),
-and its side effects make the surrounding bindings impure.
-A declarative [binding](../bindings/) tracks its dependencies automatically and evaluates on demand,
-so a relationship that a binding can express should be expressed as a binding rather than a change callback.
+变更回调强制该属性急切求值，而非[惰性](../evaluation-and-purity/)求值，
+并且其副作用会使周围的绑定变为非纯。
+声明式[绑定](../bindings/)会自动跟踪其依赖关系并按需求值，
+因此可以用绑定表达的关系应表达为绑定，而不是变更回调。

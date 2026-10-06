@@ -1,6 +1,6 @@
 ---
 title: 属性
-description: Declaring properties on elements.
+description: 在元素上声明属性。
 SC: true
 ---
 
@@ -8,21 +8,23 @@ import SC from '@slint/common-files/src/components/SC.astro';
 import OnlyInSC from '@slint/common-files/src/components/OnlyInSC.astro';
 
 <SC>
-An element has a set of named *properties*, determined by the type of the element:
-the element's type provides properties — including those of the base it
-[inherits](../file-structure/#sls.file.component.inherits) from —
-and [property declarations](#property-declaration) in the element's body add more. \{#sls.prop.def}
+元素有一组具名*属性*，由其类型决定：
+元素的类型提供属性——包括它
+[继承](../file-structure/#sls.file.component.inherits)自基类的那些——
+而元素体中的[属性声明](#property-declaration)会添加更多。 \{#sls.prop.def}
 
-A property holds a value of the property's type;
-reading the property yields its current value. \{#sls.prop.def.value}
+属性持有该属性类型的值；
+读取该属性会得到其当前值。 \{#sls.prop.def.value}
 
-## Property Declaration
+<a id="property-declaration"></a>
 
-A _property declaration_ adds a property to the element in whose body it appears.
-It consists of the keyword `property`, the type in angle brackets, and a name,
-optionally preceded by a visibility modifier,
-optionally followed by `:` and an expression that [binds](../bindings/) to the property,
-and ends with `;`. \{#sls.prop.decl.form}
+## 属性声明
+
+_属性声明_ 会向其所在元素体内添加一个属性。
+它由关键字 `property`、尖括号中的类型和一个名字组成，
+可选地在前面带有一个可见性修饰符，
+可选地在后面跟 `:` 以及一个[绑定](../bindings/)到该属性的表达式，
+并以 `;` 结尾。 \{#sls.prop.decl.form}
 
 ```slint
 export component Example inherits Window {
@@ -31,47 +33,46 @@ export component Example inherits Window {
 }
 ```
 
-The modifier declares the property's _visibility_:
-which side may read and set the property's value. \{#sls.prop.decl.visibility}
+修饰符声明属性的*可见性*：
+即哪一侧可以读取和设置属性的值。 \{#sls.prop.decl.visibility}
 
-An `in` property is an input of the component. \{#sls.prop.decl.in}
+`in` 属性是组件的输入。 \{#sls.prop.decl.in}
 
-On the root element of a component the application instantiates directly, the application sets
-its value through the generated API. \{#sls.prop.decl.in.root}
+在应用直接实例化的组件的根元素上，应用通过生成的 API
+设置其值。 \{#sls.prop.decl.in.root}
 
-On any other element, the enclosing component sets its value with a binding. \{#sls.prop.decl.in.child}
+在任何其他元素上，外层组件通过绑定设置其值。 \{#sls.prop.decl.in.child}
 
-An `out` property is an output of the component:
-the component determines its value, and the application reads it. \{#sls.prop.decl.out}
+`out` 属性是组件的输出：
+组件确定其值，应用读取它。 \{#sls.prop.decl.out}
 
-An `in-out` property is both: the application sets and reads its value. \{#sls.prop.decl.in-out}
+`in-out` 属性兼具两者：应用设置并读取其值。 \{#sls.prop.decl.in-out}
 
-A `private` property is internal to the component:
-the application can neither set nor read it.
-Private is the default: a declaration without a modifier declares a private property. \{#sls.prop.decl.private}
+`private` 属性是组件内部的：
+应用既不能设置也不能读取它。
+私有是默认值：不带修饰符的声明声明一个私有属性。 \{#sls.prop.decl.private}
 
 <OnlyInSC>
-Properties shall only be declared on the root element. \{#sls.prop.decl.root-only}
+属性应仅在根元素上声明。 \{#sls.prop.decl.root-only}
 </OnlyInSC>
 </SC>
 
-Properties can be declared on any element.
+属性可以在任何元素上声明。
 
 <SC>
 <OnlyInSC>
-The declared type can be any valid property type. \{#sls.prop.decl.types}
+所声明的类型可以是任何有效的属性类型。 \{#sls.prop.decl.types}
 </OnlyInSC>
 </SC>
 
-Any [property type](../../property-types/) can be declared.
+可以声明任何[属性类型](../../property-types/)。
 
 <SC>
-Without a binding, the property has the default value of its
-type. \{#sls.prop.decl.default}
+没有绑定时，属性具有其类型的默认值。 \{#sls.prop.decl.default}
 </SC>
 
-A [change callback](../callbacks/#change-callbacks) reacts to a property's value changing,
-and a declaration with a [two-way binding](../two-way-bindings/) links the new property to an existing one.
+[变更回调](../callbacks/#change-callbacks)对属性值的变化作出反应，
+而带[双向绑定](../two-way-bindings/)的声明会将新属性链接到现有属性。
 
-A declaration may be preceded by a [`@deprecated` annotation](../deprecation/),
-which marks the property as deprecated and points users at its replacement.
+声明前可以带有 [`@deprecated` 注解](../deprecation/)，
+它会将该属性标记为已废弃，并指引用户使用其替代者。

@@ -3,7 +3,7 @@ title: 重复与数据模型
 description: 用 `for` 与 `if` 从数据创建元素
 ---
 
-Use the `for`-`in` syntax to create an element multiple times, once per entry in a model:
+用 `for`-`in` 语法多次创建元素，模型中的每个条目创建一次：
 
 ```slint
 export component Example inherits Window {
@@ -18,10 +18,10 @@ export component Example inherits Window {
 }
 ```
 
-The model can be an integer (repeat that many times), an array,
-or a model provided by your business logic.
-This is how you build lists and tables: the data lives in a model,
-and the UI declares what one entry looks like:
+模型可以是整数（重复那么多次）、数组，
+或由你的业务逻辑提供的模型。
+这就是构建列表和表格的方式：数据存放在模型中，
+而 UI 声明单个条目长什么样：
 
 ```slint
 export component Example inherits Window {
@@ -40,7 +40,7 @@ export component Example inherits Window {
 }
 ```
 
-Related to `for` is the `if` construct, which instantiates an element only while a condition holds:
+与 `for` 相关的是 `if` 构造，它仅在条件成立时才实例化元素：
 
 ```slint
 export component Example inherits Window {
@@ -52,7 +52,7 @@ export component Example inherits Window {
 }
 ```
 
-See [Repetition and Conditional Elements](../../../../reference/language/repetition-and-conditional-elements/)
-in the language reference for the exact syntax, and
-[Arrays and Models](../../../../reference/property-types/arrays-and-models/) for the array
-operations like `length`, indexing, `push`, `insert`, and `remove`.
+关于确切的语法，参见语言参考中的
+[重复与条件元素](../../../../reference/language/repetition-and-conditional-elements/)；
+关于 `length`、索引、`push`、`insert` 和 `remove` 等数组操作，
+参见[数组与模型](../../../../reference/property-types/arrays-and-models/)。

@@ -1,78 +1,80 @@
 ---
 title: 名字解析
-description: Pre-defined names and the lookup rules for identifiers.
+description: 预定义名称以及标识符的查找规则。
 SC: true
 ---
 
 import SC from '@slint/common-files/src/components/SC.astro';
 import OnlyInSC from '@slint/common-files/src/components/OnlyInSC.astro';
 
-Name resolution decides which declaration an identifier in an expression refers to.
-Properties, callbacks, and functions share the same rules.
-An identifier may also name an element, through the [id](../file-structure/#sls.file.element.id) that `:=` gives it.
+名字解析决定表达式中的标识符指向哪个声明。
+属性、回调和函数共享相同的规则。
+标识符也可以通过 `:=` 赋予元素的 [id](../file-structure/#sls.file.element.id) 来命名一个元素。
 
-## Pre-Defined Names
+## 预定义名字
 
-Some elements are reachable under pre-defined names:
+某些元素可以通过预定义名字访问：
 
-- `self` refers to the current element — the element in whose binding, callback, or function the name appears.
-- `parent` refers to the element that encloses the current element.
-  It is available only when the current element has an enclosing element within the same component.
-- `root` refers to the outermost element of the current component.
+- `self` 指当前元素——即名字所在的绑定、回调或函数所属的元素。
+- `parent` 指包围当前元素的元素。
+  仅当当前元素在同一组件内有一个包围元素时，它才可用。
+- `root` 指当前组件的最外层元素。
 
-`root` is the automatic id of every component's outermost element; an element named `root` explicitly is a reserved-id error.
-`self`, `parent`, and `root` are element references and are used to qualify a member, as in `self.width` or `root.some-property`.
+`root` 是每个组件最外层元素的自动 id；显式命名为 `root` 的元素会构成保留 id 错误。
+`self`、`parent` 和 `root` 是元素引用，用于限定成员，例如 `self.width` 或 `root.some-property`。
 
-`true` and `false` are pre-defined names for the two boolean values and can't be redefined.
+`true` 和 `false` 是两个布尔值的预定义名字，无法重新定义。
 
 <SC>
-## Lookup Rules
+<a id="lookup-rules"></a>
+
+## 查找规则
 
 <OnlyInSC>
-An unqualified identifier is resolved by trying, in order, `self`, `parent`, `true`, or `false`;
-an element id; then a declared property, searching from the current element outward to the root.
-The first match wins. \{#sls.name.lookup}
+非限定标识符的解析方式是依次尝试 `self`、`parent`、`true` 或 `false`；
+某个元素 id；然后是从当前元素向外直到根的已声明属性。
+第一个匹配项生效。 \{#sls.name.lookup}
 
-A qualified name refers to the named member of the element reached by the qualifier,
-and does not fall back to ancestor elements. \{#sls.name.lookup.qualified}
+限定名指由限定符到达的元素的指定成员，
+并且不会回退到祖先元素。 \{#sls.name.lookup.qualified}
 
 </OnlyInSC>
 </SC>
 
-When an identifier is used without a qualifier, it is resolved by trying the following, in order, and taking the first match:
+当标识符不带限定符使用时，按以下顺序尝试并取第一个匹配项来解析：
 
-1. A local variable declared with `let` in an enclosing block, or a parameter of the enclosing callback or function handler.
-2. `self`, `parent`, `true`, or `false`.
-3. An element id.
-   Ids are searched in the current component's element tree; the id of the current element and of any element reachable from `root` is visible, as is the id of an enclosing `for` element and of any element nested within it.
-   `root` resolves here, as the id of the outermost element.
-4. A declared property, callback, or function in scope.
-   The current element (`self`) is tried first, then its enclosing element, and so on up to the root of the component.
-   Only members introduced by a declaration in the source are found this way; a built-in property of the element or of an ancestor is _not_ reachable unqualified and must be written `self.name` or through an id.
-   Within a `for` element, the loop's index and model-data names resolve here.
-5. A [global](../globals/) singleton or an enumeration, by name.
-6. A built-in namespace: `Colors`, `Easing`, `Math`, `Key`, `FontWeight`, or `MouseCursor`.
-7. A named value of the expected type: a named color where a `color` or `brush` is expected, a named easing curve where an `easing` is expected, or an enumeration value where that enumeration is expected.
-   Writing an enumeration value without its type is therefore possible only in a position whose type is known to be that enumeration.
-8. A built-in free function, such as the math and color functions and `debug`.
+1. 在包围块中用 `let` 声明的局部变量，或包围回调或函数处理程序的参数。
+2. `self`、`parent`、`true` 或 `false`。
+3. 元素 id。
+   id 在当前组件的元素树中搜索；当前元素的 id 以及从 `root` 可达的任何元素的 id 都可见，包围 `for` 元素的 id 以及嵌套在其中的任何元素的 id 也都可见。
+   `root` 在这里作为最外层元素的 id 解析。
+4. 作用域中已声明的属性、回调或函数。
+   首先尝试当前元素（`self`），然后是其包围元素，依此类推直到组件根。
+   以这种方式只能找到由源中声明引入的成员；元素或祖先的内置属性*不能*以非限定方式访问，必须写作 `self.name` 或通过 id 访问。
+   在 `for` 元素内，循环的索引和模型数据名字在这里解析。
+5. 按名字查找[全局对象](../globals/)单例或枚举。
+6. 内置命名空间：`Colors`、`Easing`、`Math`、`Key`、`FontWeight` 或 `MouseCursor`。
+7. 期望类型的具名值：期望 `color` 或 `brush` 处的具名颜色，期望 `easing` 处的具名缓动曲线，或期望该枚举处的枚举值。
+   因此，只有在其类型已知为该枚举的位置，才能书写不带类型的枚举值。
+8. 内置自由函数，例如数学和颜色函数以及 `debug`。
 
-The first step that produces a match wins, so an earlier kind shadows a later one of the same name.
-A local variable shadows a member in scope, a member on the current element shadows a member on an ancestor, and an id is chosen over a same-named property in scope.
+产生匹配的第一个步骤生效，因此较早的种类会遮蔽后面同名的种类。
+局部变量遮蔽作用域中的成员，当前元素上的成员遮蔽祖先上的成员，id 优先于作用域中同名的属性。
 
-### Qualified names
+### 限定名
 
-When an identifier is qualified with an element — an id, `self`, `parent`, or `root` — the member must be defined on that element or inherited from its base type.
-Resolution does not fall back to ancestor elements in this case.
-Calling a member without a qualifier is therefore _not_ equivalent to calling it with `self`: the unqualified form searches the whole scope, while `self.name` looks only at the current element.
+当标识符用元素限定——id、`self`、`parent` 或 `root`——时，成员必须定义在该元素上或从其基类型继承。
+在这种情况下，解析不会回退到祖先元素。
+因此，不带限定符调用成员与用 `self` 调用它*不*等价：非限定形式搜索整个作用域，而 `self.name` 只查看当前元素。
 
-A member reached through a qualifier is subject to visibility: a `private` property, callback, or function of another component can't be accessed, and a special binding-only property can't be read.
+通过限定符到达的成员受可见性约束：另一个组件的 `private` 属性、回调或函数无法访问，特殊的仅绑定属性无法读取。
 
-A [global](../globals/)'s members are reached through its name, as in `Name.property`, `Name.callback(...)`, or `Name.function(...)`.
+[全局对象](../globals/)的成员通过其名字访问，例如 `Name.property`、`Name.callback(...)` 或 `Name.function(...)`。
 
-### Shadowing across elements
+### 跨元素的遮蔽
 
-Because a declared member is looked up starting from the current element and moving outward, a member declared on an inner element shadows a same-named member declared on an enclosing element.
-Multiple functions with the same name are allowed in one component as long as they are declared on different elements, and an inner one shadows an outer one for unqualified calls made within its subtree:
+由于已声明成员从当前元素开始向外查找，声明在内层元素上的成员会遮蔽声明在外层元素上的同名成员。
+只要声明在不同的元素上，同一组件中允许存在多个同名函数；在其子树内进行的非限定调用中，内层函数会遮蔽外层函数：
 
 ```slint
 export component Example {
@@ -100,4 +102,4 @@ export component Example {
 }
 ```
 
-Here `secret_number` is set to 1, the first label reads "The secret number is 3", and the second reads "The other secret number is 2".
+这里 `secret_number` 设为 1，第一个标签显示 "The secret number is 3"，第二个显示 "The other secret number is 2"。

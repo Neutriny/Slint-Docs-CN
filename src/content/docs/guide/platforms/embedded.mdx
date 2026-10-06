@@ -8,55 +8,54 @@ description: Slint 经过测试的嵌入式平台
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import ReleaseLink from '@slint/common-files/src/components/ReleaseLink.astro';
 
-Slint runs on many embedded platforms.
+Slint 可在许多嵌入式平台上运行。
 
-The platform descriptions below cover what has been tested for deployment. For the development environment,
-we recommend using a recent desktop operating system and compiler version.
+下面的平台描述涵盖了已针对部署测试过的内容。对于开发环境，
+我们建议使用较新的桌面操作系统和编译器版本。
 
-## Embedded Linux
+## 嵌入式 Linux
 
-Slint runs on a variety of embedded Linux platforms. Generally speaking, Slint requires a modern Linux userspace
-with working OpenGL ES 2.0 (or newer) or Vulkan drivers. We've had success running Slint on
+Slint 可在多种嵌入式 Linux 平台上运行。一般来说，Slint 需要一个现代的 Linux 用户空间，
+并具备可用的 OpenGL ES 2.0（或更新版本）或 Vulkan 驱动。我们已成功在以下平台上运行 Slint：
 
-- Yocto based distributions.
-- BuildRoot based distributions.
-- Torizon.
+- 基于 Yocto 的发行版。
+- 基于 BuildRoot 的发行版。
+- Torizon。
 
 <Tabs>
 <TabItem label="Yocto Linux">
-For C++ applications see [meta-slint](https://github.com/slint-ui/meta-slint) for recipes.
+对于 C++ 应用程序，请参见 [meta-slint](https://github.com/slint-ui/meta-slint) 获取 recipe。
 
-Rust applications work out of the box with Yocto's Rust support.
+Rust 应用程序在 Yocto 的 Rust 支持下开箱即用。
 
 </TabItem>
 <TabItem label="Torizon">
-Toradex provides [Torizon OS](https://developer.toradex.com/torizon/), a Linux based platform for its embedded devices that packages applications in docker containers.
+Toradex 提供了 [Torizon OS](https://developer.toradex.com/torizon/)，这是一个面向其嵌入式设备的基于 Linux 的平台，以 docker 容器打包应用程序。
 
-We provide our demos compiled for Toradex as docker containers with and without GPU acceleration support.
+我们提供为 Toradex 编译的演示程序，封装为带或不带 GPU 加速支持的 docker 容器。
 
-#### Prerequisites
+#### 先决条件
 
-- A device running Torizon OS 6.0 or later
-- SSH access to the Torizon device
-- Docker installed on the device
+- 一台运行 Torizon OS 6.0 或更高版本的设备
+- 对 Torizon 设备的 SSH 访问
+- 设备上已安装 Docker
 
-**Note**: The Slint demos run directly on the linux/kms and do not require a Weston container.
+**注意**：Slint 演示程序直接在 linux/kms 上运行，不需要 Weston 容器。
 
-#### Running
+#### 运行
 
-Our pre-compiled demos are available in multiple variants optimized for different hardware platforms:
+我们预编译的演示程序有多种变体，针对不同的硬件平台进行了优化：
 
-1. **Standard ARM64 without GPU build** (`torizon-demos-arm64`) - Uses software rendering
-2. **i.MX8 GPU build** (`torizon-demos-arm64-imx8`) - Optimized for i.MX8 series with GPU acceleration
-3. **AM62 GPU build** (`torizon-demos-arm64-am62`) - Optimized for AM62 series with GPU acceleration
-4. **i.MX95 GPU build** (`torizon-demos-arm64-imx95`) - Optimized for i.MX95 series with GPU acceleration
+1. **标准 ARM64 无 GPU 构建**（`torizon-demos-arm64`）- 使用软件渲染
+2. **i.MX8 GPU 构建**（`torizon-demos-arm64-imx8`）- 针对带 GPU 加速的 i.MX8 系列优化
+3. **AM62 GPU 构建**（`torizon-demos-arm64-am62`）- 针对带 GPU 加速的 AM62 系列优化
+4. **i.MX95 GPU 构建**（`torizon-demos-arm64-imx95`）- 针对带 GPU 加速的 i.MX95 系列优化
 
-A complete list of all containers can be found at
+所有容器的完整列表可在以下地址找到
 
 https://github.com/orgs/slint-ui/packages?q=torizon&tab=packages&q=torizon
 
-For example, to run the container on an i.MX8 board with GPU, deploy the following `docker-compose.yaml`
-with Docker Compose:
+例如，要在带 GPU 的 i.MX8 板上运行容器，请使用 Docker Compose 部署以下 `docker-compose.yaml`：
 
 ```yaml
 services:
@@ -88,18 +87,18 @@ services:
 ```
 
 :::note[Note]
-Change the `image` to match your hardware platform:
+将 `image` 改为与你硬件平台相匹配：
 
-| Platform      | Image                                                     |
+| 平台          | 镜像                                                      |
 | ------------- | --------------------------------------------------------- |
-| ARM64 no GPU  | `ghcr.io/slint-ui/slint/torizon-demos-arm64:latest`       |
-| i.MX8 w/ GPU  | `ghcr.io/slint-ui/slint/torizon-demos-arm64-imx8:latest`  |
-| AM62 w/ GPU   | `ghcr.io/slint-ui/slint/torizon-demos-arm64-am62:latest`  |
-| i.MX95 W/ GPU | `ghcr.io/slint-ui/slint/torizon-demos-arm64-imx95:latest` |
+| ARM64 无 GPU  | `ghcr.io/slint-ui/slint/torizon-demos-arm64:latest`       |
+| i.MX8 带 GPU  | `ghcr.io/slint-ui/slint/torizon-demos-arm64-imx8:latest`  |
+| AM62 带 GPU   | `ghcr.io/slint-ui/slint/torizon-demos-arm64-am62:latest`  |
+| i.MX95 带 GPU | `ghcr.io/slint-ui/slint/torizon-demos-arm64-imx95:latest` |
 
 :::
 
-Alternative, run the container with the following command line:
+或者，使用以下命令行运行容器：
 
 ```
 sudo docker run --rm --privileged \
@@ -114,21 +113,21 @@ sudo docker run --rm --privileged \
   ghcr.io/slint-ui/slint/torizon-demos-arm64-imx8
 ```
 
-#### Selecting Demos
+#### 选择演示程序
 
-By default, the **home-automation** demo is run. The containers package multiple demo applications:
+默认情况下运行 **home-automation** 演示程序。这些容器打包了多个演示应用程序：
 
-- **home-automation** (default) - Smart home control panel
-- **energy-monitor** - Energy monitoring dashboard
-- **printerdemo** - 3D printer control interface
-- **gallery** - Image gallery with touch navigation
-- **slide_puzzle** - Interactive sliding puzzle game
-- **opengl_underlay** - OpenGL rendering demonstration
-- **carousel** - 3D carousel interface
-- **todo** - Task management application
-- **weather-demo** - Weather information display (requires API key)
+- **home-automation**（默认）- 智能家居控制面板
+- **energy-monitor** - 能源监控仪表板
+- **printerdemo** - 3D 打印机控制界面
+- **gallery** - 支持触摸导航的图像库
+- **slide_puzzle** - 交互式滑块拼图游戏
+- **opengl_underlay** - OpenGL 渲染演示
+- **carousel** - 3D 轮播界面
+- **todo** - 任务管理应用程序
+- **weather-demo** - 天气信息显示（需要 API key）
 
-Run a specific demo by specifying it as a parameter to `docker run`, for example:
+通过把特定演示程序指定为 `docker run` 的参数来运行它，例如：
 
 ```
 sudo docker run --rm --privileged --user=torizon \
@@ -141,19 +140,19 @@ sudo docker run --rm --privileged --user=torizon \
 </TabItem>
 </Tabs>
 
-## Microcontrollers
+## 微控制器
 
-Slint's platform abstraction allows for integration into any Rust or C++ based Microcontroller development
-environment. Developers need to implement functionality to feed input events such as touch or keyboard, as
-well as displaying the pixels rendered by Slint into a frame- or linebuffer.
+Slint 的平台抽象允许集成到任何基于 Rust 或 C++ 的微控制器开发
+环境中。开发者需要实现相应功能来馈送诸如触摸或键盘之类的输入事件，
+以及把 Slint 渲染的像素显示到一个帧缓冲或行缓冲中。
 
 <Tabs syncKey="dev-language">
 <TabItem label="Rust" icon="seti:rust">
-You will need to use the `mcu-board-support` crate. This crate re-export a `entry` attribute macro to apply to the `main` function, and a `init()`
-function that should be called before creating the Slint UI.
+你需要使用 `mcu-board-support` crate。这个 crate 重新导出了一个应用于 `main` 函数的 `entry` 属性宏，以及一个应在
+创建 Slint UI 之前调用的 `init()` 函数。
 
-In order to use this backend, the final program must depend on both `slint` and `mcu-board-support`.
-The main.rs will look something like this
+为了使用这个后端，最终程序必须同时依赖 `slint` 和 `mcu-board-support`。
+main.rs 看起来大致像这样
 
 ```rust
 #![no_std]
@@ -171,8 +170,8 @@ fn main() -> ! {
 }
 ```
 
-Since mcu-board-support is at the moment an internal crate not uploaded to crates.io, you must
-use the git version of slint, slint-build, and mcu-board-support
+由于 mcu-board-support 目前是一个尚未上传到 crates.io 的内部 crate，你必须
+使用 slint、slint-build 和 mcu-board-support 的 git 版本
 
 ```toml
 [dependencies]
@@ -183,33 +182,33 @@ mcu-board-support = { git = "https://github.com/slint-ui/slint" }
 slint-build = { git = "https://github.com/slint-ui/slint" }
 ```
 
-In your build.rs, you must include a call to `slint_build::print_rustc_flags().unwrap()` to set some of the flags.
+在你的 build.rs 中，必须包含对 `slint_build::print_rustc_flags().unwrap()` 的调用，以设置其中一些标志。
 
 </TabItem>
 <TabItem label="C++" icon="seti:cpp">
-We provide templates for a few off-the-shelf development boards from some of the silicon vendors.
+我们为一些芯片厂商提供的若干现成开发板提供了模板。
 </TabItem>
 </Tabs>
 
-The Rust sections below show how to run the Slint Printer demo on various boards. The commands
-are meant to be run from the root of a checkout of the [Slint repository](https://github.com/slint-ui/slint);
-the demo lives in the `demos` Cargo workspace, hence the explicit `--manifest-path`.
+下面的 Rust 章节展示如何在各种开发板上运行 Slint Printer 演示程序。这些命令
+应从 [Slint 仓库](https://github.com/slint-ui/slint)的一次检出根目录运行；
+该演示程序位于 `demos` Cargo 工作区中，因此需要显式的 `--manifest-path`。
 
 ### Espressif (ESP32)
 
 <Tabs syncKey="dev-language">
 <TabItem label="Rust" icon="seti:rust">
-#### Prerequisites
+#### 先决条件
 
-- ESP Rust Toolchain: https://esp-rs.github.io/book/installation/installation.html
-- `espflash`: Install via `cargo install espflash`.
+- ESP Rust 工具链：https://esp-rs.github.io/book/installation/installation.html
+- `espflash`：通过 `cargo install espflash` 安装。
 
-When flashing, with `espflash`, you will be prompted to select a USB port. If this port is always the same, then you can also pass it as a parameter on the command line to avoid the prompt. For example if
-`/dev/ttyUSB1` is the device file for your port, the command line changes to `espflash --monitor /dev/ttyUSB1 path/to/binary/to/flash_and_monitor`.
+使用 `espflash` 烧录时，系统会提示你选择一个 USB 端口。如果该端口总是相同的，那么你也可以在命令行上把它作为参数传入，以避免该提示。例如，如果
+`/dev/ttyUSB1` 是你端口的设备文件，则命令行变为 `espflash --monitor /dev/ttyUSB1 path/to/binary/to/flash_and_monitor`。
 
 #### ESP32-S3-Box-3
 
-To compile and run the Slint Printer demo:
+要编译并运行 Slint Printer 演示程序：
 
 ```sh
 CARGO_PROFILE_RELEASE_OPT_LEVEL=s cargo +esp run --manifest-path demos/printerdemo_mcu/Cargo.toml --target xtensa-esp32s3-none-elf --no-default-features --features=mcu-board-support/esp32-s3-box-3 --release --config examples/mcu-board-support/esp32_s3_box_3/cargo-config.toml
@@ -217,7 +216,7 @@ CARGO_PROFILE_RELEASE_OPT_LEVEL=s cargo +esp run --manifest-path demos/printerde
 
 </TabItem>
 <TabItem label="C++" icon="seti:cpp">
-To use Slint with your C++ application, you can follow the instructions on the [Espressif Documentation site](https://components.espressif.com/components/slint/slint)
+要在你的 C++ 应用程序中使用 Slint，可以遵循 [Espressif 文档站点](https://components.espressif.com/components/slint/slint)上的说明
 </TabItem>
 </Tabs>
 
@@ -225,11 +224,11 @@ To use Slint with your C++ application, you can follow the instructions on the [
 
 <Tabs syncKey="dev-language">
 <TabItem label="Rust" icon="seti:rust">
-Follow the steps below to run the Slint Printer Demo
+遵循以下步骤运行 Slint Printer 演示程序
 
 #### STM32H735G-DK
 
-Using [probe-rs](https://probe.rs).
+使用 [probe-rs](https://probe.rs)。
 
 ```sh
 CARGO_PROFILE_RELEASE_OPT_LEVEL=s CARGO_TARGET_THUMBV7EM_NONE_EABIHF_RUNNER="probe-rs run --chip STM32H735IGKx" cargo run --manifest-path demos/printerdemo_mcu/Cargo.toml --no-default-features  --features=mcu-board-support/stm32h735g --target=thumbv7em-none-eabihf --release
@@ -238,34 +237,34 @@ CARGO_PROFILE_RELEASE_OPT_LEVEL=s CARGO_TARGET_THUMBV7EM_NONE_EABIHF_RUNNER="pro
 </TabItem>
 <TabItem label="C++" icon="seti:cpp">
 #### STM32H735G-DK
-You can start with the template <ReleaseLink id="slint-cpp-template-stm32h735g-dk.zip" />
+你可以从模板 <ReleaseLink id="slint-cpp-template-stm32h735g-dk.zip" /> 开始
 
 #### STM32H747I-DISCO
 
-You can start with the template <ReleaseLink id="slint-cpp-template-stm32h747i-disco.zip" />
+你可以从模板 <ReleaseLink id="slint-cpp-template-stm32h747i-disco.zip" /> 开始
 
 </TabItem>
 </Tabs>
 
 ### Raspberry Pi (Pico)
 
-Only Rust programs are currently supported on the Raspberry Pi Pico.
+目前在 Raspberry Pi Pico 上仅支持 Rust 程序。
 
-#### On the Raspberry Pi Pico
+#### 在 Raspberry Pi Pico 上
 
-Ensure the right target is set:
+确保设置了正确的目标：
 
 ```sh
 rustup target add thumbv6m-none-eabi
 ```
 
-Build the Slint Printer demo with:
+用以下命令构建 Slint Printer 演示程序：
 
 ```sh
 cargo build --manifest-path demos/printerdemo_mcu/Cargo.toml --no-default-features --features=mcu-board-support/pico-st7789 --target=thumbv6m-none-eabi --release
 ```
 
-The resulting file can be flashed with [elf2uf2-rs](https://github.com/jonil/elf2uf2-rs). Install it using:
+生成的文件可以用 [elf2uf2-rs](https://github.com/jonil/elf2uf2-rs) 烧录。使用以下命令安装它：
 
 ```sh
 cargo install elf2uf2-rs
@@ -274,30 +273,30 @@ cargo install elf2uf2-rs
 <Tabs syncKey="dev-platform">
 <TabItem label="macOS" icon="apple">
 
-Now power off the Pico and connect it while holding down the "bootsel" button. The device will show up as a storage device
-with the name `RPI-RP2`.
+现在关闭 Pico 的电源，并在按住“bootsel”按钮的同时连接它。该设备会显示为一个存储设备，
+名称为 `RPI-RP2`。
 
-Then flash the demo to the Pico with:
+然后用以下命令把演示程序烧录到 Pico：
 
 ```sh
 elf2uf2-rs -d target/thumbv6m-none-eabi/release/printerdemo_mcu
 ```
 
-When the flashing completes the Pico will reboot and show the Slint Printer demo. The Mac will
-warn the drive was unmounted unexpectedly. This is expected and can be ignored.
+烧录完成后，Pico 会重启并显示 Slint Printer 演示程序。Mac 会
+警告驱动器被意外卸载。这是预期行为，可以忽略。
 
 </TabItem>
 <TabItem label="Linux" icon="linux">
 
-Now power off the Pico and connect it while holding down the "bootsel" button. The device will show up as a storage device.
+现在关闭 Pico 的电源，并在按住“bootsel”按钮的同时连接它。该设备会显示为一个存储设备。
 
-Mount the device:
+挂载该设备：
 
 ```sh
 udisksctl mount -b /dev/sda1
 ```
 
-Then flash the demo to the Pico with:
+然后用以下命令把演示程序烧录到 Pico：
 
 ```sh
 elf2uf2-rs -d target/thumbv6m-none-eabi/release/printerdemo_mcu
@@ -306,20 +305,20 @@ elf2uf2-rs -d target/thumbv6m-none-eabi/release/printerdemo_mcu
 </TabItem>
 </Tabs>
 
-#### On the Raspberry Pi Pico2
+#### 在 Raspberry Pi Pico2 上
 
-Build the Slint Printer demo with:
+用以下命令构建 Slint Printer 演示程序：
 
 ```sh
 cargo build --manifest-path demos/printerdemo_mcu/Cargo.toml --no-default-features --features=mcu-board-support/pico2-st7789 --target=thumbv8m.main-none-eabihf --release
 ```
 
-The resulting file can be flashed conveniently with [picotool](https://github.com/raspberrypi/picotool). You should build it from source.
+生成的文件可以用 [picotool](https://github.com/raspberrypi/picotool) 方便地烧录。你应当从源代码构建它。
 
-Then upload the demo to the Raspberry Pi Pico: push the "bootsel" white button on the device while connecting the
-micro-usb cable to the device, this connects some USB storage on your workstation where you can store the binary.
+然后把演示程序上传到 Raspberry Pi Pico：连接 micro-usb 线缆到设备时，按住设备上的白色“bootsel”按钮，
+这会在你的工作站上挂载一些 USB 存储，你可以把二进制文件存放进去。
 
-Or from the command on linux (connect the device while pressing the "bootsel" button):
+或者在 linux 上通过命令（在按住“bootsel”按钮的同时连接设备）：
 
 ```sh
 # If you're on Linux: mount the device
@@ -328,22 +327,22 @@ udisksctl mount -b /dev/sda1
 picotool load -u -v -x -t elf target/thumbv8m.main-none-eabihf/release/printerdemo_mcu
 ```
 
-#### Using probe-rs
+#### 使用 probe-rs
 
-This requires [probe-rs](https://probe.rs) and to connect the pico via a probe
-(for example another pico running the probe).
+这需要 [probe-rs](https://probe.rs)，并通过一个探针连接 pico
+（例如另一个运行探针的 pico）。
 
-Then you can simply run with `cargo run`
+然后你就可以直接用 `cargo run` 运行
 
 ```sh
 CARGO_TARGET_THUMBV6M_NONE_EABI_LINKER="flip-link" CARGO_TARGET_THUMBV6M_NONE_EABI_RUNNER="probe-rs run --chip RP2040" cargo run --manifest-path demos/printerdemo_mcu/Cargo.toml --no-default-features --features=mcu-board-support/pico-st7789 --target=thumbv6m-none-eabi --release
 ```
 
-#### Flashing and Debugging the Pico with `probe-rs`'s VSCode Plugin
+#### 使用 `probe-rs` 的 VSCode 插件烧录和调试 Pico
 
-Install `probe-rs-debugger` and the VSCode plugin as described [here](https://probe.rs/docs/tools/vscode/).
+按照[此处](https://probe.rs/docs/tools/vscode/)的说明安装 `probe-rs-debugger` 和 VSCode 插件。
 
-Add this build task to your `.vscode/tasks.json`:
+将此构建任务添加到你的 `.vscode/tasks.json`：
 
 ```json
 {
@@ -366,9 +365,9 @@ Add this build task to your `.vscode/tasks.json`:
 }
 ```
 
-The `release-with-debug` profile is needed, because the debug build does not fit into flash.
+需要 `release-with-debug` profile，因为 debug 构建无法装入 flash。
 
-You can define it like this in the `demos/Cargo.toml` workspace manifest:
+你可以在 `demos/Cargo.toml` 工作区清单中这样定义它：
 
 ```toml
 [profile.release-with-debug]
@@ -376,7 +375,7 @@ inherits = "release"
 debug = true
 ```
 
-Now you can add the launch configuration to `.vscode/launch.json`:
+现在你可以把启动配置添加到 `.vscode/launch.json`：
 
 ```json
 {
@@ -407,8 +406,8 @@ Now you can add the launch configuration to `.vscode/launch.json`:
 }
 ```
 
-This was tested using a second Raspberry Pi Pico programmed as a probe with [DapperMime](https://github.com/majbthrd/DapperMime).
+这是使用第二个 Raspberry Pi Pico 刷入 [DapperMime](https://github.com/majbthrd/DapperMime) 作为探针进行测试的。
 
-## Other Platforms
+## 其他平台
 
-[Contact us](https://slint.dev/contact) if you want to use Slint on other platforms/versions.
+如果你想在其他平台/版本上使用 Slint，请[联系我们](https://slint.dev/contact)。

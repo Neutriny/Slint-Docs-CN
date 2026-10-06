@@ -3,18 +3,18 @@ title: 数组搜索函数
 description: 实验性数组搜索函数：index-of、any、all、find-index
 ---
 
-The array function `index-of` looks up a value in an array, and the operations `any`,
-`all` and `find-index` test the elements of an array against a predicate expression.
+数组函数 `index-of` 在数组中查找某个值，而 `any`、`all` 和 `find-index`
+这些操作会用谓词表达式测试数组的各个元素。
 
-> **Note**: These functions are experimental and subject to change.
-> They report "no match" with a `-1` or `false` result; once the language has optional
-> types, `index-of` and `find-index` should return an optional index instead.
-> Tracking issue: [slint-ui/slint#12777](https://github.com/slint-ui/slint/issues/12777).
+> **注意**：这些函数是实验性的，可能会发生变化。
+> 它们以 `-1` 或 `false` 的结果表示“未匹配”；一旦语言支持了可选
+> 类型，`index-of` 和 `find-index` 应改为返回可选索引。
+> 跟踪 issue：[slint-ui/slint#12777](https://github.com/slint-ui/slint/issues/12777)。
 
 ## index-of
 
-`array.index-of(value)` reads the index of the first element that equals `value`,
-or `-1` if the array contains no such element.
+`array.index-of(value)` 读取第一个等于 `value` 的元素的索引，
+如果数组中不存在这样的元素，则返回 `-1`。
 
 ```slint
 export component Example {
@@ -23,31 +23,31 @@ export component Example {
 }
 ```
 
-## Syntax
+## 语法
 
-A predicate expression has the form `(name) => condition`.
-It binds `name` to a value and evaluates `condition`, which must be a `bool`.
-The name is in scope only inside `condition`.
+谓词表达式的形式为 `(name) => condition`。
+它将 `name` 绑定到一个值并求值 `condition`，后者必须是 `bool`。
+该名称的作用域仅限于 `condition` 内部。
 
-Predicates are passed to the array operations `any`, `all` and `find-index`,
-which supply each element in turn as `name`:
+谓词被传递给数组操作 `any`、`all` 和 `find-index`，
+这些操作会依次将每个元素作为 `name` 提供：
 
-- `array.any((name) => condition)` reads `true` if `condition` holds for at least one element.
-- `array.all((name) => condition)` reads `true` if `condition` holds for every element.
-- `array.find-index((name) => condition)` reads the index of the first element for which
-  `condition` holds, or `-1` if no element matches.
+- `array.any((name) => condition)` 在 `condition` 对至少一个元素成立时读取为 `true`。
+- `array.all((name) => condition)` 在 `condition` 对每个元素都成立时读取为 `true`。
+- `array.find-index((name) => condition)` 读取第一个使 `condition` 成立的
+  元素的索引，如果没有元素匹配则返回 `-1`。
 
-The argument name is available only inside the predicate expression,
-and its type is inferred from the array element type.
+参数名称仅在谓词表达式内部可用，
+其类型从数组元素类型推断。
 
-`any` returns `false` for an empty array, `all` returns `true` for an empty array, and
-`find-index` returns `-1` for an empty array.
+对于空数组，`any` 返回 `false`，`all` 返回 `true`，
+`find-index` 返回 `-1`。
 
-For a plain value-equality lookup, prefer `array.index-of(value)` over
-`find-index((name) => name == value)`: it needs no predicate.
-Reach for `find-index` when the match condition is more than equality against a single value.
+对于简单的值相等查找，优先使用 `array.index-of(value)`，而不是
+`find-index((name) => name == value)`：前者不需要谓词。
+当匹配条件不只是与单个值相等时，才使用 `find-index`。
 
-## Example
+## 示例
 
 ```slint
 export component Example {
@@ -59,10 +59,10 @@ export component Example {
 }
 ```
 
-## Current Limitations
+## 当前限制
 
-Predicates are the only form of closure in the Slint language, and they are only accepted
-as the argument of `any`, `all` and `find-index`.
-A predicate cannot be stored in a property, passed to a function or callback, or called directly.
-The predicate must be written inline in the call to `any`, `all` or `find-index`;
-passing a closure stored in a local variable is rejected with an error.
+谓词是 Slint 语言中唯一形式的闭包，并且只能作为
+`any`、`all` 和 `find-index` 的参数。
+谓词不能存储在属性中，不能传递给函数或回调，也不能直接调用。
+谓词必须内联写在 `any`、`all` 或 `find-index` 的调用中；
+传递存储在局部变量中的闭包会被错误拒绝。

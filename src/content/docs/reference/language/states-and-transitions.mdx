@@ -1,6 +1,6 @@
 ---
 title: 状态与过渡
-description: Declaring states and animating state changes.
+description: 声明状态并为状态变化添加动画。
 SC: true
 ---
 
@@ -9,8 +9,8 @@ import OnlyInSC from '@slint/common-files/src/components/OnlyInSC.astro';
 import NotInSC from '@slint/common-files/src/components/NotInSC.astro';
 
 <SC>
-A `states` block declares a set of named *states* on an element.
-Each state carries a condition and a set of property changes. \{#sls.state.def}
+`states` 块在元素上声明一组具名*状态*。
+每个状态带有一个条件和一组属性变更。 \{#sls.state.def}
 
 ```slint
 export component Example inherits Window {
@@ -34,25 +34,25 @@ export component Example inherits Window {
 }
 ```
 
-A `states` block is a single statement inside an element's body, written `states [ ... ]`. \{#sls.state.form}
+`states` 块是元素体内的一条语句，写作 `states [ ... ]`。 \{#sls.state.form}
 
-A `states` block may appear on any element, and each element has its own set of states. \{#sls.state.scope}
+`states` 块可以出现在任何元素上，每个元素都有自己的一组状态。 \{#sls.state.scope}
 
 <NotInSC>
-  That includes the root, a child, a sub-component's root, and the element of a
-  [`for`](../repetition-and-conditional-elements/). A [global](../globals/) may
-  not contain a `states` block; doing so is a compile error.
+  这包括根元素、子元素、子组件的根元素，以及
+  [`for`](../repetition-and-conditional-elements/)
+  的元素。[全局对象](../globals/)不得 包含 `states` 块；这样做会构成编译错误。
 </NotInSC>
 
-An element may hold more than one `states` block, and the entries of all of them make up its set of states. \{#sls.state.blocks}
+元素可以持有多个 `states` 块，它们的所有条目共同构成其状态集合。 \{#sls.state.blocks}
 
-## States
+## 状态
 
-Each entry consists of a name, a `when` clause holding a boolean expression, `:`, and a brace-delimited body of property changes. \{#sls.state.entry.form}
+每个条目由名字、持有布尔表达式的 `when` 子句、`:`，以及由花括号界定的属性变更主体组成。 \{#sls.state.entry.form}
 
 <NotInSC>
-  The `when` clause is optional. A state without one is never selected; it only
-  names a state a transition can refer to.
+  `when` 子句是可选的。没有它的状态永远不会被选中；它只是
+  为过渡可以引用的状态命名。
 </NotInSC>
 
 ```slint no-test
@@ -62,54 +62,54 @@ name when condition: {
 }
 ```
 
-The name is an identifier local to the element, so two elements may each declare a state of the same name. \{#sls.state.name}
+名字是元素局部的标识符，因此两个元素可以各自声明同名的状态。 \{#sls.state.name}
 
-The condition may reference any property in scope, including properties of other elements. \{#sls.state.condition}
+条件可以引用作用域中的任何属性，包括其他元素的属性。 \{#sls.state.condition}
 
-At most one state is active at a time. \{#sls.state.active}
+同一时刻至多有一个状态处于活动状态。 \{#sls.state.active}
 
-When the conditions of several states hold, the state listed first in source order is the active one. \{#sls.state.first-wins}
+当多个状态的条件都成立时，按源顺序最先列出的状态是活动状态。 \{#sls.state.first-wins}
 
-When no condition holds, no state is active, and every property keeps its own binding. \{#sls.state.inactive}
+当没有条件成立时，没有状态处于活动状态，每个属性都保留自己的绑定。 \{#sls.state.inactive}
 
 <OnlyInSC>
-Each state shall carry a `when` clause: a state without one can never be active. \{#sls.state.condition-required}
+每个状态都应带有 `when` 子句：没有它的状态永远无法处于活动状态。 \{#sls.state.condition-required}
 </OnlyInSC>
 
-## Property Changes
+## 属性变更
 
-The body of a state is a list of _property changes_.
-Each change consists of a name, `:`, a value, and `;`. \{#sls.state.change.form}
+状态的主体是一个*属性变更*列表。
+每个变更由名字、`:`、一个值和 `;` 组成。 \{#sls.state.change.form}
 
-An unqualified name refers to a property of the element that owns the `states` block, so `background` is the same as `root.background`.
-A qualified name addresses a descendant by its element id, as in `indicator.background`. \{#sls.state.change.target}
+非限定名字指向拥有 `states` 块的那个元素的属性，因此 `background` 与 `root.background` 相同。
+限定名字通过元素 id 定位后代，例如 `indicator.background`。 \{#sls.state.change.target}
 
-The name shall resolve to a property. \{#sls.state.change.target-must-exist}
+该名字应解析为一个属性。 \{#sls.state.change.target-must-exist}
 
-The value is a [binding](../bindings/) of that property. \{#sls.state.change.value}
+该值是那个属性的一个[绑定](../bindings/)。 \{#sls.state.change.value}
 
-While a state is active, each property it lists takes the state's value instead of its own binding. \{#sls.state.change.effect}
+当某个状态处于活动状态时，它列出的每个属性会取该状态的值，而不是自己的绑定。 \{#sls.state.change.effect}
 
-Setting the property [replaces](../bindings/#sls.binding.set-replaces) the binding a property change gives it.
-The property then keeps the value it was set to, whichever state is active. \{#sls.state.change.set}
+设置属性会[替换](../bindings/#sls.binding.set-replaces)属性变更赋予它的绑定。
+此后，无论哪个状态处于活动状态，该属性都保留被设置的值。 \{#sls.state.change.set}
 
 <NotInSC>
-  A property initialized with a [two-way binding](../two-way-bindings/) cannot
-  be changed in a state; doing so is an error.
+  用[双向绑定](../two-way-bindings/)初始化的属性不能在状态中
+  被更改；这样做是一个错误。
 </NotInSC>
 
 <OnlyInSC>
-A state shall only change a property that is part of the subset. \{#sls.state.change.subset}
+状态只能更改属于该子集的属性。 \{#sls.state.change.subset}
 
-A state shall carry no transition. \{#sls.state.no-transition}
+状态不应带有过渡。 \{#sls.state.no-transition}
 
 </OnlyInSC>
 </SC>
 
-## Transitions
+## 过渡
 
-A _transition_ binds [animations](../animations/) to the entering or leaving of a state.
-Transitions are declared with `in`, `out`, or `in-out` blocks inside the state they belong to:
+_过渡_ 将[动画](../animations/)绑定到状态的进入或离开。
+过渡使用 `in`、`out` 或 `in-out` 块声明在它们所属的状态内部：
 
 ```slint
 export component Example inherits Window {
@@ -135,18 +135,18 @@ export component Example inherits Window {
 }
 ```
 
-The three directions are:
+三种方向为：
 
-- `in` — animate when entering the state.
-- `out` — animate when leaving the state.
-- `in-out` — animate in both directions. `in_out` is accepted as a spelling of `in-out`.
+- `in` —— 进入状态时应用动画。
+- `out` —— 离开状态时应用动画。
+- `in-out` —— 两个方向都应用动画。`in_out` 可作为 `in-out` 的一种写法被接受。
 
-A direction block sits alongside the property changes in the state body and may be repeated; a state may hold several `in`, `out`, or `in-out` blocks.
+方向块与状态体中的属性变更并列，并且可以重复；一个状态可以持有多个 `in`、`out` 或 `in-out` 块。
 
-### Animations in Transitions
+### 过渡中的动画
 
-The body of a direction block contains only `animate` clauses; anything else is an error.
-Each `animate` clause names one or more properties, or the catch-all `*`, and carries the same fields as an animation elsewhere (see [Animations](../animations/)):
+方向块的主体仅包含 `animate` 子句；其他任何内容都是一个错误。
+每个 `animate` 子句命名一个或多个属性，或通配符 `*`，并带有与其他地方的动画相同的字段（见[动画](../animations/)）：
 
 ```slint no-test
 in {
@@ -155,10 +155,10 @@ in {
 }
 ```
 
-- `animate *` matches every property changed by the state.
-  The catch-all is allowed only inside a transition.
-- The properties named must be among those changed by the state the transition belongs to; naming an unchanged property is an error.
-- A property that already has an [`animate`](../animations/) binding of its own cannot also be driven by a transition; that combination is an error.
+- `animate *` 匹配状态更改的每个属性。
+  通配符仅允许在过渡内部使用。
+- 所命名的属性必须是该过渡所属状态所更改的属性之一；命名未更改的属性是一个错误。
+- 已有自己 [`animate`](../animations/) 绑定的属性也不能同时由过渡驱动；这种组合是一个错误。
 
-The standalone `transitions [ ... ]` block from the legacy syntax is no longer supported.
-Declare transitions with `in`, `out`, and `in-out` directly inside the state.
+旧语法中独立的 `transitions [ ... ]` 块不再受支持。
+请直接在状态内部用 `in`、`out` 和 `in-out` 声明过渡。

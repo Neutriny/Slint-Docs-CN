@@ -1,6 +1,6 @@
 ---
 title: ProgressIndicator
-description: ProgressIndicator api.
+description: ProgressIndicator API。
 ---
 
 import SlintProperty from '@slint/common-files/src/components/SlintProperty.astro';
@@ -22,20 +22,20 @@ export component Example inherits Window {
 ```
 </CodeSnippetMD>
 
-The `ProgressIndicator` informs the user about the status of an on-going operation, such as loading data from the network.
+`ProgressIndicator` 向用户告知正在进行操作的进度状态，例如从网络加载数据。
 
-## Properties
+## 属性
 
 ### indeterminate
 
 <SlintProperty propName="indeterminate" typeName="bool" defaultValue="false">
-  Set to true if the progress of the operation cannot be determined by value.
+  如果无法通过值确定操作的进度，则设置为 true。
 </SlintProperty>
 
 ### progress
 
 <SlintProperty propName="progress" typeName="float" defaultValue="0">
-Percentage of completion, as value between 0 and 1. Values less than 0 or greater than 1 are capped.
+完成百分比，为 0 到 1 之间的值。小于 0 或大于 1 的值将被限制。
 ```slint "progress: 0.5;"
 ProgressIndicator {
     progress: 0.5;

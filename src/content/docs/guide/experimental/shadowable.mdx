@@ -5,7 +5,7 @@ description: 实验性 `@shadowable` 注解，允许派生组件重新声明继�
 
 import Link from '@slint/common-files/src/components/Link.astro';
 
-Declaring a property, callback or function whose name already exists in the base component is normally an error:
+声明一个名称已存在于基组件中的属性、回调或函数，通常是一个错误：
 
 ```slint no-test
 component Base {
@@ -18,15 +18,15 @@ component Derived inherits Base {
 }
 ```
 
-That makes adding a member to a released component a breaking change: any component out there that already declares
-that name stops compiling. The `@shadowable` annotation lets the author of the base component opt in to being shadowed,
-so such an addition stays backwards compatible.
+这使得向已发布的组件添加成员成为一种破坏性变更：任何已经声明了
+该名称的组件都会停止编译。`@shadowable` 注解让基组件的作者可以选择允许被覆写，
+这样此类添加就能保持向后兼容。
 
-> **Note**: `@shadowable` is experimental and subject to change.
+> **注意**：`@shadowable` 是实验性的，可能会发生变化。
 
-## Syntax
+## 语法
 
-Prefix a property, callback or function declaration in the base component with `@shadowable`:
+在基组件中的属性、回调或函数声明前加上 `@shadowable`：
 
 ```slint
 @shadowable in-out property <string> name: "Hello";
@@ -34,19 +34,18 @@ Prefix a property, callback or function declaration in the base component with `
 @shadowable public function describe() -> string { "base" }
 ```
 
-A component that inherits from it may then declare a member of the same name. The compiler warns
-(`'name' shadows the inherited property of the same name`) but accepts the declaration.
+继承自它的组件随后可以声明同名的成员。编译器会发出警告
+（`'name' shadows the inherited property of the same name`），但接受该声明。
 
-## Semantics
+## 语义
 
-The two members are entirely separate. Each side keeps using the one it was written against:
+这两个成员完全独立。各方继续使用自己编写时所针对的那个成员：
 
-- Expressions inside the base component refer to the base's member, with the base's value and type.
-- Expressions inside the derived component, and code that instantiates it, refer to the shadowing declaration.
-- The base member is no longer reachable from the derived component, nor through its public API.
+- 基组件内部的表达式引用基组件的成员，使用基组件的值和类型。
+- 派生组件内部的表达式，以及实例化它的代码，引用覆写声明。
+- 基组件的成员在派生组件中不再可访问，通过其公共 API 也无法访问。
 
-The shadowing member need not match the shadowed one: the type may differ, and a property may shadow a callback
-or a function.
+覆写成员不必与被覆写成员匹配：类型可以不同，属性也可以覆写回调或函数。
 
 ```slint
 component Base {
@@ -70,10 +69,10 @@ export component Example {
 }
 ```
 
-## Private members
+## 私有成员
 
-A `private` member is not visible outside the component that declares it, so a derived component may always
-declare a member of the same name. This needs no annotation and produces no warning.
+`private` 成员在声明它的组件之外不可见，因此派生组件总是可以
+声明同名的成员。这不需要注解，也不会产生警告。
 
 ```slint
 component Base {
@@ -86,11 +85,11 @@ export component Derived inherits Base {
 }
 ```
 
-## Rules
+## 规则
 
-- `@shadowable` can be applied to property, callback and function declarations.
-- It goes on the declaration in the _base_ component: it says "this member may be shadowed", not "this member shadows".
-- It may be combined with <Link type="Deprecation" label="@deprecated" code /> in either order, but each annotation only once.
-- A shadowing declaration in a derived component may itself be marked `@shadowable` to allow shadowing it further down.
-- Declaring the same name twice on the same element is still an error.
-- Reserved members that exist on every element, such as `x`, `y`, `width` and `height`, can't be shadowed.
+- `@shadowable` 可以应用于属性、回调和函数声明。
+- 它写在*基*组件中的声明上：它表示"该成员可以被覆写"，而不是"该成员会覆写"。
+- 它可以与 <Link type="Deprecation" label="@deprecated" code /> 以任意顺序组合，但每个注解只能出现一次。
+- 派生组件中的覆写声明本身也可以标记为 `@shadowable`，以允许在更下层继续覆写它。
+- 在同一元素上重复声明同一名称仍然是错误。
+- 每个元素上都存在的保留成员，例如 `x`、`y`、`width` 和 `height`，不能被覆写。

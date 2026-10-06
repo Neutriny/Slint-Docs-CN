@@ -8,38 +8,40 @@ import Link from '@slint/common-files/src/components/Link.astro';
 import { Image } from 'astro:assets';
 
 :::note[Note]
-When developing Slint applications for iOS, you can only use Rust as the programming language.
+在开发 iOS 的 Slint 应用程序时，你只能使用 Rust 作为编程语言。
 :::
 
-A Rust-based Slint application can be cross-compiled to iOS and runs on iPhones, iPads, and their
-respective simulators. This is implemented through the <Link type="WinitBackend" label="Winit backend" /> and the
+基于 Rust 的 Slint 应用程序可以交叉编译到 iOS，并在 iPhone、iPad 及其各自的
+模拟器上运行。这是通过 <Link type="WinitBackend" label="Winit 后端" /> 和
 
-<Link type="skia_renderer" label="Skia Renderer" />.
+<Link type="skia_renderer" label="Skia 渲染器" /> 实现的。
 
-## Prerequisites
+## 先决条件
 
-- A computer running macOS.
-- An up-to-date installation of [Xcode](https://developer.apple.com/xcode/).
-- [Xcodegen](https://github.com/yonaskolb/XcodeGen?tab=readme-ov-file#installing).
+- 一台运行 macOS 的电脑。
+- 最新安装的 [Xcode](https://developer.apple.com/xcode/)。
+- [Xcodegen](https://github.com/yonaskolb/XcodeGen?tab=readme-ov-file#installing)。
 - [Rust](https://rustup.rs)
-- The Rust device and simulator toolchains. Run `rustup target add aarch64-apple-ios` and `rustup target add aarch64-apple-ios-sim`
-  to add them.
+- Rust 设备端和模拟器工具链。运行 `rustup target add aarch64-apple-ios` 和 `rustup target add aarch64-apple-ios-sim`
+  来添加它们。
 
-## Adding iOS Support to an existing Rust Application
+<a id="adding-ios-support-to-an-existing-rust-application"></a>
 
-The following steps assume that you have a Rust application with Slint prepared. If you're just getting started, use our [Slint Rust Template](https://github.com/slint-ui/slint-rust-template)
-to get a minimal application running.
+## 为现有的 Rust 应用程序添加 iOS 支持
 
-Use XCode to building, deploy, and submit iOS applications to the App Store.
-Use [Xcodegen](https://github.com/yonaskolb/XcodeGen) to create an Xcode project from a minimal description.
+以下步骤假设你已经准备好一个使用 Slint 的 Rust 应用程序。如果你刚入门，请使用我们的 [Slint Rust Template](https://github.com/slint-ui/slint-rust-template)
+让一个最小应用跑起来。
 
-1. Verify that your application compiles for iOS, by running:
+使用 XCode 构建、部署 iOS 应用程序并提交到 App Store。
+使用 [Xcodegen](https://github.com/yonaskolb/XcodeGen) 从一份最简描述创建 Xcode 项目。
+
+1. 通过运行以下命令，验证你的应用程序能为 iOS 编译：
 
 ```bash
 cargo build --target=aarch64-apple-ios
 ```
 
-2. Create a file called `project.yml` with the following contents:
+2. 创建一个名为 `project.yml` 的文件，内容如下：
 
 ```yml
 name: My App
@@ -71,42 +73,41 @@ targets:
         outputFileLists: $TARGET_BUILD_DIR/$EXECUTABLE_PATH
 ```
 
-Adjust the name, bundle id, and other fields as needed.
+根据需要调整名称、bundle id 和其他字段。
 
-This configuration file delegates the build process to cargo through a shell script.
+这个配置文件通过一个 shell 脚本把构建过程委托给 cargo。
 
-The `CADisableMinimumFrameDurationOnPhone` entry lets animations run at the screen's
-full refresh rate.
-Without it, iOS limits an iPhone app to 60 frames per second,
-even on a ProMotion display that supports 120.
-iPad isn't affected.
+`CADisableMinimumFrameDurationOnPhone` 条目让动画以屏幕的
+完整刷新率运行。
+没有它，即使 ProMotion 显示屏支持 120，iOS 也会把 iPhone 应用限制在每秒 60 帧。
+iPad 不受影响。
 
-The `UIApplicationSceneManifest` entry opts the app into UIKit's scene lifecycle,
-which iOS 27 requires: an app without it fails to launch.
-`SlintWindowSceneDelegate` is the scene delegate that Slint's winit backend provides,
-and it attaches Slint's windows to the scene that UIKit connects.
-Keep the entry as it is.
-For background on the requirement, see Apple's
-[TN3187](https://developer.apple.com/documentation/technotes/tn3187-migrating-to-the-uikit-scene-based-life-cycle).
+`UIApplicationSceneManifest` 条目让应用选择使用 UIKit 的场景生命周期，
+这是 iOS 27 所要求的：没有它的应用会启动失败。
+`SlintWindowSceneDelegate` 是 Slint 的 winit 后端提供的场景委托，
+它把 Slint 的窗口附加到 UIKit 所连接的场景。
+保持该条目原样。
+关于此要求的背景，请参见 Apple 的
+[TN3187](https://developer.apple.com/documentation/technotes/tn3187-migrating-to-the-uikit-scene-based-life-cycle)。
 
 :::note[Note]
-The shell script is invoked with the name of the binary that cargo produces. Update it to match the name of your project.
+该 shell 脚本以 cargo 生成的二进制文件名被调用。请更新它以匹配你的项目名称。
 :::
 
-2. In a new file called `build_for_ios_with_cargo.bash`, paste the following script code:
+2. 在一个名为 `build_for_ios_with_cargo.bash` 的新文件中，粘贴以下脚本代码：
 
 import scriptContent from '../../../../../../scripts/build_for_ios_with_cargo.bash?raw';
 
 <Code code={scriptContent} lang="bash" />
 
-3. Make the script executable with `chmod +x build_for_ios_with_cargo.bash`.
+3. 用 `chmod +x build_for_ios_with_cargo.bash` 使脚本可执行。
 
-4. Run `xcodegen` to create `My App.xcodeproj`, and open it in Xcode. Now you can build, deploy, and debug your iOS application.
+4. 运行 `xcodegen` 创建 `My App.xcodeproj`，并在 Xcode 中打开它。现在你可以构建、部署和调试你的 iOS 应用程序。
 
 import iosScreenshot from '/src/assets/ios-simulator.webp';
 
 <Image
   src={iosScreenshot}
   style={{ width: '500px' }}
-  alt="Screenshot Slint Template running in iOS Simulator"
+  alt="在 iOS 模拟器中运行的 Slint 模板截图"
 />

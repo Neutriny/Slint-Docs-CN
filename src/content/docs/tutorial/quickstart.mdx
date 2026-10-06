@@ -1,18 +1,18 @@
 ---
 title: 简介
-description: Intro
+description: 简介
 prev: false
 ---
 
-This tutorial introduces you to the Slint framework in a playful way by implementing a memory game. It combines the Slint language for the graphics with the game rules implemented in C++, Rust, NodeJS, or Python.
+本教程通过实现一个记忆游戏，以有趣的方式向你介绍 Slint 框架。它将用于图形的 Slint 语言与用 C++、Rust、NodeJS 或 Python 实现的游戏规则结合在一起。
 
-The game consists of a grid of 16 rectangular tiles. Clicking on a tile uncovers an icon underneath.
-There are 8 different icons in total, so each tile has a sibling somewhere in the grid with the
-same icon. The objective is to locate all icon pairs. The player can uncover two tiles at the same time. If they
-aren't the same, the game obscures the icons again.
-If the player uncovers two tiles with the same icon, then they remain visible - they're solved.
+游戏由 16 张矩形牌组成的网格构成。点击一张牌会露出下面的图标。
+总共有 8 种不同的图标，因此每张牌在网格中的某处都有一张具有
+相同图标的配对牌。目标是找出所有配对的图标。玩家可以同时翻开两张牌。如果它们
+不相同，游戏会再次遮住这些图标。
+如果玩家翻开的两张牌图标相同，它们就会保持可见——即已解开。
 
-This is how the game looks in action:
+游戏实际运行的效果如下：
 
 <video
   autoplay

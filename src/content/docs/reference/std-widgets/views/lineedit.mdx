@@ -1,6 +1,6 @@
 ---
 title: LineEdit
-description: LineEdit api.
+description: LineEdit API。
 ---
 
 import SlintProperty from '@slint/common-files/src/components/SlintProperty.astro';
@@ -25,45 +25,44 @@ export component Example inherits Window {
 ````
 </CodeSnippetMD>
 
-A widget used to enter a single line of text. See <Link type="TextEdit" /> for
-a widget able to handle several lines of text.
+用于输入单行文本的控件。有关能够处理多行文本的控件，请参见 <Link type="TextEdit" />。
 
-## Properties
+## 属性
 
 ### enabled
 <SlintProperty propName="enabled" typeName="bool" defaultValue="true">
-When false, nothing can be entered.
+当为 false 时，无法输入任何内容。
 </SlintProperty>
 
 ### font-size
 <SlintProperty propName="font-size" typeName="length">
-The size of the font of the input text
+输入文本的字体大小
 </SlintProperty>
 
 ### font-family
 <SlintProperty propName="font-family" typeName="string">
-The font family of the input text
+输入文本的字体系列
 </SlintProperty>
 
 ### font-italic
 <SlintProperty propName="font-italic" typeName="bool" defaultValue="false">
-The italic state of the font of the input text
+输入文本的字体斜体状态
 </SlintProperty>
 
 ### has-focus
 <SlintProperty propName="has-focus" typeName="bool" propertyVisibility="out">
-Set to true when the line edit currently has the focus
+当单行编辑器当前具有焦点时设置为 true
 </SlintProperty>
 
 ### horizontal-alignment
 <SlintProperty propName="horizontal-alignment" typeName="enum" enumName='TextHorizontalAlignment' defaultValue="left">
-The horizontal alignment of the text.
+文本的水平对齐方式。
 </SlintProperty>
 
 ### input-method-hints
 <SlintProperty propName="input-method-hints" typeName="struct" structName="InputMethodHints">
-Hints for the platform's input method (such as a soft keyboard), for example to configure auto-capitalization.
-The input method may take these hints into account, but might also ignore them.
+平台输入法（例如软键盘）的提示，例如用于配置自动大写。
+输入法可能会考虑这些提示，也可能忽略它们。
 ```slint "input-method-hints: { capitalization: CapitalizationMode.words };"
 LineEdit {
     input-method-hints: { capitalization: CapitalizationMode.words };
@@ -75,7 +74,7 @@ LineEdit {
 ### input-type
 
 <SlintProperty propName="input-type" typeName="enum" enumName="InputType" defaultValue="text">
-The way to allow special input viewing properties such as password fields.
+允许特殊输入视图属性（如密码字段）的方式。
 ```slint "input-type: password;"
 LineEdit {
     input-type: password;
@@ -86,20 +85,20 @@ LineEdit {
 ### placeholder-text
 
 <SlintProperty propName="placeholder-text" typeName="string">
-  A placeholder text being shown when there is no text in the edit field
+  编辑字段中没有文本时显示的占位文本
 </SlintProperty>
 
 ### read-only
 
 <SlintProperty propName="read-only" typeName="bool" defaultValue="false">
-  When set to true, text editing via keyboard and mouse is disabled but
-  selecting text is still enabled as well as editing text programmatically.
+  设置为 true 时，通过键盘和鼠标进行的文本编辑被禁用，但
+  仍可选择文本，也可通过编程方式编辑文本。
 </SlintProperty>
 
 ### text
 
 <SlintProperty propName="text" typeName="string" defaultValue='""' propertyVisibility="in-out">
-The text being edited
+正在编辑的文本
 ```slint 'text: "Initial text";'
 LineEdit {
     text: "Initial text";
@@ -107,59 +106,59 @@ LineEdit {
 ```
 </SlintProperty>
 
-## Functions
+## 函数
 
 ### focus()
 
-Call this function to focus the LineEdit and make it receive future keyboard events.
+调用此函数以聚焦 LineEdit 并使其接收后续键盘事件。
 
 ### clear-focus()
 
-Call this function to remove keyboard focus from this `LineEdit` if it currently has the focus. See also <Link type="FocusHandling" />.
+调用此函数以从此 `LineEdit` 移除键盘焦点（如果它当前具有焦点）。另请参见 <Link type="FocusHandling" />。
 
 ### set-selection-offsets(anchor: int, focus: int)
 
-Selects the text between two UTF-8 offsets: `anchor` is the end of the selection that stays put and `focus` the end the cursor moves to, so `focus` may precede `anchor` to select backwards.
-Pass the same value for both to place the text cursor at that offset without selecting anything.
+选择两个 UTF-8 偏移之间的文本：`anchor` 是保持不动的选择端，`focus` 是光标移动到的端，因此 `focus` 可以先于 `anchor` 以反向选择。
+为两者传递相同的值可将文本光标放置在该偏移处而不选择任何内容。
 
 ### select-all()
 
-Selects all text.
+选择所有文本。
 
 ### clear-selection()
 
-Clears the selection.
-This function takes effect regardless of the `read-only` and `enabled` properties.
+清除选择。
+无论 `read-only` 和 `enabled` 属性如何，此函数都会生效。
 
 ### copy()
 
-Copies the selected text to the clipboard.
+将选中的文本复制到剪贴板。
 
 ### cut()
 
-Copies the selected text to the clipboard and removes it from the editable area.
-This function takes effect regardless of the `read-only` and `enabled` properties.
+将选中的文本复制到剪贴板并从可编辑区域中移除。
+无论 `read-only` 和 `enabled` 属性如何，此函数都会生效。
 
 ### paste()
 
-Pastes the text content of the clipboard at the cursor position.
-This function takes effect regardless of the `read-only` and `enabled` properties.
+将剪贴板的文本内容粘贴到光标位置。
+无论 `read-only` 和 `enabled` 属性如何，此函数都会生效。
 
 ### undo()
 
-Undoes the last text operation.
-This function takes effect regardless of the `read-only` and `enabled` properties.
+撤销上次文本操作。
+无论 `read-only` 和 `enabled` 属性如何，此函数都会生效。
 
 ### redo()
 
-Redoes the last undone text operation.
-This function takes effect regardless of the `read-only` and `enabled` properties.
+重做上次撤销的文本操作。
+无论 `read-only` 和 `enabled` 属性如何，此函数都会生效。
 
-## Callbacks
+## 回调
 
 ### accepted(string)
 
-Invoked when the enter key is pressed.
+当按下回车键时调用。
 
 ```slint {2-4}
 LineEdit {
@@ -171,7 +170,7 @@ LineEdit {
 
 ### edited(string)
 
-Emitted when the text has changed because the user modified it
+当文本因用户修改而发生变化时发出
 
 ```slint {2-4}
 LineEdit {
@@ -183,12 +182,12 @@ LineEdit {
 
 ### key-pressed(KeyEvent) -> EventResult
 
-Invoked when a key is pressed, the argument is a <Link type="KeyEvent" /> struct. Use this callback to
-handle keys before `LineEdit` does. Return `accept` to indicate that you've handled the event, or return
-`reject` to let `LineEdit` handle it.
+当按键被按下时调用，参数是一个 <Link type="KeyEvent" /> 结构体。使用此回调在 `LineEdit`
+处理键之前处理按键。返回 `accept` 表示你已处理该事件，或返回
+`reject` 让 `LineEdit` 处理它。
 
 ### key-released(KeyEvent) -> EventResult
 
-Invoked when a key is released, the argument is a <Link type="KeyEvent" /> struct. Use this callback to
-handle keys before `LineEdit` does. Return `accept` to indicate that you've handled the event, or return
-`reject` to let `LineEdit` handle it.
+当按键被释放时调用，参数是一个 <Link type="KeyEvent" /> 结构体。使用此回调在 `LineEdit`
+处理键之前处理按键。返回 `accept` 表示你已处理该事件，或返回
+`reject` 让 `LineEdit` 处理它。

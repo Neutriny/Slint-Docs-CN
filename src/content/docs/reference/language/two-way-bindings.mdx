@@ -1,10 +1,10 @@
 ---
 title: 双向绑定
-description: Linking two properties with the <=> operator.
+description: 使用 <=> 运算符链接两个属性。
 ---
 
-A _two-way binding_, written with `<=>`, links two properties so that they always hold the same value;
-writing either side updates the other:
+_双向绑定_ 用 `<=>` 书写，链接两个属性，使它们始终持有相同的值；
+写入任一侧都会更新另一侧：
 
 ```slint
 export component Example {
@@ -17,23 +17,22 @@ export component Example {
 }
 ```
 
-The left-hand side is the property or callback being declared or bound;
-the right-hand side references the property or callback it links to.
+左侧是被声明或绑定的属性或回调；
+右侧引用它所链接到的属性或回调。
 
-- Both sides must have the same type.
-  In a property declaration the type may be omitted and is inferred from the other side.
-- The right-hand side references a property — of the same element, another element, the root component,
-  or a [global](../globals/) (`Global.property`) — or a field of matching type within a property of struct type.
-  Linking to a global's property re-exposes that member on the component.
-- Inside a [`for` element](../repetition-and-conditional-elements/) the right-hand side may be the model value,
-  which stays in sync.
-- Both sides must be compatible in input and output: each must be readable and writable wherever the binding
-  reads or writes it.
-- The initial value of the linked pair is the value of the right-hand side.
+- 两侧必须具有相同的类型。
+  在属性声明中可以省略类型，并从另一侧推断。
+- 右侧引用某个属性——同一元素的、另一个元素的、根组件的，
+  或[全局对象](../globals/)的（`Global.property`）——或结构体类型属性内类型匹配的字段。
+  链接到全局对象的属性会在组件上重新暴露该成员。
+- 在 [`for` 元素](../repetition-and-conditional-elements/)内，右侧可以是模型值，
+  它会保持同步。
+- 两侧在输入和输出上必须兼容：在绑定读取或写入它们的地方，每一侧都必须可读且可写。
+- 链接对的初始值是右侧的值。
 
-The same `<=>` syntax forms a _callback alias_ that forwards one callback to another (see [Callbacks](../callbacks/#aliases)).
-A callback alias may target a [global](../globals/)'s callback, including from another global — the supported way
-for one global to implement another's callback.
+相同的 `<=>` 语法构成*回调别名*，将一个回调转发到另一个回调（见[回调](../callbacks/#aliases)）。
+回调别名可以指向[全局对象](../globals/)的回调，包括来自另一个全局对象——这是受支持的方式，
+用于让一个全局对象实现另一个的回调。
 
 ```slint
 global Logic {

@@ -1,10 +1,10 @@
 ---
 title: 数组与模型
-description: Array types, array literals, and their operations.
+description: 数组类型、数组字面量及其操作。
 ---
 
-An _array_ type holds an ordered, zero-indexed sequence of values of a single element type.
-It is written by wrapping the element type in `[` and `]` square brackets:
+_数组_ 类型保存单一元素类型的有序、从零开始索引的值序列。
+通过将元素类型包裹在 `[` 和 `]` 方括号中来书写：
 
 ```slint no-test
 [int]
@@ -13,15 +13,15 @@ It is written by wrapping the element type in `[` and `]` square brackets:
 [[int]]
 ```
 
-The element type may be any type, including a struct type and another array type.
+元素类型可以是任何类型，包括结构体类型和另一个数组类型。
 
-A value of an array type is a _model_: it is what a [`for` element](../../language/repetition-and-conditional-elements/) iterates.
-A property of an array type, and an array literal, both act as models.
-Native code can also supply a model implementation for an array property, which the same operations act on.
+数组类型的值是一个*模型*：[`for` 元素](../../language/repetition-and-conditional-elements/)迭代的就是它。
+数组类型的属性和数组字面量都充当模型。
+原生代码也可以为数组属性提供模型实现，相同的操作作用于其上。
 
-## Literals
+## 字面量
 
-An array literal lists its elements between `[` and `]`, separated by commas:
+数组字面量将其元素列在 `[` 和 `]` 之间，以逗号分隔：
 
 ```slint
 export component Example {
@@ -30,37 +30,37 @@ export component Example {
 }
 ```
 
-Each element must have the array's element type.
-An empty literal `[]` is a model with no elements.
+每个元素必须具有数组的元素类型。
+空字面量 `[]` 是没有元素的模型。
 
-## Operations
+## 操作
 
-The following operations apply to a value of an array type.
+以下操作适用于数组类型的值。
 
-- `array.length` reads the number of elements as an `int`.
-  It is read-only; it cannot be assigned.
-- `array[index]` reads the element at the zero-based `index`.
-  The index is an `int`.
-- `array[index] = value` writes the element at `index`.
-  The array must be writable in that context.
-- `array.push(value)` appends `value` as a new last element.
-  `value` must have the element type.
-- `array.remove(index)` removes the element at `index`.
-- `array.insert(index, value)` inserts `value` before the element at `index`, shifting later elements up.
-  `value` must have the element type.
+- `array.length` 以 `int` 读取元素数量。
+  它是只读的；不能被赋值。
+- `array[index]` 读取从零开始的 `index` 处的元素。
+  索引是 `int`。
+- `array[index] = value` 写入 `index` 处的元素。
+  该数组在该上下文中必须可写。
+- `array.push(value)` 将 `value` 追加为新的最后一个元素。
+  `value` 必须具有元素类型。
+- `array.remove(index)` 移除 `index` 处的元素。
+- `array.insert(index, value)` 将 `value` 插入到 `index` 处的元素之前，将后面的元素后移。
+  `value` 必须具有元素类型。
 
-`length`, `push`, `remove`, and `insert` are members of the array; `index` is written with the `[ ]` operator.
+`length`、`push`、`remove` 和 `insert` 是数组的成员；`index` 用 `[ ]` 运算符书写。
 
-## Out-of-bounds behavior
+## 越界行为
 
-Access outside the current bounds does not raise an error; each operation defines its own result.
+在当前边界之外的访问不会引发错误；每个操作定义自己的结果。
 
-- `array[index]` with `index < 0` or `index >= array.length` returns the default value of the element type.
-- `array[index] = value` with `index < 0` or `index >= array.length` does nothing.
-- `array.remove(index)` accepts `0 <= index < array.length`.
-  Any other `index` leaves the array unchanged.
-- `array.insert(index, value)` accepts `0 <= index <= array.length`, so inserting at `array.length` appends.
-  Any other `index` leaves the array unchanged.
+- `array[index]` 当 `index < 0` 或 `index >= array.length` 时返回元素类型的默认值。
+- `array[index] = value` 当 `index < 0` 或 `index >= array.length` 时什么都不做。
+- `array.remove(index)` 接受 `0 <= index < array.length`。
+  任何其他 `index` 都不会改变数组。
+- `array.insert(index, value)` 接受 `0 <= index <= array.length`，因此在 `array.length` 处插入即追加。
+  任何其他 `index` 都不会改变数组。
 
 ```slint
 export component Example {

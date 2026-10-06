@@ -7,29 +7,29 @@ description: Kate 的 Slint 配置
 
 import Link from '@slint/common-files/src/components/Link.astro';
 
-Before we start, it's important to note that Kate relies on the presence of syntax highlighting file for the usage of the LSP.
-Therefore, we'll set up the syntax highlighting first.
+在开始之前，有一点很重要：Kate 使用 LSP 依赖语法高亮文件的存在。
+因此，我们先设置语法高亮。
 
-### Syntax Highlighting
+### 语法高亮
 
-Kate has built-in support for highlighting Slint files since KDE Frameworks 6.27. The current Frameworks version can checked under the "Help" -> "About Kate" menu. Since this release is new as of time of writing, you can still find manual installation instructions below.
+自 KDE Frameworks 6.27 起，Kate 内置支持高亮 Slint 文件。当前 Frameworks 版本可在 "Help" -> "About Kate" 菜单下查看。由于此版本在撰写本文时较新，你仍然可以在下方找到手动安装说明。
 
-The highlighting syntax file needs to be copied into a location where Kate can find it. See the [Kate documentation](https://docs.kde.org/stable_kf6/en/kate/katepart/highlight.html#katehighlight-xml-format) more information.
+需要将高亮语法文件复制到 Kate 能够找到的位置。更多信息请参阅 [Kate 文档](https://docs.kde.org/stable_kf6/en/kate/katepart/highlight.html#katehighlight-xml-format)。
 
-On Linux, this can be done by running this command
+在 Linux 上，可以通过运行以下命令完成
 
 ```sh
 mkdir -p ~/.local/share/org.kde.syntax-highlighting/syntax/
 wget https://invent.kde.org/frameworks/syntax-highlighting/-/raw/master/data/syntax/slint.xml -O ~/.local/share/org.kde.syntax-highlighting/syntax/slint.xml
 ```
 
-On Windows, download [slint.xml](https://invent.kde.org/frameworks/syntax-highlighting/-/raw/master/data/syntax/slint.xml) into `%USERPROFILE%\AppData\Local\org.kde.syntax-highlighting\syntax`
+在 Windows 上，将 [slint.xml](https://invent.kde.org/frameworks/syntax-highlighting/-/raw/master/data/syntax/slint.xml) 下载到 `%USERPROFILE%\AppData\Local\org.kde.syntax-highlighting\syntax`
 
 ### LSP
 
-After setting up the syntax highlighting, you can now install the Slint Language server. Check the <Link type="SlintLSP" label="LSP Documentation"/> for instructions.
+设置好语法高亮后，你现在可以安装 Slint Language Server。请查看 <Link type="SlintLSP" label="LSP 文档"/> 了解说明。
 
-Once it is installed, go to _Settings > Configure Kate_. In the _Plugins_ section, enable the _LSP-Client_ plugin. This will add a _LSP Client_ section in the settings dialog. In that _LSP Client_ section, go to the _User Server Settings_, and enter the following in the text area:
+安装完成后，转到 _Settings > Configure Kate_。在 _Plugins_ 部分启用 _LSP-Client_ 插件。这会在设置对话框中添加一个 _LSP Client_ 部分。在该 _LSP Client_ 部分中，转到 _User Server Settings_，并在文本区域中输入以下内容：
 
 ```json
 {
@@ -45,10 +45,10 @@ Once it is installed, go to _Settings > Configure Kate_. In the _Plugins_ sectio
 
 ![Kate LSP Setup](../../../../assets/guide/tooling/kate-lsp-setup.webp)
 
-### Live Preview
+### 实时预览
 
-Once the LSP is correctly set up, to preview a component, first, position your cursor on the name definition of the component you want to preview
-(for instance, `MainWindow` in `component MainWindow inherits Window {`).
-Then, activate the _Show Preview_ code action.
-You can do this by using the Alt+Enter shortcut to bring up the code action menu,
-or find it in the menu bar at _LSP Client > Code Action > Show Preview_
+LSP 正确设置后，要预览组件，首先将光标定位在你想预览的组件的名称定义上
+（例如 `component MainWindow inherits Window {` 中的 `MainWindow`）。
+然后激活 _Show Preview_ 代码操作。
+你可以使用 Alt+Enter 快捷键调出代码操作菜单，
+或在菜单栏的 _LSP Client > Code Action > Show Preview_ 中找到它

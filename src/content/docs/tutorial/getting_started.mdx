@@ -1,36 +1,36 @@
 ---
 title: 入门
-description: Getting started
+description: 开始
 ---
 
 import { extractLines } from '../../../utils/utils.ts';
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import { Code } from '@astrojs/starlight/components';
 
-This tutorial shows you how to use the languages that Slint supports as the host programming language.
+本教程向你展示如何使用 Slint 支持的语言作为宿主编程语言。
 
-We recommend using [our editor integrations for Slint](https://github.com/slint-ui/slint/tree/master/editors) for following this tutorial.
+我们建议使用 [我们为 Slint 提供的编辑器集成](https://github.com/slint-ui/slint/tree/master/editors) 来跟随本教程。
 
-Slint has application templates you can use to create a project with dependencies already set up that follows recommended best practices.
+Slint 提供了应用模板，你可以用它们创建一个已设置好依赖、并遵循推荐最佳实践的项目。
 
-## Prerequisites
+## 前置条件
 
 <Tabs syncKey="dev-language">
 <TabItem label="Rust" icon="seti:rust">
 
-We recommend using [rust-analyzer](https://rust-analyzer.github.io) and [our editor integrations for Slint](https://github.com/slint-ui/slint/tree/master/editors) for following this tutorial.
+我们建议使用 [rust-analyzer](https://rust-analyzer.github.io) 和 [我们为 Slint 提供的编辑器集成](https://github.com/slint-ui/slint/tree/master/editors) 来跟随本教程。
 
-1. Download and extract the [ZIP archive](https://github.com/slint-ui/slint-rust-template/archive/refs/heads/main.zip) of the [Rust Template](https://github.com/slint-ui/slint-rust-template).
-2. Rename the extracted directory and change into it:
+1. 下载并解压 [Rust 模板](https://github.com/slint-ui/slint-rust-template) 的 [ZIP 归档](https://github.com/slint-ui/slint-rust-template/archive/refs/heads/main.zip)。
+2. 重命名解压后的目录并进入其中：
 
 ```sh
 mv slint-rust-template-main memory
 cd memory
 ```
 
-### Configure the project
+### 配置项目
 
-Replace the contents of `src/main.rs` with the following:
+将 `src/main.rs` 的内容替换为以下内容：
 
 ```rust
 slint::include_modules!();
@@ -42,7 +42,7 @@ fn main() -> Result<(), slint::PlatformError> {
 }
 ```
 
-Replace the contents of `ui/app-window.slint` with the following:
+将 `ui/app-window.slint` 的内容替换为以下内容：
 
 <Code
   code={extractLines(memorySlint, 6, 11)}
@@ -50,28 +50,28 @@ Replace the contents of `ui/app-window.slint` with the following:
   title="memory.slint"
 />
 
-### Run the application
+### 运行应用
 
-Run the example with `cargo run` and a window appears with the green "Hello World" greeting.
+使用 `cargo run` 运行示例，会出现一个显示绿色 "Hello World" 问候语的窗口。
 
 </TabItem>
   <TabItem label="C++" icon="seti:cpp">
 
-Before using the template, you need a C++ compiler that supports C++ 20 and to install [CMake](https://cmake.org/download/) 3.21 or newer.
+在使用模板之前，你需要一个支持 C++ 20 的 C++ 编译器，并安装 [CMake](https://cmake.org/download/) 3.21 或更高版本。
 
-1. Download and extract the [ZIP archive](https://github.com/slint-ui/slint-cpp-template/archive/refs/heads/main.zip) of the [C++ Template](https://github.com/slint-ui/slint-cpp-template/).
-2. Rename the extracted directory and change into it:
+1. 下载并解压 [C++ 模板](https://github.com/slint-ui/slint-cpp-template/) 的 [ZIP 归档](https://github.com/slint-ui/slint-cpp-template/archive/refs/heads/main.zip)。
+2. 重命名解压后的目录并进入其中：
 
 ```sh
 mv slint-cpp-template-main memory
 cd memory
 ```
 
-### Configure the project
+### 配置项目
 
-The `CMakeLists.txt` uses the line `add_executable(my_application src/main.cpp)` to set `src/main.cpp` as the main C++ code file.
+`CMakeLists.txt` 使用 `add_executable(my_application src/main.cpp)` 这一行将 `src/main.cpp` 设置为主 C++ 代码文件。
 
-Replace the content of `src/main.cpp` with the following:
+将 `src/main.cpp` 的内容替换为以下内容：
 
 import initialCpp from '/src/content/code/main_initial.cpp?raw';
 
@@ -81,11 +81,11 @@ import initialCpp from '/src/content/code/main_initial.cpp?raw';
   title="main_initial.cpp"
 />
 
-Also in `CMakeLists.txt` the line
-`slint_target_sources(my_application ui/app-window.slint)` is a Slint function used to
-add the `app-window.slint` file to the target.
+同样，在 `CMakeLists.txt` 中，
+`slint_target_sources(my_application ui/app-window.slint)` 这一行是一个 Slint 函数，用于
+将 `app-window.slint` 文件添加到目标中。
 
-Replace the contents of `ui/app-window.slint` with the following:
+将 `ui/app-window.slint` 的内容替换为以下内容：
 
 import appWindow from '/src/content/code/app-window.slint?raw';
 
@@ -95,41 +95,41 @@ import appWindow from '/src/content/code/app-window.slint?raw';
   title="app-window.slint"
 />
 
-Configure with CMake:
+使用 CMake 进行配置：
 
 ```sh
 cmake -B build
 ```
 
-:::tip[Tip]
-When configuring with CMake, the FetchContent module fetches the source code of Slint via git.
-This may take some time when building for the first time, as the process needs to build
-the Slint runtime and compiler.
+:::tip[提示]
+使用 CMake 配置时，FetchContent 模块会通过 git 获取 Slint 的源代码。
+首次构建时这可能需要一些时间，因为该过程需要构建
+Slint 运行时和编译器。
 :::
 
-Build with CMake:
+使用 CMake 构建：
 
 ```sh
 cmake --build build
 ```
 
-### Run the application
+### 运行应用
 
-Run the application binary on Linux or macOS:
+在 Linux 或 macOS 上运行应用二进制文件：
 
 ```sh
 ./build/my_application
 ```
 
-Or on Windows:
+在 Windows 上则运行：
 
 ```sh
 build\my_application.exe
 ```
 
-This opens a window with a green "Hello World" greeting.
+这会打开一个显示绿色 "Hello World" 问候语的窗口。
 
-If you are stepping through this tutorial on a Windows machine, you can run the application at each step with:
+如果你在 Windows 机器上逐步学习本教程，可以在每一步用以下命令运行应用：
 
 ```sh
 my_application
@@ -139,25 +139,25 @@ my_application
 
 <TabItem label="NodeJS" icon="node">
 
-1. Download and extract the [ZIP archive](https://github.com/slint-ui/slint-nodejs-template/archive/refs/heads/main.zip) of the [Node.js Template](https://github.com/slint-ui/slint-nodejs-template).
-2. Rename the extracted directory and change into it:
+1. 下载并解压 [Node.js 模板](https://github.com/slint-ui/slint-nodejs-template) 的 [ZIP 归档](https://github.com/slint-ui/slint-nodejs-template/archive/refs/heads/main.zip)。
+2. 重命名解压后的目录并进入其中：
 
 ```sh
 mv slint-nodejs-template-main memory
 cd memory
 ```
 
-3. Install dependencies with npm:
+3. 使用 npm 安装依赖：
 
 ```sh
 npm install
 ```
 
-### Configure the project
+### 配置项目
 
-The `package.json` file references `src/main.js` as the entry point for the application and `src/main.js` references `ui/app-window.slint` as the UI file.
+`package.json` 文件将 `src/main.js` 引用为应用的入口点，而 `src/main.js` 将 `ui/app-window.slint` 引用为 UI 文件。
 
-Replace the contents of `src/main.js` with the following:
+将 `src/main.js` 的内容替换为以下内容：
 
 import mainInitialJs from '/src/content/code/main_initial.js?raw';
 
@@ -167,9 +167,9 @@ import mainInitialJs from '/src/content/code/main_initial.js?raw';
   title="main_initial.js"
 />
 
-The `slint.loadFile` method resolves files from the process's current working directory, so from the `package.json` file's location.
+`slint.loadFile` 方法从进程的当前工作目录解析文件，也就是从 `package.json` 文件所在的位置。
 
-Replace the contents of `ui/app-window.slint` with the following:
+将 `ui/app-window.slint` 的内容替换为以下内容：
 
 import memorySlint from '/src/content/code/memory.slint?raw';
 
@@ -179,32 +179,32 @@ import memorySlint from '/src/content/code/memory.slint?raw';
   title="memory.slint"
 />
 
-### Run the application
+### 运行应用
 
-Run the example with `npm start` and a window appears with the green "Hello World" greeting.
+使用 `npm start` 运行示例，会出现一个显示绿色 "Hello World" 问候语的窗口。
 
 </TabItem>
 <TabItem label="Python" icon="seti:python">
 
-1. Download and extract the [ZIP archive](https://github.com/slint-ui/slint-python-template/archive/refs/heads/main.zip) of the [Python Template](https://github.com/slint-ui/slint-python-template).
-2. Rename the extracted directory and change into it:
+1. 下载并解压 [Python 模板](https://github.com/slint-ui/slint-python-template) 的 [ZIP 归档](https://github.com/slint-ui/slint-python-template/archive/refs/heads/main.zip)。
+2. 重命名解压后的目录并进入其中：
 
 ```sh
 mv slint-python-template-main memory
 cd memory
 ```
 
-3. Install dependencies with uv:
+3. 使用 uv 安装依赖：
 
 ```sh
 uv sync
 ```
 
-### Configure the project
+### 配置项目
 
-The entry point for the application is `main.py`, the UI file is `app-window.slint`.
+应用的入口点是 `main.py`，UI 文件是 `app-window.slint`。
 
-Replace the contents of `main.py` with the following:
+将 `main.py` 的内容替换为以下内容：
 
 import mainInitialPython from '/src/content/code/main_initial.py?raw';
 
@@ -214,9 +214,9 @@ import mainInitialPython from '/src/content/code/main_initial.py?raw';
   title="main.py"
 />
 
-The `slint.load_file` method resolves files from the process's current working directory, so from the `main.py` file's location.
+`slint.load_file` 方法从进程的当前工作目录解析文件，也就是从 `main.py` 文件所在的位置。
 
-Replace the contents of `ui/app-window.slint` with the following:
+将 `ui/app-window.slint` 的内容替换为以下内容：
 
 <Code
   code={extractLines(memorySlint, 6, 11)}
@@ -224,11 +224,11 @@ Replace the contents of `ui/app-window.slint` with the following:
   title="memory.slint"
 />
 
-### Run the application
+### 运行应用
 
-Run the example with `uv run main.py` and a window appears with the green "Hello World" greeting.
+使用 `uv run main.py` 运行示例，会出现一个显示绿色 "Hello World" 问候语的窗口。
 
 </TabItem>
 </Tabs>
 
-![Screenshot of initial tutorial app showing Hello World](https://slint.dev/blog/memory-game-tutorial/getting-started.png 'Hello World')
+![初始教程应用显示 Hello World 的截图](https://slint.dev/blog/memory-game-tutorial/getting-started.png 'Hello World')

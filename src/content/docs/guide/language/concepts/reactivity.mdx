@@ -3,10 +3,10 @@ title: 响应式
 description: Slint 的响应式模型
 ---
 
-## Reactivity
+## 响应式
 
-Reactivity is core concept within Slint. It allows the creation of complex dynamic user interfaces with a fraction of the code.
-The following examples will help you understand the basics of reactivity.
+响应式是 Slint 的核心概念。它允许用极少的代码创建复杂的动态用户界面。
+以下示例将帮助你理解响应式的基础知识。
 
 ```slint playground
 export component MyComponent {
@@ -38,46 +38,43 @@ export component MyComponent {
 }
 ```
 
-As the name suggests, Reactivity is all about parts of the user interface automatically updating or 'reacting'
-to changes. The above example looks simple, but when run it does several things:
+顾名思义，响应式指的是用户界面的各个部分会随着变更自动更新或「响应」变更。
+上面的例子看起来简单，但运行时它做了好几件事：
 
-- The `Rectangle` will follow the mouse around as you move it.
-- If you `click` anywhere the `Rectangle` will change color.
-- The `Text` elements will update their text to show the current position of the `Rectangle`.
+- 当你移动鼠标时，`Rectangle` 会跟随鼠标移动。
+- 如果在任意位置 `click`，`Rectangle` 会改变颜色。
+- `Text` 元素会更新其文本，以显示 `Rectangle` 的当前位置。
 
-The 'magic' here is built into the Slint language directly. There is no need to opt into this or define
-specific stateful items. The `Rectangle` will automatically update because its `x` and `y` properties
-are bound to the `mouse-x` and `mouse-y` properties of the `TouchArea` element. This was done by giving
-the `TouchArea` a name to identify it `ta` and then using the name in what Slint calls an `expression`
-to track values. It's as simple as `x: ta.mouse-x;` and `y: ta.mouse-y;`. The mouse-x and mouse-y properties
-are built into the `TouchArea` and automatically update as the cursor moves over them.
+这里的「魔法」直接内置于 Slint 语言之中。无需显式选择启用，也无需定义特定的有状态项。
+`Rectangle` 会自动更新，因为它的 `x` 和 `y` 属性绑定到了 `TouchArea` 元素的 `mouse-x` 和
+`mouse-y` 属性。具体做法是给 `TouchArea` 取一个名字 `ta` 来标识它，然后在 Slint 所称的
+`expression`（表达式）中使用该名字来跟踪值。就这么简单：`x: ta.mouse-x;` 和
+`y: ta.mouse-y;`。`mouse-x` 和 `mouse-y` 属性内置于 `TouchArea`，当光标在其上方移动时会自动更新。
 
-The `TouchArea` also has a `pressed` property that is only `true` when the cursor is pressed or clicked down.
-So the ternary expression `background: ta.pressed ? orange : white;` will change the background color of the `Rectangle`
-to orange when `ta.pressed` is true, or white when it isn't.
+`TouchArea` 还有一个 `pressed` 属性，仅当光标被按下或点击按下时才为 `true`。
+因此三元表达式 `background: ta.pressed ? orange : white;` 会在 `ta.pressed` 为 true 时把
+`Rectangle` 的背景色改为橙色，否则改为白色。
 
-Similarly the 2 text items are updating by tracking the rectangle's `x` and `y` position.
+类似地，这两个文本项通过跟踪矩形的 `x` 和 `y` 位置来更新。
 
-## Overwritten Bindings
+## 被覆盖的绑定
 
-A binding stays active only as long as the property keeps it:
-assigning a value in code (`foo.bar = 42;`) breaks the binding, and the property stops reacting.
-The [Evaluation and Purity](../../../../reference/language/evaluation-and-purity/) chapter describes the exact rules.
+绑定只会在属性保留它期间保持有效：在代码中赋值（`foo.bar = 42;`）会破坏绑定，属性随之停止响应。
+[求值与纯度](../../../../reference/language/evaluation-and-purity/)章节描述了确切的规则。
 
-## Performance
+## 性能
 
-From a performance perspective, Slint works out what properties are changed. It then finds all the expressions
-that depend on that value. These dependencies are then re-evaluated based on the new values and the UI will update.
+从性能角度看，Slint 会找出哪些属性发生了变更，然后找出所有依赖该值的表达式。
+随后根据新值重新求值这些依赖项，界面便会更新。
 
-The re-evaluation happens lazily when the property is queried.
+重新求值发生在查询该属性时，是惰性的。
 
-Internally, a dependency is registered for any property accessed while evaluating a binding.
-When a property changes, the dependencies are notified and all dependent bindings
-are marked as dirty.
+在内部，求值绑定时访问的任何属性都会注册一个依赖项。当某个属性变更时，依赖项会收到通知，
+所有依赖的绑定都会被标记为脏。
 
-## Property Expressions
+## 属性表达式
 
-Expressions can vary in complexity:
+表达式的复杂度各不相同：
 
 ```slint no-test
 // Tracks the `x` value of an element called foo
@@ -91,8 +88,8 @@ x: foo.x > 100px ? 0px : 400px;
 x: clamp(foo.x, 0px, 400px);
 ```
 
-As the last example shows functions can be used as part of a property expression. This can be
-useful for when an expression is too complex to be readable or maintained as a single line.
+如最后一个示例所示，函数可以作为属性表达式的一部分使用。当表达式过于复杂，
+难以作为单行阅读或维护时，这很有用。
 
 ```slint playground
 export component MyComponent {
@@ -128,16 +125,16 @@ export component MyComponent {
 }
 ```
 
-Here the earlier example was updated to use a function to convert the length to an integer.
-This also truncates the x and y values to be more readable i.e. '4' instead of '4.124488'.
+这里，前面的示例被更新为使用函数将长度转换为整数。这还会截断 x 和 y 值，使其更易读，
+例如用 '4' 代替 '4.124488'。
 
-## Purity
+## 纯度
 
-Bindings must be free of side effects, and the compiler enforces this in pure contexts.
-Mark callbacks and public functions with the `pure` keyword to call them from bindings;
-see [Evaluation and Purity](../../../../reference/language/evaluation-and-purity/#purity).
+绑定必须没有副作用，编译器会在纯上下文中强制这一点。
+用 `pure` 关键字标记回调和公共函数，以便从绑定中调用它们；
+参见[求值与纯度](../../../../reference/language/evaluation-and-purity/#purity)。
 
-## Two-Way Bindings
+## 双向绑定
 
-The `<=>` syntax links two properties so that they always contain the same value;
-see [Two-Way Bindings](../../../../reference/language/two-way-bindings/) in the language reference.
+`<=>` 语法将两个属性链接起来，使它们始终包含相同的值；
+参见语言参考中的[双向绑定](../../../../reference/language/two-way-bindings/)。

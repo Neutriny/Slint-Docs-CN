@@ -1,6 +1,6 @@
 ---
 title: 字符串
-description: The string and styled-text types of the Slint language.
+description: Slint 语言的字符串和样式文本类型。
 ---
 
 import SlintProperty from '../../../../components/SlintProperty.astro';
@@ -8,10 +8,12 @@ import Link from '../../../../components/Link.astro';
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 import LangRefLink from '../../../../components/LangRefLink.astro';
 
+<a id="string"></a>
+
 ### string
 
 <SlintProperty propName="string" typeName="string" defaultValue='""'>
-Any sequence of utf-8 encoded characters surrounded by quotes is a `string`: `"foo"`.
+由引号包围的任何 UTF-8 编码字符序列都是 `string`：`"foo"`。
 
 ```slint
 export component Example inherits Text {
@@ -19,55 +21,52 @@ export component Example inherits Text {
 }
 ```
 
-Escape sequences may be embedded into strings to insert characters that would
-be hard to insert otherwise:
+可以在字符串中嵌入转义序列，以插入否则难以插入的字符：
 
-| Escape          | Result                                                                                          |
-| --------------- | ----------------------------------------------------------------------------------------------- |
-| `\"`            | `"`                                                                                             |
-| `\\`            | `\`                                                                                             |
-| `\n`            | new line                                                                                        |
-| `\u{x}`         | where `x` is a hexadecimal number, expands to the unicode code point represented by this number |
-| `\{expression}` | the result of evaluating the expression                                                         |
+| 转义            | 结果                                                   |
+| --------------- | ------------------------------------------------------ |
+| `\"`            | `"`                                                    |
+| `\\`            | `\`                                                    |
+| `\n`            | 换行                                                   |
+| `\u{x}`         | 其中 `x` 是十六进制数，展开为该数字表示的 Unicode 码位 |
+| `\{expression}` | 求值该表达式的结果                                     |
 
-Anything else following an unescaped `\` is an error.
+未转义 `\` 后面的任何其他内容都是错误。
 
-:::note[Note]
-The `\{...}` syntax is not valid within the `slint!` macro in Rust.
+:::note[注意]
+`\{...}` 语法在 Rust 的 `slint!` 宏中无效。
 :::
 
 <Tabs syncKey="dev-language">
   <TabItem label="Rust" icon="seti:rust">
-    In Rust, properties or struct fields of the string type are mapped to{' '}
+    在 Rust 中，string 类型的属性或结构体字段映射到{' '}
     <LangRefLink lang="rust-slint" relpath="struct.SharedString.html">
       `slint::SharedString`
     </LangRefLink>
-    .
+    。
   </TabItem>
   <TabItem label="C++" icon="seti:cpp">
-    In C++, properties or struct fields of the string type are mapped to{' '}
+    在 C++ 中，string 类型的属性或结构体字段映射到{' '}
     <LangRefLink lang="cpp" relpath="api/slint/sharedstring/">
       `slint::SharedString`
     </LangRefLink>
-    .
+    。
   </TabItem>
   <TabItem label="NodeJS" icon="node">
-    In JavaScript, properties or struct fields of the string type are mapped to
-    the `String` type.
+    在 JavaScript 中，string 类型的属性或结构体字段映射到 `String` 类型。
   </TabItem>
   <TabItem label="Python" icon="seti:python">
-    In Python, properties or struct fields of the string type are mapped to the
-    native `str` type.
+    在 Python 中，string 类型的属性或结构体字段映射到 原生 `str` 类型。
   </TabItem>
 </Tabs>
 
 </SlintProperty>
 
-Strings have the following properties and member functions:
+字符串具有以下属性和成员函数：
 
 #### is-empty
 
-`true` when the string doesn't contain anything, `false` otherwise.
+当字符串不包含任何内容时为 `true`，否则为 `false`。
 
 ```slint
 export component LengthOfString {
@@ -78,7 +77,7 @@ export component LengthOfString {
 
 #### character-count
 
-The number of [grapheme clusters](https://www.unicode.org/reports/tr29/#Grapheme_Cluster_Boundaries) in the string.
+字符串中 [字素簇](https://www.unicode.org/reports/tr29/#Grapheme_Cluster_Boundaries) 的数量。
 
 ```slint
 export component CharacterCountOfString {
@@ -96,8 +95,8 @@ export component CharacterCountOfString {
 
 #### to-lowercase() -> string
 
-Returns the string converted to lowercase,
-according to the [Unicode Character Property](https://www.unicode.org/versions/Unicode16.0.0/core-spec/chapter-4/#G124722).
+返回转换为小写的字符串，
+依据 [Unicode 字符属性](https://www.unicode.org/versions/Unicode16.0.0/core-spec/chapter-4/#G124722)。
 
 ```slint
 export component StringToLowercase {
@@ -108,8 +107,8 @@ export component StringToLowercase {
 
 #### to-uppercase() -> string
 
-Returns the string converted to uppercase,
-according to the [Unicode Character Property](https://www.unicode.org/versions/Unicode16.0.0/core-spec/chapter-4/#G124722).
+返回转换为大写的字符串，
+依据 [Unicode 字符属性](https://www.unicode.org/versions/Unicode16.0.0/core-spec/chapter-4/#G124722)。
 
 ```slint
 export component StringToUppercase {
@@ -120,9 +119,9 @@ export component StringToUppercase {
 
 #### starts-with(pat: string) -> bool
 
-Returns `true` if the given pattern matches a prefix of this string.
+如果给定模式匹配此字符串的前缀，则返回 `true`。
 
-Returns `false` if it does not.
+如果不匹配，则返回 `false`。
 
 ```slint
 export component StringStartsWith {
@@ -133,9 +132,9 @@ export component StringStartsWith {
 
 #### ends-with(pat: string) -> bool
 
-Returns `true` if the given pattern matches a suffix of this string.
+如果给定模式匹配此字符串的后缀，则返回 `true`。
 
-Returns `false` if it does not.
+如果不匹配，则返回 `false`。
 
 ```slint
 export component StringEndsWith {
@@ -144,18 +143,20 @@ export component StringEndsWith {
 }
 ```
 
+<a id="to-float---float"></a>
+
 #### to-float() -> float
 
-Returns the number contained in the string, or 0 if the string isn't a valid number.
-Use `is-float()` to tell a string holding the number 0 apart from a string that isn't a valid number.
+返回字符串中包含的数字，如果字符串不是有效数字则返回 0。
+使用 `is-float()` 区分保存数字 0 的字符串和不是有效数字的字符串。
 
-The string is parsed using the decimal separator of the current locale.
-See [Converting Between Numbers and Strings](../../language/type-conversions/#converting-between-numbers-and-strings).
+字符串使用当前区域设置的小数分隔符进行解析。
+参见 [数字与字符串之间的转换](../../language/type-conversions/#converting-between-numbers-and-strings)。
 
 #### is-float() -> bool
 
-Returns `true` if the string contains a valid number, `false` otherwise.
-Like `to-float()`, it uses the decimal separator of the current locale.
+如果字符串包含有效数字则返回 `true`，否则返回 `false`。
+与 `to-float()` 一样，它使用当前区域设置的小数分隔符。
 
 ```slint
 export component StringToFloat {
@@ -167,7 +168,7 @@ export component StringToFloat {
 
 #### replace-all(from: string, to: string) -> string
 
-Returns a string with all instances of `from` replaced with `to`.
+返回将 `from` 的所有实例替换为 `to` 的字符串。
 
 ```slint
 export component StringToReplaceAll {
@@ -180,57 +181,59 @@ export component StringToReplaceAll {
 }
 ```
 
+<a id="styled-text"></a>
+
 ### styled-text
 
 <SlintProperty propName="styled-text" typeName="styled-text" defaultValue='""'>
 
-A property that is used with the <Link type="StyledText" label="StyledText element"/>.
+与 <Link type="StyledText" label="StyledText 元素"/> 一起使用的属性。
 
-Create styled text with the `@markdown()` macro. For example: `@markdown("Hello **Bold**")`.
+使用 `@markdown()` 宏创建样式化文本。例如：`@markdown("Hello **Bold**")`。
 
-`@markdown()` supports interpolation: For example, `@markdown("5 + 5 = *\{ 5 + 5 }*")` becomes `"5 + 5 = *10*"`.
+`@markdown()` 支持插值：例如，`@markdown("5 + 5 = *\{ 5 + 5 }*")` 变为 `"5 + 5 = *10*"`。
 
-Any text passed as an argument to the macro will be escaped, for example `@markdown("Hello \{"*World*"}")` will become `"Hello \*World\*"`.
+作为参数传递给宏的任何文本都会被转义，例如 `@markdown("Hello \{"*World*"}")` 会变为 `"Hello \*World\*"`。
 
-If multiple string literal are used, they are concatenated.
-An invocation with no string content is a compile error.
+如果使用多个字符串字面量，它们会被连接起来。
+不带字符串内容的调用是编译错误。
 
-Use `<font color='...'>` to apply colors.
-Literal color names and hex values work directly: `@markdown("<font color='red'>warning</font>")`.
-To interpolate a dynamic color, the expression must be of type `color`:
-`@markdown("<font color='\{self.my-color}'>colored</font>")`.
-Interpolation inside HTML tags is only allowed in the color attribute value.
+使用 `<font color='...'>` 应用颜色。
+字面颜色名称和十六进制值可直接使用：`@markdown("<font color='red'>warning</font>")`。
+要插入动态颜色，表达式必须是 `color` 类型：
+`@markdown("<font color='\{self.my-color}'>colored</font>")`。
+HTML 标签内的插值只允许在 color 属性值中使用。
 
-Create styled text at runtime by parsing markdown with the `StyledText` API:
+在运行时使用 `StyledText` API 解析 markdown 以创建样式化文本：
 
 <Tabs syncKey="dev-language">
   <TabItem label="Rust" icon="seti:rust">
-    In Rust, parse markdown into styled text with{' '}
+    在 Rust 中，使用{' '}
     <LangRefLink lang="rust-slint" relpath="struct.StyledText.html">
       `slint::StyledText`
     </LangRefLink>
-    .
+    将 markdown 解析为样式化文本。
   </TabItem>
   <TabItem label="C++" icon="seti:cpp">
-    In C++, parse markdown into styled text with{' '}
+    在 C++ 中，使用{' '}
     <LangRefLink lang="cpp" relpath="api/slint/styledtext/">
       `slint::StyledText`
     </LangRefLink>
-    .
+    将 markdown 解析为样式化文本。
   </TabItem>
   <TabItem label="NodeJS" icon="node">
-    In JavaScript, parse markdown into styled text with the{' '}
+    在 JavaScript 中，使用{' '}
     <LangRefLink lang="nodejs" relpath="api/classes/styledtext/">
       `StyledText`
     </LangRefLink>{' '}
-    class.
+    类将 markdown 解析为样式化文本。
   </TabItem>
   <TabItem label="Python" icon="seti:python">
-    In Python, parse markdown into styled text with the{' '}
+    在 Python 中，使用{' '}
     <LangRefLink lang="python" relpath="api/classes/styledtext/">
       `StyledText`
     </LangRefLink>{' '}
-    class.
+    类将 markdown 解析为样式化文本。
   </TabItem>
 </Tabs>
 

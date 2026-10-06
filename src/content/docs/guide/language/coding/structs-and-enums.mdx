@@ -3,10 +3,10 @@ title: 结构体与枚举
 description: 用命名结构体与枚举建模数据
 ---
 
-When a single value isn't enough, model your data with structs and enums.
-Both can be exported and used from your business logic like any other type.
+当单个值不够用时，用结构体和枚举来为你的数据建模。
+两者都可以像其他类型一样被导出，并从你的业务逻辑中使用。
 
-Define a named structure with the `struct` keyword:
+用 `struct` 关键字定义具名结构体：
 
 ```slint
 export struct Player  {
@@ -19,10 +19,10 @@ export component Example {
 }
 ```
 
-Fields can declare default values, and for one-off shapes you can use an anonymous
-struct type like `{name: string, score: int}` directly.
+字段可以声明默认值，对于一次性的形状，你可以直接使用匿名的
+结构体类型，例如 `{name: string, score: int}`。
 
-Define an enumeration with the `enum` keyword:
+用 `enum` 关键字定义枚举：
 
 ```slint
 export enum CardSuit { clubs, diamonds, hearts, spade }
@@ -33,8 +33,8 @@ export component Example {
 }
 ```
 
-Refer to a value as `CardSuit.spade`, or drop the enum name wherever the type is
-already known — like in the binding above.
+用 `CardSuit.spade` 引用某个值，或者在类型已知的地方省略枚举名——
+就像上面的绑定那样。
 
-For field defaults, name omission, and default values, see the
-[Structs and Enums](../../../../reference/language/structs-and-enums/) chapter of the language reference.
+关于字段默认值、名字省略以及默认值，参见语言参考中的
+[结构体与枚举](../../../../reference/language/structs-and-enums/)章节。

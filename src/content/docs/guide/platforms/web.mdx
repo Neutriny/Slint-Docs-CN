@@ -6,39 +6,39 @@ description: 在 Web 上用 Wasm 运行 Slint
 import Link from '@slint/common-files/src/components/Link.astro';
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-Slint applications run on desktop, embedded, and mobile platforms.
-Slint applications written with Rust or C++ can also be cross-compiled to WebAssembly (Wasm) and run in the web browser.
+Slint 应用程序可在桌面、嵌入式和移动平台上运行。
+用 Rust 或 C++ 编写的 Slint 应用程序也可以交叉编译到 WebAssembly（Wasm）并在 Web 浏览器中运行。
 
 :::note[Note]
-Rust applications use the <Link type="WinitBackend" label="Winit backend" /> with the FemtoVG renderer.
-C++ applications are built with [Emscripten](https://emscripten.org) and use Slint's Emscripten backend,
-with the FemtoVG renderer or the software renderer.
+Rust 应用程序使用 <Link type="WinitBackend" label="Winit 后端" /> 和 FemtoVG 渲染器。
+C++ 应用程序使用 [Emscripten](https://emscripten.org) 构建，并使用 Slint 的 Emscripten 后端，
+搭配 FemtoVG 渲染器或软件渲染器。
 :::
 
-Slint renders your UI into a HTML `<canvas>` element using [WebGL](https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API), without using the DOM or CSS.
-This results in a consistent look across platforms, but also introduces some limitations:
+Slint 使用 [WebGL](https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API) 把你的 UI 渲染到一个 HTML `<canvas>` 元素中，而不使用 DOM 或 CSS。
+这带来了跨平台一致的外观，但也引入了一些限制：
 
-- Slint renders text directly, instead of benefitting from the browser's text rendering.
-- Accessibility features (such as screen readers) are not available.
-- The UI does not behave like a typical web application, since it doesn't use standard HTML elements.
+- Slint 直接渲染文本，而不是受益于浏览器的文本渲染。
+- 无障碍功能（如屏幕阅读器）不可用。
+- UI 的行为不像典型的 Web 应用程序，因为它不使用标准 HTML 元素。
 
-Because of these trade-offs, running Slint in the browser is currently not recommended for building general-purpose web applications.
-Instead, it is best suited for:
+由于这些取舍，目前不推荐用浏览器中运行的 Slint 来构建通用 Web 应用程序。
+相反，它最适合用于：
 
-- Demos and examples that can run directly in the browser without requiring installation.
-- Applications where the web is not the primary platform, but a consistent UI is still needed.
-- Tools or dashboards where native-style rendering is more important than web integration.
+- 可以直接在浏览器中运行、无需安装的演示和示例。
+- Web 不是主要平台，但仍需要一致 UI 的应用程序。
+- 原生风格渲染比 Web 集成更重要的工具或仪表板。
 
-## Building for Wasm
+## 为 Wasm 构建
 
 <Tabs syncKey="dev-language">
 <TabItem label="Rust" icon="seti:rust">
 
-For a step-by-step walkthrough, check out the last chapter of the <Link type="quickstart" />.
+如需分步讲解，请查看 <Link type="quickstart" /> 的最后一章。
 
-Below is a summary of the main steps:
+下面是主要步骤的摘要：
 
-In your `Cargo.toml`, set the crate type to `"cdylib"` and add [`wasm-bindgen`](https://wasm-bindgen.github.io/wasm-bindgen/) as a dependency for the "wasm" target:
+在你的 `Cargo.toml` 中，将 crate 类型设置为 `"cdylib"`，并为 "wasm" 目标添加 [`wasm-bindgen`](https://wasm-bindgen.github.io/wasm-bindgen/) 作为依赖项：
 
 ```toml
 [lib]
@@ -49,8 +49,8 @@ crate-type = ["cdylib"]
 wasm-bindgen = { version = "0.2" }
 ```
 
-Use the `wasm-bindgen(start)` attribute to mark the application's entry point.
-The UI is created and run as usual:
+使用 `wasm-bindgen(start)` 属性来标记应用程序的入口点。
+UI 像往常一样创建并运行：
 
 ```rust
 #[cfg(target_family = "wasm")]
@@ -66,16 +66,16 @@ pub fn main() {
 }
 ```
 
-Build the application using [wasm-pack](https://wasm-bindgen.github.io/wasm-pack/).
+使用 [wasm-pack](https://wasm-bindgen.github.io/wasm-pack/) 构建应用程序。
 
 ```bash
 wasm-pack build --release --target web
 ```
 
-This creates a `pkg/` directory with `.wasm` and `.js` files, including a JavaScript file named after your package.
+这会创建一个 `pkg/` 目录，其中包含 `.wasm` 和 `.js` 文件，以及一个以你的包命名的 JavaScript 文件。
 
-Import the wasm binary in your HTML file.
-Slint expects a `<canvas>` HTML element with `id = "canvas"`.
+在你的 HTML 文件中导入 wasm 二进制文件。
+Slint 期望有一个 `id = "canvas"` 的 `<canvas>` HTML 元素。
 
 ```html
 <canvas id="canvas"></canvas>
@@ -85,44 +85,44 @@ Slint expects a `<canvas>` HTML element with `id = "canvas"`.
 </script>
 ```
 
-Replace `YOUR_APPLICATION` with the name of your crate.
+把 `YOUR_APPLICATION` 替换为你的 crate 名称。
 
 :::note[Note]
-Many web browser load `.wasm` files only in trusted contexts. If during development you observe the browser producing permission errors, then you may need to serve files through a web server, instead of the file system directly.
+许多 Web 浏览器只在受信任的上下文中加载 `.wasm` 文件。如果你在开发期间观察到浏览器产生权限错误，那么你可能需要通过 Web 服务器来提供文件，而不是直接从文件系统提供。
 :::
 
 </TabItem>
 <TabItem label="C++" icon="seti:cpp">
 
-A Slint C++ application for the web is a standard CMake project (see the <Link type="getting_started" label="getting started tutorial" />),
-built with the [Emscripten](https://emscripten.org) toolchain.
+用于 Web 的 Slint C++ 应用程序是一个标准 CMake 项目（参见 <Link type="getting_started" label="入门教程" />），
+使用 [Emscripten](https://emscripten.org) 工具链构建。
 
-Install the prerequisites:
+安装先决条件：
 
-- The [Emscripten SDK](https://emscripten.org/docs/getting_started/downloads.html).
-- The Rust Emscripten toolchain: run `rustup target add wasm32-unknown-emscripten`.
-- [CMake](https://cmake.org/download/) 3.21 or newer, and optionally [Ninja](https://ninja-build.org).
+- [Emscripten SDK](https://emscripten.org/docs/getting_started/downloads.html)。
+- Rust Emscripten 工具链：运行 `rustup target add wasm32-unknown-emscripten`。
+- [CMake](https://cmake.org/download/) 3.21 或更新版本，以及可选的 [Ninja](https://ninja-build.org)。
 
-When you configure Slint with Emscripten's toolchain, its `CMakeLists.txt` automatically:
+当你使用 Emscripten 的工具链配置 Slint 时，它的 `CMakeLists.txt` 会自动：
 
-- Builds Slint for the `wasm32-unknown-emscripten` Rust target as a static library.
-- Enables the FemtoVG renderer on WebGL 2 and the software renderer.
-- Embeds images and fonts in the binary, since the page can't read files from the build machine.
-- Adds the link options that Slint needs to `Slint::Slint`.
+- 为 `wasm32-unknown-emscripten` Rust 目标把 Slint 构建为静态库。
+- 启用基于 WebGL 2 的 FemtoVG 渲染器和软件渲染器。
+- 把图像和字体嵌入二进制文件，因为页面无法从构建机器读取文件。
+- 向 `Slint::Slint` 添加 Slint 所需的链接选项。
 
-Your `main()` function works as it is.
-`run()` hands control to the browser and doesn't return,
-so code after it doesn't run.
+你的 `main()` 函数按原样工作。
+`run()` 把控制权交给浏览器且不会返回，
+因此其后的代码不会运行。
 
 :::caution[Caution]
-Compile your C++ code without exception support, which is Emscripten's default:
-don't pass `-fexceptions` or `-fwasm-exceptions` to the compiler.
-When `run()` hands control to the browser, it leaves `main()` with a JavaScript exception.
-Code compiled with exceptions runs the destructors in `main()` on the way out,
-which destroys your window.
+编译你的 C++ 代码时不要启用异常支持，这也是 Emscripten 的默认设置：
+不要向编译器传递 `-fexceptions` 或 `-fwasm-exceptions`。
+当 `run()` 把控制权交给浏览器时，它会以一个 JavaScript 异常的方式离开 `main()`。
+用异常编译的代码会在退出时运行 `main()` 中的析构函数，
+从而销毁你的窗口。
 :::
 
-1. Let Emscripten write an HTML page next to the `.js` and `.wasm` files:
+1. 让 Emscripten 在 `.js` 和 `.wasm` 文件旁边写一个 HTML 页面：
 
 ```cmake
 add_executable(my_app main.cpp)
@@ -131,26 +131,26 @@ if(EMSCRIPTEN)
 endif()
 ```
 
-2. Configure and build with `emcmake`:
+2. 使用 `emcmake` 配置并构建：
 
 ```bash
 emcmake cmake -S . -B build-web -GNinja -DCMAKE_BUILD_TYPE=Release
 cmake --build build-web
 ```
 
-3. Serve the output directory through a web server and open `my_app.html`, for example:
+3. 通过 Web 服务器提供输出目录，并打开 `my_app.html`，例如：
 
 ```bash
 python3 -m http.server -d build-web
 ```
 
-To use your own page instead, add a `<canvas id="canvas">` and load `my_app.js`.
-Slint sizes the canvas to fit the window.
-To lay out the canvas with the page instead, give it a width and height in its `style` attribute,
-for example `<canvas id="canvas" style="width: 100%; height: 100vh">`.
+要改为使用你自己的页面，请添加一个 `<canvas id="canvas">` 并加载 `my_app.js`。
+Slint 会调整 canvas 的尺寸以适配窗口。
+如果要改为让 canvas 随页面布局，请在其 `style` 属性中给出宽度和高度，
+例如 `<canvas id="canvas" style="width: 100%; height: 100vh">`。
 
-Slint renders with FemtoVG on WebGL 2.
-To use the software renderer, set `SLINT_BACKEND` before the application starts:
+Slint 在 WebGL 2 上使用 FemtoVG 进行渲染。
+要使用软件渲染器，请在应用程序启动前设置 `SLINT_BACKEND`：
 
 ```js
 var Module = {
@@ -162,13 +162,13 @@ var Module = {
 };
 ```
 
-To leave FemtoVG out of the build, configure with `-DSLINT_FEATURE_RENDERER_FEMTOVG=OFF`.
+要把 FemtoVG 排除在构建之外，请使用 `-DSLINT_FEATURE_RENDERER_FEMTOVG=OFF` 进行配置。
 
-The Emscripten backend has these limits for now:
+Emscripten 后端目前有这些限制：
 
-- It supports one window, which renders into the canvas.
-- The Slint interpreter isn't available.
-- Copy and paste and input method editors (IME) aren't supported yet.
+- 它只支持一个渲染到 canvas 中的窗口。
+- Slint 解释器不可用。
+- 尚不支持复制粘贴和输入法编辑器（IME）。
 
 </TabItem>
 </Tabs>

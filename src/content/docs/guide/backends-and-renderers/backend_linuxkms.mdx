@@ -7,51 +7,50 @@ description: LinuxKMS 后端
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-The LinuxKMS backend runs only on Linux and eliminates the need for a windowing system such as Wayland or X11.
-Instead it uses the following libraries and interface to render directly to the screen and react to touch, mouse,
-and keyboard input.
+LinuxKMS 后端仅在 Linux 上运行，并且无需诸如 Wayland 或 X11 之类的窗口系统。
+相反，它使用以下库和接口直接渲染到屏幕，并对触摸、鼠标和键盘输入做出反应。
 
-- OpenGL via KMS/DRI.
-- Vulkan via wgpu and the Vulkan KHR Display Extension.
-- DRM dumb buffers for software rendering, as well as legacy LinuxFB rendering.
-- libinput/libudev for input event handling from mice, touch screens, or keyboards. (optional)
-- libseat for GPU and input device access without requiring root access. (optional)
+- 通过 KMS/DRI 使用 OpenGL。
+- 通过 wgpu 和 Vulkan KHR Display Extension 使用 Vulkan。
+- 用于软件渲染的 DRM dumb buffer，以及旧版 LinuxFB 渲染。
+- libinput/libudev，用于处理来自鼠标、触摸屏或键盘的输入事件。（可选）
+- libseat，无需 root 权限即可访问 GPU 和输入设备。（可选）
 
-## Dependencies
+## 依赖项
 
-For compilation, pkg-config is used to determine the location of the system libraries needed by the
-features you select. None of them are needed by every configuration:
+编译时，使用 pkg-config 来确定你选择的 feature 所需的系统库的位置。
+并非每种配置都需要它们全部：
 
-| pkg-config package name | Package name on Debian based distros | Needed for                            |
-| ----------------------- | ------------------------------------ | ------------------------------------- |
-| `gbm`                   | `libgbm-dev`                         | the FemtoVG and Skia OpenGL renderers |
-| `libseat`               | `libseat-dev`                        | libseat support                       |
-| `libinput`              | `libinput-dev`                       | libinput support                      |
-| `libudev`               | `libudev-dev`                        | libinput support                      |
-| `xkbcommon`             | `libxkbcommon-dev`                   | libinput support                      |
+| pkg-config 包名 | Debian 系发行版上的包名 | 所需用途                      |
+| --------------- | ----------------------- | ----------------------------- |
+| `gbm`           | `libgbm-dev`            | FemtoVG 和 Skia OpenGL 渲染器 |
+| `libseat`       | `libseat-dev`           | libseat 支持                  |
+| `libinput`      | `libinput-dev`          | libinput 支持                 |
+| `libudev`       | `libudev-dev`           | libinput 支持                 |
+| `xkbcommon`     | `libxkbcommon-dev`      | libinput 支持                 |
 
-The software renderer needs none of these: it renders through DRM dumb buffers, which Slint drives
-directly without a C library. Font handling is separate from this table and needs fontconfig
-(`libfontconfig-dev`) in every configuration.
+软件渲染器不需要其中任何一个：它通过 DRM dumb buffer 渲染，Slint 直接驱动它们
+而无需 C 库。字体处理与此表分开，并且在每种配置中都需要 fontconfig
+（`libfontconfig-dev`）。
 
-## Selecting libseat and libinput
+## 选择 libseat 和 libinput
 
-libseat provides access to the GPU and to input devices without running as root. libinput delivers
-mouse, touch, and keyboard events. Both are optional, and how you select them differs between Rust
-and C++.
+libseat 允许在非 root 身份下访问 GPU 和输入设备。libinput 传递
+鼠标、触摸和键盘事件。两者都是可选的，而且选择它们的方式在 Rust
+和 C++ 之间有所不同。
 
 <Tabs syncKey="dev-language">
 <TabItem label="Rust" icon="seti:rust">
 
-Disable the default features, select the `compat-1-18` feature, and then combine
-`backend-linuxkms` with the capabilities you need:
+禁用默认 feature，选择 `compat-1-18` feature，然后将
+`backend-linuxkms` 与你需要的能力组合起来：
 
-| Cargo features                                             | libseat | libinput |
-| ---------------------------------------------------------- | ------- | -------- |
-| `backend-linuxkms`                                         | no      | no       |
-| `backend-linuxkms-libseat`                                 | yes     | no       |
-| `backend-linuxkms-libinput`                                | no      | yes      |
-| `backend-linuxkms-libseat` and `backend-linuxkms-libinput` | yes     | yes      |
+| Cargo feature                                             | libseat | libinput |
+| --------------------------------------------------------- | ------- | -------- |
+| `backend-linuxkms`                                        | 否      | 否       |
+| `backend-linuxkms-libseat`                                | 是      | 否       |
+| `backend-linuxkms-libinput`                               | 否      | 是       |
+| `backend-linuxkms-libseat` 和 `backend-linuxkms-libinput` | 是      | 是       |
 
 ```toml
 [dependencies]
@@ -63,87 +62,84 @@ slint = { version = "1.18.0", default-features = false, features = [
 ] }
 ```
 
-With the default features instead, the `compat-1-2` feature is enabled and `backend-linuxkms`
-implies libseat and libinput, as it did before Slint 1.18.
+如果改用默认 feature，则会启用 `compat-1-2` feature，并且 `backend-linuxkms`
+会隐含 libseat 和 libinput，就像 Slint 1.18 之前那样。
 
-The `backend-linuxkms-noseat` feature is deprecated; use `backend-linuxkms-libinput`, which selects
-the same combination.
+`backend-linuxkms-noseat` feature 已弃用；请使用 `backend-linuxkms-libinput`，它选择的
+是相同的组合。
 
 </TabItem>
 <TabItem label="C++" icon="seti:cpp">
 
-`SLINT_FEATURE_BACKEND_LINUXKMS` enables the backend with both libraries and turns either off
-when you don't need it. `_LIBSEAT` and `_LIBINPUT` also enable the backend on their own and
-combine, so `SLINT_FEATURE_BACKEND_LINUXKMS` is not a prerequisite:
+`SLINT_FEATURE_BACKEND_LINUXKMS` 会启用带有两个库的后端，并在你不需要时关闭其中任一个。
+`_LIBSEAT` 和 `_LIBINPUT` 也能各自启用后端并可以组合，因此 `SLINT_FEATURE_BACKEND_LINUXKMS` 不是先决条件：
 
-| CMake options                                                             | libseat | libinput |
-| ------------------------------------------------------------------------- | ------- | -------- |
-| `SLINT_FEATURE_BACKEND_LINUXKMS`                                          | yes     | yes      |
-| `SLINT_FEATURE_BACKEND_LINUXKMS` and `..._LIBSEAT=OFF`                    | no      | yes      |
-| `SLINT_FEATURE_BACKEND_LINUXKMS` and `..._LIBSEAT=OFF` `..._LIBINPUT=OFF` | no      | no       |
-| `SLINT_FEATURE_BACKEND_LINUXKMS_LIBSEAT`                                  | yes     | no       |
-| `SLINT_FEATURE_BACKEND_LINUXKMS_LIBINPUT`                                 | no      | yes      |
-| `SLINT_FEATURE_BACKEND_LINUXKMS_LIBSEAT` and `..._LIBINPUT`               | yes     | yes      |
+| CMake 选项                                                               | libseat | libinput |
+| ------------------------------------------------------------------------ | ------- | -------- |
+| `SLINT_FEATURE_BACKEND_LINUXKMS`                                         | 是      | 是       |
+| `SLINT_FEATURE_BACKEND_LINUXKMS` 和 `..._LIBSEAT=OFF`                    | 否      | 是       |
+| `SLINT_FEATURE_BACKEND_LINUXKMS` 和 `..._LIBSEAT=OFF` `..._LIBINPUT=OFF` | 否      | 否       |
+| `SLINT_FEATURE_BACKEND_LINUXKMS_LIBSEAT`                                 | 是      | 否       |
+| `SLINT_FEATURE_BACKEND_LINUXKMS_LIBINPUT`                                | 否      | 是       |
+| `SLINT_FEATURE_BACKEND_LINUXKMS_LIBSEAT` 和 `..._LIBINPUT`               | 是      | 是       |
 
 ```bash
 cmake -DSLINT_FEATURE_BACKEND_LINUXKMS=ON ..
 ```
 
-The configure output reports which of the two libraries the build ends up with.
+配置输出会报告构建最终采用的是这两个库中的哪一个。
 
-`SLINT_FEATURE_BACKEND_LINUXKMS_NOSEAT` is deprecated; use
-`SLINT_FEATURE_BACKEND_LINUXKMS_LIBINPUT`, which selects the same combination.
+`SLINT_FEATURE_BACKEND_LINUXKMS_NOSEAT` 已弃用；请使用
+`SLINT_FEATURE_BACKEND_LINUXKMS_LIBINPUT`，它选择的是相同的组合。
 
 </TabItem>
 </Tabs>
 
 :::note[Note]
-Without libseat, the application must run as a user privileged to access the input and DRM/KMS device
-files; typically that's the root user.
+没有 libseat 时，应用程序必须以有权访问输入和 DRM/KMS 设备文件的用户身份运行；
+通常那就是 root 用户。
 :::
 
 :::note[Note]
-Without libinput the application renders but receives no input events, and the
+没有 libinput 时，应用程序会渲染，但接收不到任何输入事件，而且
 
-<kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>Backspace</kbd> shortcut that otherwise
-quits the application is not available. Quit the event loop from a timer or
-another thread instead. :::
+原本能退出应用程序的 <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>Backspace</kbd> 快捷键
+也不可用。请改为从定时器或另一个线程退出事件循环。 :::
 
-## Renderers
+## 渲染器
 
-The LinuxKMS backend supports different renderers. They can be explicitly selected for use through the
-`SLINT_BACKEND` environment variable.
+LinuxKMS 后端支持不同的渲染器。可以通过
+`SLINT_BACKEND` 环境变量显式选择使用它们。
 
-| Renderer name  | Required Graphics APIs | `SLINT_BACKEND` value to select renderer         |
-| -------------- | ---------------------- | ------------------------------------------------ |
-| FemtoVG        | OpenGL ES 2.0          | `linuxkms-femtovg`                               |
-| FemtoVG (wgpu) | Vulkan                 | `linuxkms-femtovg-wgpu`                          |
-| Skia           | OpenGL ES 2.0, Vulkan  | `linuxkms-skia-opengl` or `linuxkms-skia-vulkan` |
-| Skia software  | None                   | `linuxkms-skia-software`                         |
-| Software       | None                   | `linuxkms-software`                              |
+| 渲染器名称     | 所需图形 API          | 用于选择渲染器的 `SLINT_BACKEND` 值              |
+| -------------- | --------------------- | ------------------------------------------------ |
+| FemtoVG        | OpenGL ES 2.0         | `linuxkms-femtovg`                               |
+| FemtoVG (wgpu) | Vulkan                | `linuxkms-femtovg-wgpu`                          |
+| Skia           | OpenGL ES 2.0、Vulkan | `linuxkms-skia-opengl` 或 `linuxkms-skia-vulkan` |
+| Skia 软件      | 无                    | `linuxkms-skia-software`                         |
+| 软件           | 无                    | `linuxkms-software`                              |
 
 :::note[Note]
-This backend is still experimental. The backend has not undergone a great variety of testing on different devices
-and there are [known issues](https://github.com/slint-ui/slint/labels/a%3Abackend-linuxkms).
+此后端仍处于实验阶段。该后端尚未在不同设备上进行过大量测试，
+并且存在一些[已知问题](https://github.com/slint-ui/slint/labels/a%3Abackend-linuxkms)。
 :::
 
 :::note[Note]
-A mouse is supported as input device, but rendering of the mouse cursor only works with the Skia and FemtoVG renderers,
-not with the Slint software renderer.
+鼠标可作为输入设备使用，但鼠标光标的渲染仅适用于 Skia 和 FemtoVG 渲染器，
+不适用于 Slint 软件渲染器。
 :::
 
-Enable the Rust `renderer-skia-software` feature together with a Linux KMS backend feature
-to compile Skia's CPU rendering path without a GPU renderer.
+启用 Rust 的 `renderer-skia-software` feature 并搭配一个 Linux KMS 后端 feature，
+即可在没有 GPU 渲染器的情况下编译 Skia 的 CPU 渲染路径。
 
-## Display Selection
+## 显示器选择
 
-All renderers use Linux's direct rendering manager (DRM) subsystem to configure display outputs. Slint defaults to selecting the first connected
-display and configures it at either its preferred resolution (if available) or its highest. Set the `SLINT_DRM_OUTPUT`
-environment variable to select a specific display. To get a list of available outputs, set `SLINT_DRM_OUTPUT`
-to `list`, run your program, and observe the output.
+所有渲染器都使用 Linux 的直接渲染管理器（DRM）子系统来配置显示输出。Slint 默认选择第一个已连接的
+显示器，并以它的首选分辨率（如果可用）或最高分辨率来配置它。设置 `SLINT_DRM_OUTPUT`
+环境变量可以选择特定的显示器。要获取可用输出列表，请把 `SLINT_DRM_OUTPUT`
+设为 `list`，运行你的程序，并观察输出。
 
-For example, the output may look like this on a laptop with a built-in screen (eDP-1) and an externally
-connected monitor (DP-3):
+例如，在一台带有内置屏幕（eDP-1）和外接显示器（DP-3）的笔记本电脑上，输出可能如下所示：
 
 ```
 DRM Output List Requested:
@@ -154,10 +150,10 @@ DP-3 (connected: true)
 DP-4 (connected: false)
 ```
 
-Setting `SLINT_DRM_OUTPUT` to `DP-3` will render on the second monitor.
+将 `SLINT_DRM_OUTPUT` 设置为 `DP-3` 将在第二台显示器上渲染。
 
-To select a specific resolution and refresh rate (mode), set the `SLINT_DRM_MODE` variable. Set it to `list` and
-run your program to get a list of available modes. For example the program output could look like this:
+要选择特定的分辨率和刷新率（模式），请设置 `SLINT_DRM_MODE` 变量。把它设为 `list` 并
+运行你的程序，即可获取可用模式列表。例如，程序输出可能如下所示：
 
 ```
 DRM Mode List Requested:
@@ -170,35 +166,36 @@ Index: 5 Width: 1680 Height: 1050 Refresh Rate: 59
 ...
 ```
 
-Set `SLINT_DRM_MODE` to `4` to select 1920x1080@60.
+将 `SLINT_DRM_MODE` 设置为 `4` 即可选择 1920x1080@60。
 
-## Configuring the Keyboard
+## 配置键盘
 
-By default the keyboard layout and model is assumed to be a US model and layout. Set the following
-environment variables to configure support for different keyboards:
+默认情况下，假定键盘的型号和布局为 US 型号和布局。设置以下
+环境变量来配置对不同键盘的支持：
 
-- `XKB_DEFAULT_LAYOUT`: A comma separated list of layouts (languages) to include in the keymap.
-  See the layouts section in [xkeyboard-config(7)](https://manpages.debian.org/testing/xkb-data/xkeyboard-config.7.en.html) for a list of accepted language codes.
-  for a list of supported layouts.
-- `XKB_DEFAULT_MODEL`: The keyboard model by which to interpreter keys. See the models section in
-  [xkeyboard-config(7)](https://manpages.debian.org/testing/xkb-data/xkeyboard-config.7.en.html) for a list of accepted model codes.
-- `XKB_DEFAULT_VARIANT`: A comma separated list of variants, one per layout, which configures layout specific variants. See the values in parentheses in the layouts section in [xkeyboard-config(7)](https://manpages.debian.org/testing/xkb-data/xkeyboard-config.7.en.html) for a list of accepted variant codes.
-- `XKB_DEFAULT_OPTIONS`: A comma separated list of options to configure layout-independent key combinations. See the
-  options section in
-  [xkeyboard-config(7)](https://manpages.debian.org/testing/xkb-data/xkeyboard-config.7.en.html) for a list of accepted option codes.
+- `XKB_DEFAULT_LAYOUT`：要包含在 keymap 中的布局（语言）的逗号分隔列表。
+  接受的语言代码列表请参见 [xkeyboard-config(7)](https://manpages.debian.org/testing/xkb-data/xkeyboard-config.7.en.html) 中的 layouts 一节。
+  以获取支持的布局列表。
+- `XKB_DEFAULT_MODEL`：用于解释按键的键盘型号。接受的型号代码列表请参见
+  [xkeyboard-config(7)](https://manpages.debian.org/testing/xkb-data/xkeyboard-config.7.en.html) 中的 models 一节。
+- `XKB_DEFAULT_VARIANT`：一个逗号分隔的变体列表，每个布局一个，用于配置特定于布局的变体。接受的变体代码列表请参见 [xkeyboard-config(7)](https://manpages.debian.org/testing/xkb-data/xkeyboard-config.7.en.html) 中 layouts 一节里括号内的值。
+- `XKB_DEFAULT_OPTIONS`：一个逗号分隔的选项列表，用于配置与布局无关的按键组合。接受的选项代码列表请参见
+  [xkeyboard-config(7)](https://manpages.debian.org/testing/xkb-data/xkeyboard-config.7.en.html) 中的
+  options 一节。
 
-## Display Rotation
+## 显示器旋转
 
-If your display's default orientation does not match the desired orientation of your user interface, then you can
-set the `SLINT_KMS_ROTATION` environment variable to instruct Slint to rotate at rendering time. Supported values
-are the rotation in degrees: `0`, `90`, `180`, and `270`.
+如果你的显示器的默认方向与你想要的用户界面方向不匹配，那么你可以
+设置 `SLINT_KMS_ROTATION` 环境变量来指示 Slint 在渲染时旋转。支持的值
+是以度为单位的旋转角度：`0`、`90`、`180` 和 `270`。
 
-Note that this variable merely rotates the rendering output. If you're using a touch screen attached to the same
-display, then you may need to configure it to also apply a rotation on the touch events generated. For configuring
-libinput's `LIBINPUT_CALIBRATION_MATRIX` see the [libinput Documentation](https://wayland.freedesktop.org/libinput/doc/latest/device-configuration-via-udev.html#static-device-configuration-via-udev)
-for a list of valid values. Values can typically be set by writing them into a rules file under `/etc/udev/rules.d`.
+注意，该变量仅旋转渲染输出。如果你使用的是连接到同一显示器的触摸屏，
+那么你可能需要对其进行配置，以便对所产生的触摸事件也应用旋转。关于配置
+libinput 的 `LIBINPUT_CALIBRATION_MATRIX`，合法值列表请参见
+[libinput 文档](https://wayland.freedesktop.org/libinput/doc/latest/device-configuration-via-udev.html#static-device-configuration-via-udev)。
+通常可以通过把值写入 `/etc/udev/rules.d` 下的规则文件来设置这些值。
 
-The following example configures libinput to apply a 90 degree clockwise rotation for any attached touch screen:
+以下示例配置 libinput 对任何连接的触摸屏应用 90 度顺时针旋转：
 
 ```bash
 echo 'ENV{LIBINPUT_CALIBRATION_MATRIX}="0 -1 1 1 0 0"' > /etc/udev/rules.d/libinput.rules
@@ -206,9 +203,10 @@ udevadm control --reload-rules
 udevadm trigger
 ```
 
-## Legacy LinuxFB Interface
+## 旧版 LinuxFB 接口
 
-For software rendering, DRM dumb buffers are the preferred default way of posting frame buffers to the display. If DRM dumb buffers are not supported, the LinuxKMS backend falls back to using the Linux legacy
-framebuffer interface (`/dev/fbX`).
+对于软件渲染，DRM dumb buffer 是将帧缓冲提交到显示器的首选默认方式。如果不支持 DRM dumb buffer，
+LinuxKMS 后端会回退到使用 Linux 旧版
+framebuffer 接口（`/dev/fbX`）。
 
-To override this default and use only the legacy framebuffer interface, set the `SLINT_BACKEND_LINUXFB=1` environment variable.
+要覆盖此默认行为并仅使用旧版 framebuffer 接口，请设置 `SLINT_BACKEND_LINUXFB=1` 环境变量。

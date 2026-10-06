@@ -3,12 +3,12 @@ title: 名字解析（作用域）
 description: Slint 如何查找属性、函数与回调
 ---
 
-When you use a name without an element prefix, Slint looks it up on the current element first,
-then on its parent, and so on up to the root of the component.
-When you qualify a name with an element (or `self`, `parent`, `root`),
-only that element is searched.
+当你使用不带元素前缀的名字时，Slint 会先在当前元素上查找它，
+然后在其父元素上查找，如此一直向上直到组件的根元素。
+当你用元素（或 `self`、`parent`、`root`）限定名字时，
+只会在该元素上搜索。
 
-This means a function can shadow another function from an ancestor element:
+这意味着一个函数可以遮蔽祖先元素上的另一个函数：
 
 ```slint
 export component Example {
@@ -36,8 +36,8 @@ export component Example {
 }
 ```
 
-In this example, `secret_number` is 1,
-and the labels say "The secret number is 3" and "The other secret number is 2".
+在这个示例中，`secret_number` 是 1，
+两个标签分别显示 "The secret number is 3" 和 "The other secret number is 2"。
 
-The exact rules are in the [Name Resolution](../../../../reference/language/name-resolution/)
-chapter of the language reference.
+确切的规则见语言参考中的[名字解析](../../../../reference/language/name-resolution/)
+章节。

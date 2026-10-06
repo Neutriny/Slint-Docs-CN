@@ -3,11 +3,10 @@ title: 状态与过渡
 description: 用状态一起切换多个属性
 ---
 
-When several properties should change together — a button that looks different when
-disabled, pressed, or hovered — declare _states_ instead of writing a condition into
-every binding.
-The `states` statement names each state, gives it a condition,
-and sets the properties of multiple elements in one go:
+当多个属性应当一起变化时——例如一个按钮在禁用、按下或悬停时外观不同——
+请声明*状态*，而不是在每个绑定中写条件判断。
+`states` 语句为每个状态命名、给出条件，
+并一次性设置多个元素的属性：
 
 ```slint
 export component Example inherits Window {
@@ -39,11 +38,11 @@ export component Example inherits Window {
 }
 ```
 
-Hovering toggles between a blue and a green background and adjusts the label;
-clicking enters the `inactive` state.
+悬停会在蓝色和绿色背景之间切换，并调整标签；
+点击则进入 `inactive` 状态。
 
-Transitions bind [animations](animation/) to state changes.
-Use `in` to animate when entering a state, `out` when leaving it, and `in-out` for both:
+过渡把[动画](animation/)绑定到状态变化上。
+用 `in` 在进入状态时播放动画，用 `out` 在离开时播放，用 `in-out` 表示两者都播放：
 
 ```slint no-test
 states [
@@ -56,5 +55,4 @@ states [
 ]
 ```
 
-See [States and Transitions](../../../../reference/language/states-and-transitions/)
-in the language reference for the full syntax.
+关于完整语法，参见语言参考中的[状态与过渡](../../../../reference/language/states-and-transitions/)。

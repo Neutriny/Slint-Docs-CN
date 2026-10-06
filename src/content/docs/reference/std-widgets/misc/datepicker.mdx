@@ -1,12 +1,12 @@
 ---
 title: DatePickerPopup
-description: DatePickerPopup api.
+description: DatePickerPopup API。
 ---
 
 import SlintProperty from '@slint/common-files/src/components/SlintProperty.astro';
 import CodeSnippetMD from '@slint/common-files/src/components/CodeSnippetMD.astro';
 
-Use a date picker to let the user select a date.
+使用日期选择器让用户选择日期。
 
 ```slint playground
 import { DatePickerPopup, Button } from "std-widgets.slint";
@@ -37,18 +37,18 @@ export component Example inherits Window {
 }
 ```
 
-## Properties
+## 属性
 
 ### title
 
 <SlintProperty propName="title" typeName="string">
-  The text that is displayed at the top of the picker.
+  显示在选择器顶部的文本。
 </SlintProperty>
 
 ### date
 
 <SlintProperty propName="date" typeName="struct" structName="Date">
-Set the initial displayed date.
+设置初始显示的日期。
 ```slint "date: { year: 2024, month: 11 };"
 DatePickerPopup {
     date: { year: 2024, month: 11 };
@@ -56,11 +56,11 @@ DatePickerPopup {
 ```
 </SlintProperty>
 
-## Callbacks
+## 回调
 
 ### canceled()
 
-Invoked when the cancel button is clicked.
+当点击取消按钮时调用。
 
 ```slint {2-4}
 date-picker := DatePickerPopup {
@@ -72,7 +72,7 @@ date-picker := DatePickerPopup {
 
 ### accepted(Date)
 
-Invoked when the ok button is clicked.
+当点击确定按钮时调用。
 
 ```slint {2-5}
 date-picker := DatePickerPopup {

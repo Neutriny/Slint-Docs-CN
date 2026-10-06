@@ -1,6 +1,6 @@
 ---
 title: CheckBox
-description: CheckBox api.
+description: CheckBox API。
 ---
 
 import CodeSnippetMD from '@slint/common-files/src/components/CodeSnippetMD.astro';
@@ -23,14 +23,14 @@ export component Example inherits Window {
 ```
 </CodeSnippetMD>
 
-Use a `CheckBox` to let the user select or deselect values, for example in a list with multiple options. Consider using a `Switch` element instead if the action resembles more something that's turned on or off.
+使用 `CheckBox` 让用户选择或取消选择值，例如在具有多个选项的列表中。如果该操作更像是打开或关闭某物，请考虑改用 `Switch` 元素。
 
-## Properties
+## 属性
 
 ### checked
 
 <SlintProperty propName="checked" typeName="bool" defaultValue="false" propertyVisibility="in-out">
-Whether the checkbox is checked or not.
+复选框是否已选中。
 ```slint "checked: true;"
 CheckBox {
     text: self.checked ? "Checked" : "Not checked";
@@ -42,31 +42,31 @@ CheckBox {
 ### enabled
 
 <SlintProperty propName="enabled" typeName="bool" defaultValue="true">
-  Defaults to true. When false, the checkbox can't be pressed.
+  默认为 true。当为 false 时，复选框无法被按下。
 </SlintProperty>
 
 ### font-size
 
 <SlintProperty propName="font-size" typeName="length">
-  The size of the font of the label text.
+  标签文本的字体大小。
 </SlintProperty>
 
 ### font-weight
 
 <SlintProperty propName="font-weight" typeName="int">
-  The weight of the font of the label text.
+  标签文本的字体粗细。
 </SlintProperty>
 
 ### has-focus
 
 <SlintProperty propName="has-focus" typeName="bool" propertyVisibility="out">
-  Set to true when the checkbox has keyboard focus.
+  当复选框具有键盘焦点时设置为 true。
 </SlintProperty>
 
 ### text
 
 <SlintProperty propName="text" typeName="string">
-The text written next to the checkbox.
+复选框旁边显示的文本。
 ```slint 'text: "CheckBox with text";'
 CheckBox {
     text: "CheckBox with text";
@@ -74,11 +74,11 @@ CheckBox {
 ```
 </SlintProperty>
 
-## Callbacks
+## 回调
 
 ### toggled()
 
-The checkbox value changed
+复选框的值发生了变化
 
 ```slint {3-5}
 CheckBox {

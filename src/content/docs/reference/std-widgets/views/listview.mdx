@@ -1,17 +1,17 @@
 ---
 title: ListView
-description: ListView api.
+description: ListView API。
 ---
 
 import CodeSnippetMD from '@slint/common-files/src/components/CodeSnippetMD.astro';
 import Link from '@slint/common-files/src/components/Link.astro';
 
-A ListView is like a <Link type="ScrollView"/> but it should have a `for` element, and the contents are
-automatically laid out in a list.
+ListView 类似 <Link type="ScrollView"/>，但它应该有一个 `for` 元素，内容会
+自动排列为列表。
 
-In a ListView, elements are only instantiated if they are visible, which guarantees stable performance with a practically unlimited number of items.
+在 ListView 中，元素仅在可见时才会实例化，这保证了在拥有几乎无限数量项时性能稳定。
 
-<Link type="ScrollView" /> is more suitable for free-form content.
+<Link type="ScrollView" /> 更适合自由形式的内容。
 
 <CodeSnippetMD imagePath="/src/assets/generated/std-widgets-listview-example.png"  imageWidth="200" imageHeight="200"  imageAlt='listview example'>
 ```slint playground
@@ -49,12 +49,12 @@ export component Example inherits Window {
 ```
 </CodeSnippetMD>
 
-## Properties
+## 属性
 
-Same as <Link type="ScrollView"/>.
+与 <Link type="ScrollView"/> 相同。
 
 
-## Callbacks
+## 回调
 
-Same as <Link type="ScrollView"/>.
+与 <Link type="ScrollView"/> 相同。
 ```

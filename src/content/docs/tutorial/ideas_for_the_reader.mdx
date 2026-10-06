@@ -1,16 +1,16 @@
 ---
 title: 读者练习
-description: Ideas For The Reader
+description: 给读者的练习建议
 ---
 
 import Link from '../../../components/Link.astro';
 
-The game is visually bare. Here are some ideas on how you could make further changes to enhance it:
+这个游戏在视觉上很朴素。以下是一些你可以做出进一步改进来增强它的想法：
 
-- The tiles could have rounded corners, to look less sharp. Use the <Link type="BorderRadiusRectangle" label="border-radius" />
-  property of <Link type="Rectangle" /> to achieve that.
+- 牌可以有圆角，看起来不那么尖锐。使用 <Link type="Rectangle" /> 的
 
-- In real-world memory games, the back of the tiles often have some common graphic. You could add an image with
-  the help of another <Link type="Image" />
-  element. Note that you may have to use _Rectangle_'s _clip property_
-  element around it to ensure that the image is clipped away when the curtain effect opens.
+  <Link type="BorderRadiusRectangle" label="border-radius" /> 属性即可实现。
+
+- 在现实中的记忆游戏中，牌的背面通常有一些共同的图案。你可以借助另一个 <Link type="Image" />
+  元素来添加图像。请注意，你可能需要在它周围使用 _Rectangle_ 的 _clip 属性_
+  以确保当帘幕效果打开时图像被裁剪掉。

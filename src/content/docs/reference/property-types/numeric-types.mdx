@@ -1,6 +1,6 @@
 ---
 title: 原始类型与数值类型
-description: The boolean, numeric, and unit types of the Slint language.
+description: Slint 语言的布尔、数值和单位类型。
 SC: true
 ---
 
@@ -10,54 +10,55 @@ import Link from '../../../../components/Link.astro';
 import NotInSC from '../../../../components/NotInSC.astro';
 
 <SC>
-## Primitive Types
+## 原始类型
 
 ### bool
 
 <SlintProperty propName="bool" typeName="bool" defaultValue="false">
-  boolean whose value can be either `true` or `false`.
+  布尔值，其值可以是 `true` 或 `false`。
 </SlintProperty>
 
-The default `bool` is `false`. \{#sls.type.bool}
+默认 `bool` 是 `false`。 \{#sls.type.bool}
 
-## Numeric Types
+## 数值类型
 
 </SC>
 
 ### angle
 
 <SlintProperty propName="angle" typeName="angle" defaultValue="0deg">
-  Angle measurement, corresponds to a literal like `90deg`, `1.2rad`, `0 25turn`
+  角度测量，对应于 `90deg`、`1.2rad`、`0 25turn` 之类的字面量
 </SlintProperty>
 
 ### duration
 
 <SlintProperty propName="duration" typeName="duration" defaultValue="0ms">
-  Type for the duration of animations. A suffix like `ms` (millisecond) or `s`
-  (second) is used to indicate the precision.
+  动画时长的类型。使用 `ms`（毫秒）或 `s` （秒）之类的后缀来表示精度。
 </SlintProperty>
 
 ### float
 
 <SlintProperty propName="float" typeName="float" defaultValue="0">
-  Signed, 32-bit floating point number. Numbers with a `%` suffix are
-  automatically divided by 100, so for example `30%` is the same as `0.30`.
+  有符号的 32 位浮点数。带 `%` 后缀的数字会 自动除以 100，因此例如 `30%` 与
+  `0.30` 相同。
 </SlintProperty>
 
-`float` and `int` values have the following member functions:
+`float` 和 `int` 值具有以下成员函数：
+
+<a id="to-fixeddigits-int---string"></a>
 
 #### to-fixed(digits: int) -> string
 
-Returns a string representation of the number with `digits` digits after the decimal point.
-It behaves like JavaScript's [`toFixed()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toFixed).
+返回数字的字符串表示形式，小数点后保留 `digits` 位。
+它的行为类似于 JavaScript 的 [`toFixed()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toFixed)。
 
 #### to-precision(digits: int) -> string
 
-Returns a string representation of the number with `digits` significant digits.
-It behaves like JavaScript's [`toPrecision()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toPrecision).
+返回数字的字符串表示形式，保留 `digits` 位有效数字。
+它的行为类似于 JavaScript 的 [`toPrecision()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toPrecision)。
 
-Both functions format the number using the decimal separator of the current locale.
-See [Converting Between Numbers and Strings](../../language/type-conversions/#converting-between-numbers-and-strings).
+这两个函数使用当前区域设置的小数分隔符格式化数字。
+参见 [数字与字符串之间的转换](../../language/type-conversions/#converting-between-numbers-and-strings)。
 
 ```slint
 export component FloatToString {
@@ -67,44 +68,47 @@ export component FloatToString {
 }
 ```
 
-In addition, call the <Link type="MathRef" label="math functions"/> in postfix style on any numeric value,
-for example `(-10).abs()` or `x.round()`.
+此外，可以对任何数值以后缀风格调用 <Link type="MathRef" label="数学函数"/>，
+例如 `(-10).abs()` 或 `x.round()`。
+
+<a id="to-string-unlocalized---string"></a>
 
 #### to-string-unlocalized() -> string
 
-Returns a string representation of the number but not localized. This means the decimal separator will always be a dot.
+返回数字的字符串表示形式，但不进行本地化。这意味着小数分隔符始终是点。
 
 <SC>
 
 ### int
 
 <SlintProperty propName="int" typeName="int" defaultValue="0">
-  Signed integral number.
+  有符号整数。
 </SlintProperty>
 
-The default `int` is zero. \{#sls.type.int}
+默认 `int` 为零。 \{#sls.type.int}
 
 ### length
 
 <SlintProperty propName="length" typeName="length" defaultValue="0px">
   <NotInSC>
-    The type used for `x`, `y`, `width` and `height` coordinates. Corresponds to
-    a literal like `1px`, `1pt`, `1in`, `1mm`, or `1cm`. It can be converted to
-    and from length provided the binding is run in a context where there is an
-    access to the device pixel ratio.
+    用于 `x`、`y`、`width` 和 `height` 坐标的类型。对应于
+    `1px`、`1pt`、`1in`、`1mm` 或 `1cm` 之类的字面量。只要绑定在
+    可以访问设备像素比的上下文中运行，它就可以与 length 相互转换。
   </NotInSC>
 </SlintProperty>
 
-A `length` is a distance.
-The default `length` is zero. \{#sls.type.length}
+`length` 是一种距离。
+默认 `length` 为零。 \{#sls.type.length}
 
 </SC>
+
+<a id="percent"></a>
 
 ### percent
 
 <SlintProperty propName="percent" typeName="percent" defaultValue="0%">
-  Signed, 32-bit floating point number that is interpreted as percentage.
-  Literal number assigned to properties of this type must have a `%` suffix.
+  被解释为百分比的有符号 32 位浮点数。 分配给此类型属性的字面数字必须带 `%`
+  后缀。
 </SlintProperty>
 
 ### physical-length
@@ -114,9 +118,8 @@ The default `length` is zero. \{#sls.type.length}
   typeName="physical-length"
   defaultValue="0phx"
 >
-  This is an amount of physical pixels. To convert from an integer to a length
-  unit, one can simply multiply by `1px`. Or to convert from a length to a
-  float, one can divide by `1phx`.
+  这是物理像素的数量。要将整数转换为长度 单位，只需乘以
+  `1px`。或者要将长度转换为 浮点数，可以除以 `1phx`。
 </SlintProperty>
 
 ### relative-font-size
@@ -126,8 +129,8 @@ The default `length` is zero. \{#sls.type.length}
   typeName="relative-font-size"
   defaultValue="0rem"
 >
-  Relative font size factor that is multiplied with the
-  `Window.default-font-size` and can be converted to a `length`.
+  相对字体大小因子，与 `Window.default-font-size` 相乘，并且可以转换为
+  `length`。
 </SlintProperty>
 
-Please see the language specific API references how these types are mapped to the APIs of the different programming languages.
+请参阅特定语言的 API 参考，了解这些类型如何映射到不同编程语言的 API。

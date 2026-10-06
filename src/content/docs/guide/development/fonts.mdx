@@ -7,18 +7,17 @@ import LangRefLink from '@slint/common-files/src/components/LangRefLink.astro';
 
 {/* cSpell: ignore Noto sdf */}
 
-Elements such as `Text` and `TextInput` can render text and allow customizing the appearance of the text through
-different properties. The properties prefixed with `font-`, such as `font-family`, `font-size` and `font-weight`
-affect the choice of font used for rendering to the screen. If any of these properties isn't specified, the `default-font-`
-values in the surrounding `Window` element apply, such as `default-font-family`.
+`Text` 和 `TextInput` 等元素可以渲染文本，并允许通过各种属性自定义文本的外观。
+以 `font-` 为前缀的属性，例如 `font-family`、`font-size` 和 `font-weight`，
+会影响渲染到屏幕时所使用的字体选择。如果这些属性中有任何一个未指定，则会应用
+外层 `Window` 元素中的 `default-font-` 值，例如 `default-font-family`。
 
-The fonts chosen for rendering are automatically picked up from the system running the application. It's also possible to include custom
-fonts in your design. A custom font must be a TrueType font (`.ttf`), a TrueType font collection (`.ttc`) or an OpenType font (`.otf`).
-You can select a custom font with the `import` statement: `import "./my_custom_font.ttf"` in a .slint file. This
-instructs the Slint compiler to include the font and makes the font families globally available for use with
-`font-family` properties.
+用于渲染的字体自动取自运行应用的系统。你也可以在设计中使用自定义字体。
+自定义字体必须是 TrueType 字体（`.ttf`）、TrueType 字体集合（`.ttc`）或 OpenType 字体（`.otf`）。
+你可以在 .slint 文件中使用 `import` 语句选择自定义字体：`import "./my_custom_font.ttf"`。这会
+指示 Slint 编译器包含该字体，并使这些字体族全局可用，供 `font-family` 属性使用。
 
-For example:
+例如：
 
 ```slint no-test
 import "./NotoSans-Regular.ttf";
@@ -32,29 +31,26 @@ export component Example inherits Window {
 }
 ```
 
-## Fonts on embedded and bare-metal targets
+## 嵌入式和裸机目标上的字体
 
-The fonts used for rendering are automatically picked up from the operating system running
-the application. On embedded or bare-metal targets that use the software renderer and have no
-operating system, no system fonts are available. On these targets you must embed every font
-your application uses by importing it as shown above.
+用于渲染的字体自动取自运行应用的操作系统。在使用软件渲染器且没有操作系统的
+嵌入式或裸机目标上，没有可用的系统字体。在这些目标上，你必须通过像上面那样导入，
+嵌入应用使用的每一种字体。
 
-Embedding the fonts (and pre-rendering their glyphs) is enabled through the compiler's
-resource-embedding setting:
+字体嵌入（以及其字形预渲染）通过编译器的资源嵌入设置来启用：
 
-- **Rust:** in your build script, pass <LangRefLink lang="rust-slint-build" relpath="enum.EmbedResourcesKind.html#variant.EmbedForSoftwareRenderer">`EmbedResourcesKind::EmbedForSoftwareRenderer`</LangRefLink> to <LangRefLink lang="rust-slint-build" relpath="struct.CompilerConfiguration.html#method.embed_resources">`CompilerConfiguration::embed_resources()`</LangRefLink>.
-- **C++:** set the `SLINT_EMBED_RESOURCES` CMake target property (or the `DEFAULT_SLINT_EMBED_RESOURCES`
-  cache variable) to `embed-for-software-renderer`.
+- **Rust：** 在你的构建脚本中，将 <LangRefLink lang="rust-slint-build" relpath="enum.EmbedResourcesKind.html#variant.EmbedForSoftwareRenderer">`EmbedResourcesKind::EmbedForSoftwareRenderer`</LangRefLink> 传递给 <LangRefLink lang="rust-slint-build" relpath="struct.CompilerConfiguration.html#method.embed_resources">`CompilerConfiguration::embed_resources()`</LangRefLink>。
+- **C++：** 将 `SLINT_EMBED_RESOURCES` CMake 目标属性（或 `DEFAULT_SLINT_EMBED_RESOURCES`
+  缓存变量）设置为 `embed-for-software-renderer`。
 
-When embedding glyphs for the software renderer, the compiler pre-renders them at the pixel
-sizes your `.slint` files use. If some font sizes are only known at run time, set the
-`SLINT_FONT_SIZES` environment variable at compile time to a comma-separated list of pixel
-sizes (for example `SLINT_FONT_SIZES=12,16,24`) so glyphs are pre-rendered at those sizes as
-well.
+在为软件渲染器嵌入字形时，编译器会按你的 `.slint` 文件使用的像素尺寸预先渲染它们。
+如果某些字体大小只有在运行时才能确定，请在编译时把 `SLINT_FONT_SIZES` 环境变量设置为
+以逗号分隔的像素尺寸列表（例如 `SLINT_FONT_SIZES=12,16,24`），这样字形也会按这些尺寸
+预先渲染。
 
-To reduce the binary size on systems with limited flash memory, glyphs can be embedded as
-[Signed Distance Fields (SDF)](https://en.wikipedia.org/wiki/Signed_distance_function) instead
-of pre-rendered bitmaps, trading some rendering quality for a smaller footprint. Enable it with
+为了在闪存有限的系统上减小二进制文件体积，字形可以嵌入为
+[有符号距离场（SDF）](https://en.wikipedia.org/wiki/Signed_distance_function)，而不是
+预渲染的位图，以牺牲一些渲染质量为代价换取更小的占用。可通过以下方式启用：
 
 <LangRefLink
   lang="rust-slint-build"
@@ -62,9 +58,9 @@ of pre-rendered bitmaps, trading some rendering quality for a smaller footprint.
 >
   `CompilerConfiguration::with_sdf_fonts()`
 </LangRefLink>
-(Rust, requires the `sdf-fonts` Cargo feature), or by setting
-`SLINT_EMBED_RESOURCES` to `embed-for-software-renderer-with-sdf` (C++, requires
-the `SLINT_FEATURE_SDF_FONTS` feature).
+（Rust，需要 `sdf-fonts` Cargo feature），或者将 `SLINT_EMBED_RESOURCES` 设置为
+`embed-for-software-renderer-with-sdf`（C++，需要 `SLINT_FEATURE_SDF_FONTS`
+feature）。
 
-On targets that do have an operating system, enable the `software-renderer-systemfonts` cargo
-feature to let the software renderer also use fonts installed on the system.
+在确实有操作系统的目标上，启用 `software-renderer-systemfonts` cargo
+feature，让软件渲染器也能使用系统上安装的字体。

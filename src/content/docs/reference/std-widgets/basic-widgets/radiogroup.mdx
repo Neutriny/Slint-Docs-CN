@@ -1,6 +1,6 @@
 ---
 title: RadioGroup
-description: RadioGroup api.
+description: RadioGroup API。
 ---
 
 import SlintProperty from '@slint/common-files/src/components/SlintProperty.astro';
@@ -22,39 +22,39 @@ export component Example inherits Window {
 ```
 </CodeSnippetMD>
 
-A group of radio buttons where the user picks exactly one option.
+一组单选按钮，用户从中精确选择一项。
 
-`RadioGroup` only accepts `RadioButton` children, either listed statically
-or produced by a single `for` loop.
-`if` inside a `RadioGroup` is not supported, and a `for` must be the only
-child of the group.
+`RadioGroup` 只接受 `RadioButton` 子元素，可以静态列出，
+或由单个 `for` 循环生成。
+不支持在 `RadioGroup` 中使用 `if`，并且 `for` 必须是
+该组的唯一子元素。
 
-## Properties
+## 属性
 
 ### current-value
 
 <SlintProperty propName="current-value" typeName="string" propertyVisibility="out">
-The `text` of the currently selected `RadioButton`. To change the selection from
-host code, set the target `RadioButton`'s `checked` to `true` — typically through
-a two-way binding (`checked <=> model.field`).
+当前选中的 `RadioButton` 的 `text`。要从宿主代码更改选择，
+请将目标 `RadioButton` 的 `checked` 设置为 `true` —— 通常通过
+双向绑定（`checked <=> model.field`）。
 </SlintProperty>
 
 ### enabled
 
 <SlintProperty propName="enabled" typeName="bool" defaultValue="true">
-  When `false`, the group and its buttons don't react to input.
+  当为 `false` 时，该组及其按钮不响应输入。
 </SlintProperty>
 
 ### has-focus
 
 <SlintProperty propName="has-focus" typeName="bool" propertyVisibility="out">
-  `true` while any radio button in the group has keyboard focus.
+  当组中任一单选按钮具有键盘焦点时为 `true`。
 </SlintProperty>
 
 ### title
 
 <SlintProperty propName="title" typeName="string" defaultValue='""'>
-  An optional label rendered above the group. When empty, no title is shown.
+  在组上方渲染的可选标签。为空时不显示标题。
 </SlintProperty>
 
 ### orientation
@@ -66,15 +66,15 @@ a two-way binding (`checked <=> model.field`).
   defaultValue="vertical"
   inlineReferenceDocs={false}
 >
-  Use `Orientation.vertical` (default) to stack options, or
-  `Orientation.horizontal` for a single row.
+  使用 `Orientation.vertical`（默认）堆叠选项，或 使用 `Orientation.horizontal`
+  排列为单行。
 </SlintProperty>
 
-## Callbacks
+## 回调
 
 ### selected(value: string)
 
-Invoked when the user selects a different option. The argument is the `text` of the newly selected entry.
+当用户选择不同的选项时调用。参数为新选中条目的 `text`。
 
 ```slint {4-6}
 RadioGroup {
@@ -88,32 +88,32 @@ RadioGroup {
 
 ## RadioButton
 
-`RadioButton` is a pseudo-element that only appears inside `RadioGroup`.
+`RadioButton` 是仅出现在 `RadioGroup` 内的伪元素。
 
-### Properties
+### 属性
 
 <SlintProperty propName="text" typeName="string" defaultValue='""'>
-  Label shown next to the radio indicator.
+  单选指示器旁显示的标签。
 </SlintProperty>
 
 <SlintProperty propName="enabled" typeName="bool" defaultValue="true">
-  When `false`, the user can't select this button. The button stays visible.
+  当为 `false` 时，用户无法选择此按钮。按钮仍然可见。
 </SlintProperty>
 
 <SlintProperty propName="checked" typeName="bool" defaultValue="false" propertyVisibility="in-out">
-`true` when this is the currently selected button.
-By default `checked` tracks the group's selection: when a button is clicked
-it becomes `true`, and the previously-checked button's `checked` becomes
-`false`.
-Setting `checked = true` from outside selects this button on the next
-event loop iteration; the previously-checked button goes unchecked.
-Setting `checked = false` on the currently-selected button is reverted —
-the group always has at most one selection.
-Programmatic selection on a disabled button is refused.
+当这是当前选中的按钮时为 `true`。
+默认情况下，`checked` 会跟踪该组的选择：当某个按钮被点击
+时，它变为 `true`，而先前选中的按钮的 `checked` 变为
+`false`。
+从外部设置 `checked = true` 会在下一个
+事件循环迭代中选择此按钮；先前选中的按钮将取消选中。
+对当前选中的按钮设置 `checked = false` 会被还原 ——
+该组始终最多只有一个选中项。
+拒绝对禁用按钮进行程序化选择。
 
-Use a two-way binding (`checked <=> model.field`) to keep the
-button in sync with an external property, including with a `for`
-over a model:
+使用双向绑定（`checked <=> model.field`）使
+按钮与外部属性保持同步，包括通过 `for`
+遍历模型：
 
 ```slint
 RadioGroup {
@@ -122,18 +122,18 @@ RadioGroup {
 }
 ```
 
-A one-way binding (`checked: cond`) works for the initial state and
-stays reactive _until another button in the group is selected_ — at
-that point the group writes `checked = false` and the binding to
-`cond` is severed. Prefer `<=>` for cases where `cond` keeps changing.
+单向绑定（`checked: cond`）适用于初始状态，并在
+_该组中另一个按钮被选中之前_ 保持响应 —— 此时
+该组会写入 `checked = false`，与
+`cond` 的绑定将被切断。对于 `cond` 持续变化的情况，建议使用 `<=>`。
 
 </SlintProperty>
 
-### Callbacks
+### 回调
 
 #### toggled()
 
-Invoked when this button's `checked` state changes — both when it becomes the selection and when another button takes it over.
+当此按钮的 `checked` 状态改变时调用 —— 包括它成为选中项时，以及另一个按钮取代它时。
 
 ```slint {3-5}
 RadioGroup {
@@ -144,11 +144,11 @@ RadioGroup {
 }
 ```
 
-## Dynamic Buttons
+## 动态按钮
 
-Drive the buttons from a model with `for`.
-The `for` must be the only child of the group — mixing it with static
-`RadioButton` siblings isn't supported.
+使用 `for` 从模型驱动按钮。
+`for` 必须是该组的唯一子元素 —— 不支持将其与静态
+`RadioButton` 同级元素混合使用。
 
 ```slint
 RadioGroup {

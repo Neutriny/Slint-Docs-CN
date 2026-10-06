@@ -1,6 +1,6 @@
 ---
 title: 结构体与枚举
-description: Declaring named structures and enumerations.
+description: 声明命名结构体和枚举。
 SC: true
 ---
 
@@ -8,13 +8,13 @@ import SC from '@slint/common-files/src/components/SC.astro';
 import OnlyInSC from '@slint/common-files/src/components/OnlyInSC.astro';
 
 <SC>
-## Structs
+## 结构体
 
-A `struct` declaration at the top level of a `.slint` source file defines a named structure type;
-its fields are written between braces, each a name and a type separated by `:`,
-the fields separated by commas, and a struct with no fields is allowed. \{#sls.struct.decl}
+在 `.slint` 源文件顶层的 `struct` 声明定义具名结构体类型；
+其字段写在花括号之间，每个字段是由 `:` 分隔的名字和类型，
+字段之间用逗号分隔，允许没有字段的结构体。 \{#sls.struct.decl}
 
-Each field's type can be any property type. \{#sls.struct.field-type}
+每个字段的类型可以是任何属性类型。 \{#sls.struct.field-type}
 
 ```slint
 export struct Palette {
@@ -24,30 +24,30 @@ export struct Palette {
 ```
 
 <OnlyInSC>
-A field shall not declare a default value. \{#sls.struct.no-field-default}
+字段不应声明默认值。 \{#sls.struct.no-field-default}
 
-The default value of a struct is the value whose every field holds the default value of its type. \{#sls.struct.default}
+结构体的默认值是每个字段都持有其类型默认值的值。 \{#sls.struct.default}
 
 </OnlyInSC>
 </SC>
 
-A `;` between fields is a compile error; the compiler tells you to use `,` instead.
+字段之间的 `;` 会构成编译错误；编译器会提示你改用 `,`。
 
-A struct may be prefixed with one or more `@rust-attr(...)` attributes and may be `export`ed.
-Declaring a struct whose name matches an already-defined type replaces the earlier type and emits a warning.
+结构体可以带有一个或多个 `@rust-attr(...)` 属性作为前缀，并且可以被 `export`。
+声明与已定义类型同名的结构体会替换先前的类型，并发出警告。
 
-### Constructing and accessing
+### 构造与访问
 
 <SC>
-A struct value is written as a struct literal that initializes fields by name,
-`{ field1: value1, field2: value2 }`, with an optional trailing comma. \{#sls.struct.literal}
+结构体值写作按名字初始化字段的结构体字面量，
+`{ field1: value1, field2: value2 }`，可带可选的尾随逗号。 \{#sls.struct.literal}
 
 <OnlyInSC>
-A struct literal shall initialize every field of the struct exactly once,
-and shall not name a member that the struct does not have. \{#sls.struct.literal.exact}
+结构体字面量应恰好初始化结构体的每个字段一次，
+并且不应命名结构体不具有的成员。 \{#sls.struct.literal.exact}
 </OnlyInSC>
 
-A field is read with the `.` operator, as in `palette.fill`. \{#sls.struct.field-access}
+字段用 `.` 运算符读取，例如 `palette.fill`。 \{#sls.struct.field-access}
 
 ```slint
 export struct Palette {
@@ -63,15 +63,15 @@ export component Example inherits Window {
 
 </SC>
 
-A struct literal need not list every field; an omitted field takes its default value,
-and members that don't name a field of the target struct are ignored.
-`{}` lists no field at all, so every field takes its default value.
+结构体字面量不必列出每个字段；省略的字段取其默认值，
+而不指向目标结构体字段的成员会被忽略。
+`{}` 完全不列出字段，因此每个字段都取其默认值。
 
-The default value of a struct has every field set to its own default value, unless the field declares its own.
+结构体的默认值将每个字段设置为其自身的默认值，除非该字段声明了自己的默认值。
 
-### Field default values
+### 字段默认值
 
-`= expression` after a field's type declares a default value for that field:
+字段类型后面的 `= expression` 为该字段声明默认值：
 
 ```slint
 export struct Player {
@@ -85,24 +85,24 @@ export component Example {
 }
 ```
 
-The expression must be a compile-time constant.
-It may combine literals, casts, and operators, but referencing a property, an element, or any runtime value
-is a compile error.
-A number is only converted to a string when the result is the same in every locale:
-`= 42` is fine, while `= 42.1` is a compile error, because the decimal separator depends on the locale.
+该表达式必须是编译时常量。
+它可以组合字面量、类型转换和运算符，但引用属性、元素或任何运行时值
+会构成编译错误。
+只有当结果在所有区域设置中都相同时，数字才会转换为字符串：
+`= 42` 没问题，而 `= 42.1` 会构成编译错误，因为小数分隔符取决于区域设置。
 
-The default applies whenever an instance of the struct is created without a value for the field:
-in struct literals that omit the field, in properties of that struct type that are never set,
-and when the struct is constructed from native code
-(Rust `Player::default()`, C++ `Player{}`, JavaScript `new ui.Player()`, Python `ui.Player()`).
+只要创建结构体实例时没有为该字段提供值，就会应用默认值：
+在省略该字段的结构体字面量中、在从未设置过该结构体类型的属性中，
+以及从原生代码构造该结构体时
+（Rust `Player::default()`、C++ `Player{}`、JavaScript `new ui.Player()`、Python `ui.Player()`）。
 
-Field default values are only supported in named struct declarations.
-Writing `= expression` in an anonymous struct type is a compile error.
+字段默认值仅在具名结构体声明中受支持。
+在匿名结构体类型中书写 `= expression` 会构成编译错误。
 
-### Anonymous structures
+### 匿名结构体
 
-`{ identifier1: type1, identifier2: type2 }` is an anonymous struct type.
-It behaves like a named struct without a name:
+`{ identifier1: type1, identifier2: type2 }` 是匿名结构体类型。
+它的行为类似于没有名字的具名结构体：
 
 ```slint
 export component Example {
@@ -111,26 +111,28 @@ export component Example {
 }
 ```
 
-Two anonymous struct types with the same fields are the same type.
-A named struct is only ever equal to itself: it is not interchangeable with an anonymous struct of identical fields.
+具有相同字段的两个匿名结构体类型是同一类型。
+具名结构体永远只等于自身：它不能与字段相同的匿名结构体互换。
 
 <SC>
-## Enums
+<a id="enums"></a>
 
-An `enum` declaration at the top level defines an enumeration;
-its values are listed between braces, separated by commas. \{#sls.enum.decl}
+## 枚举
 
-An enum shall have at least one value. \{#sls.enum.nonempty}
+顶层的 `enum` 声明定义枚举；
+其值列在花括号之间，以逗号分隔。 \{#sls.enum.decl}
 
-A value shall not have the same name as the enum. \{#sls.enum.value-name}
+枚举应至少有一个值。 \{#sls.enum.nonempty}
 
-The values shall be distinct; `-` and `_` are the same character within a name,
-so `hello-world` and `hello_world` name one value. \{#sls.enum.distinct}
+值不应与枚举同名。 \{#sls.enum.value-name}
 
-No two values shall map to the same generated name, formed by dropping `-` and `_`
-and capitalizing the first letter of the name and of each word after a separator.
-`hello-world` and `HelloWorld` are different values but map to the same name,
-so an enum cannot declare both. \{#sls.enum.name-collision}
+各个值应互不相同；在名字中 `-` 和 `_` 是相同的字符，
+因此 `hello-world` 和 `hello_world` 命名同一个值。 \{#sls.enum.distinct}
+
+任何两个值都不应映射到相同的生成名字，该名字通过去掉 `-` 和 `_`
+并将名字的首字母以及分隔符后每个单词的首字母大写而形成。
+`hello-world` 和 `HelloWorld` 是不同的值，但映射到同一个名字，
+因此枚举不能同时声明两者。 \{#sls.enum.name-collision}
 
 ```slint
 export enum Direction { up, down, left, right }
@@ -140,17 +142,17 @@ export component Example inherits Window {
 }
 ```
 
-An enum value is referenced with the enum name and the value name separated by a dot,
-as in `Direction.up`. \{#sls.enum.value}
+枚举值通过用点分隔的枚举名和值名来引用，
+例如 `Direction.up`。 \{#sls.enum.value}
 
-The default value of an enum is its first value. \{#sls.enum.default}
+枚举的默认值是其第一个值。 \{#sls.enum.default}
 
 </SC>
 
-### Omitting the enum name
+### 省略枚举名
 
-The enum name may be omitted wherever a value of that enum type is the expected type:
-in a binding, a struct field, an array element, a function or callback argument, and a return value.
+只要期望的类型是该枚举类型的值，就可以省略枚举名：
+在绑定、结构体字段、数组元素、函数或回调参数以及返回值中。
 
 ```slint
 export enum CardSuit { clubs, diamonds, hearts, spade }
@@ -169,5 +171,5 @@ export component Example {
 }
 ```
 
-In a comparison the name may be omitted only on the right-hand side, which takes the type of the left:
-`card.suit == hearts` works, but `hearts == card.suit` does not, because the left operand has no expected type.
+在比较中，只有右侧可以省略名字，因为右侧会取左侧的类型：
+`card.suit == hearts` 可行，但 `hearts == card.suit` 不可行，因为左侧操作数没有期望类型。

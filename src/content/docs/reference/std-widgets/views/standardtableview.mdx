@@ -1,15 +1,15 @@
 ---
 title: StandardTableView
-description: StandardTableView api
+description: StandardTableView API。
 ---
 
 import SlintProperty from '@slint/common-files/src/components/SlintProperty.astro';
 import CodeSnippetMD from '@slint/common-files/src/components/CodeSnippetMD.astro';
 import Link from '@slint/common-files/src/components/Link.astro';
 
-The `StandardTableView` represents a table of data with columns and rows. The
-columns are defined by the `columns` property, and each row is a model of
-`StandardListViewItem` set via the `rows` property.
+`StandardTableView` 表示一个由列和行组成的数据表格。列由
+`columns` 属性定义，每一行是通过 `rows` 属性设置的
+`StandardListViewItem` 模型。
 
 <CodeSnippetMD imagePath="/src/assets/generated/std-widgets-standardtableview.png"  imageWidth="200" imageHeight="200"  imageAlt='std-widgets standardtableview example'>
 ```slint playground
@@ -45,18 +45,18 @@ export component Example inherits Window {
 
 
 
-## Properties
+## 属性
 
-Same scroll properties as <Link type="ScrollView" />, and in addition:
+与 <Link type="ScrollView" /> 相同的滚动属性，另外还有：
 
 ### current-sort-column
 <SlintProperty typeName="int" propName="current-sort-column" propertyVisibility="out">
-Indicates the sorted column, or `-1` when no column is sorted.
+指示已排序的列，当没有列被排序时为 `-1`。
 </SlintProperty>
 
 ### columns
 <SlintProperty typeName="[struct]" structName="TableColumn" propName="columns" defaultValue="[]" propertyVisibility="in-out">
-Defines the model of the table columns.
+定义表格列的模型。
 
 ```slint 'columns: [{ title: "Header 1" }, { title: "Header 2" }];'
 StandardTableView {
@@ -70,7 +70,7 @@ StandardTableView {
 ### rows
 
 <SlintProperty typeName="[[struct]]" structName="StandardListViewItem" propName="rows" defaultValue="[]" propertyVisibility="in-out">
-Defines the model of table rows.
+定义表格行的模型。
 
 ```slint 'rows: [[{ text: "Item 1" }, { text: "Item 2" }]];'
 StandardTableView {
@@ -89,27 +89,26 @@ StandardTableView {
   defaultValue="-1"
   propertyVisibility="in-out"
 >
-  The index of the currently active row. -1 mean none is selected, which is the
-  default.
+  当前活动行的索引。-1 表示未选中任何行，这是 默认值。
 </SlintProperty>
 
-## Callbacks
+## 回调
 
 ### sort-ascending(int)
 
-Emitted if the model should be sorted by the given column in ascending order.
+如果应按给定列以升序对模型排序，则发出。
 
 ### sort-descending(int)
 
-Emitted if the model should be sorted by the given column in descending order.
+如果应按给定列以降序对模型排序，则发出。
 
 ### row-pointer-event(int, PointerEvent, Point)
 
-Emitted on any mouse pointer event similar to `TouchArea`. Arguments are row index associated with the event, the `PointerEvent` itself and the mouse position within the tableview.
+在任何鼠标指针事件上发出，类似于 `TouchArea`。参数为与该事件关联的行索引、`PointerEvent` 本身以及 tableview 内的鼠标位置。
 
 ### current-row-changed(int)
 
-Emitted when the current row has changed because the user modified it
+当当前行因用户修改而发生变化时发出
 
 ```slint {5-7}
 StandardTableView {
@@ -122,8 +121,8 @@ StandardTableView {
 }
 ```
 
-## Functions
+## 函数
 
 ### set-current-row(int)
 
-Sets the current row by index and brings it into view.
+通过索引设置当前行，并将其滚动到可见区域。

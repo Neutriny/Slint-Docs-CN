@@ -1,6 +1,6 @@
 ---
 title: Button
-description: Button api.
+description: Button API。
 ---
 
 import SlintProperty from '@slint/common-files/src/components/SlintProperty.astro';
@@ -25,14 +25,14 @@ export component Example inherits Window {
 }
 ```
 
-A simple button. Common types of buttons can also be created with <Link type="StandardButton" />.
+一个简单的按钮。常见的按钮类型也可以通过 <Link type="StandardButton" /> 创建。
 
-## Properties
+## 属性
 
 ### checkable
 
 <SlintProperty propName="checkable" typeName="bool" defaultValue="false">
-Shows whether the button can be checked or not. This enables the `checked` property to possibly become true.
+显示按钮是否可选中。这使 `checked` 属性有可能变为 true。
 
 ```slint "checkable: true;"
 Button {
@@ -51,46 +51,43 @@ Button {
   defaultValue="false"
   propertyVisibility="in-out"
 >
-  Shows whether the button is checked or not. Needs `checkable` to be true to
-  work.
+  显示按钮是否已选中。需要 `checkable` 为 true 才能生效。
 </SlintProperty>
 
 ### enabled
 
 <SlintProperty propName="enabled" typeName="bool" defaultValue="true">
-  Defaults to true. When false, the button cannot be pressed.
+  默认为 true。当为 false 时，按钮无法被按下。
 </SlintProperty>
 
 ### has-focus
 
 <SlintProperty propName="has-focus" typeName="bool" propertyVisibility="out">
-  Set to true when the button has keyboard focus
+  当按钮具有键盘焦点时设置为 true
 </SlintProperty>
 
 ### icon
 
 <SlintProperty propName="icon" typeName="image">
-  The image to show in the button. Note that not all styles support drawing
-  icons.
+  在按钮中显示的图片。请注意，并非所有样式都支持绘制图标。
 </SlintProperty>
 
 ### icon-size
 
 <SlintProperty propName="icon-size" typeName="length">
-  The size of the icon shown in the button. The default value depends on the
-  style. The button will grow if needed to accommodate for large icon sizes.
+  按钮中显示的图标大小。默认值取决于样式。如果需要容纳较大的图标尺寸，按钮将自动增大。
 </SlintProperty>
 
 ### pressed
 
 <SlintProperty propName="pressed" typeName="bool" propertyVisibility="out">
-  Set to true when the button is pressed.
+  当按钮被按下时设置为 true。
 </SlintProperty>
 
 ### text
 
 <SlintProperty propName="text" typeName="string">
-The text written in the button.
+按钮中显示的文本。
 
 ```slint 'text: "Button with text";'
 Button {
@@ -103,21 +100,20 @@ Button {
 ### primary
 
 <SlintProperty propName="primary" typeName="bool" defaultValue="false">
-  If set to true the button is displayed with the primary accent color.
+  如果设置为 true，按钮将使用主强调色显示。
 </SlintProperty>
 
 ### colorize-icon
 
 <SlintProperty propName="colorize-icon" typeName="bool" defaultValue="false">
-  If set to true, the icon will be colorized to the same color as the Button's
-  text color.
+  如果设置为 true，图标将被着色为与 Button 文本颜色相同的颜色。
 </SlintProperty>
 
-## Callbacks
+## 回调
 
 ### clicked()
 
-Invoked when clicked: A finger or the left mouse button is pressed, then released on this element.
+在以下情况调用：手指或鼠标左键在此元素上按下，然后释放。
 
 ```slint {3-5}
 Button {

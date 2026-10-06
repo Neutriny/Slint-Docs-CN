@@ -1,6 +1,6 @@
 ---
 title: 键盘输入总览
-description: Key Handling Overview
+description: 按键处理总览
 ---
 
 {/* cSpell: ignore Backtab */}
@@ -8,40 +8,42 @@ description: Key Handling Overview
 import Link from '../../../../components/Link.astro';
 import SpecialKeys from '/src/content/docs/generated/reference/enums/_keys.md';
 
-To handle keyboard input in Slint, use the `FocusScope` with `KeyBinding` elements or individual `key-pressed` and `key-released` callbacks in various elements.
-Keyboard input is delivered via [`KeyEvent`](#keyevent) data structures.
-The primary field of this data structure is the `text` property, which holds all affected keys
-encoded in a string.
-Use the [`Key` namespace](#key-namespace) to identify known named keys.
+要在 Slint 中处理键盘输入，请使用带有 `KeyBinding` 元素的 `FocusScope`，或各种元素中的单独 `key-pressed` 和 `key-released` 回调。
+键盘输入通过 [`KeyEvent`](#keyevent) 数据结构传递。
+该数据结构的主要字段是 `text` 属性，它以字符串形式保存所有受影响的键。
+使用 [`Key` 命名空间](#key-namespace) 来识别已知的命名键。
 
-See the [Key Bindings](#key-bindings) section for how to handle key bindings declaratively with
-Slint's <Link type="KeyBinding"/> elements and the built-in <Link type="keys" /> type, which is constructed from the `@keys` macro.
+有关如何使用 Slint 的 <Link type="KeyBinding"/> 元素以及由 `@keys` 宏构造的内置 <Link type="keys" /> 类型以声明方式处理按键绑定的内容，请参见[按键绑定](#key-bindings)部分。
+
+<a id="keyevent"></a>
 
 ## KeyEvent
 
-This structure is generated and passed to the key press and release callbacks of the `FocusScope` element.
+此结构被生成并传递给 `FocusScope` 元素的按键按下和释放回调。
 
-- **`text`** (_string_): The unicode representation of the key pressed.
-- **`modifiers`** (_KeyboardModifiers_): The keyboard modifiers active at the time of the key press event.
-- **`repeat`** (_bool_): This field is set to true for key press events that are repeated, i.e. the key is held down. It's always false for key release events.
+- **`text`**（_string_）：所按下键的 Unicode 表示。
+- **`modifiers`**（_KeyboardModifiers_）：按键按下事件发生时处于活动状态的键盘修饰键。
+- **`repeat`**（_bool_）：对于重复的按键按下事件（即按住键不放），此字段设置为 true。对于按键释放事件，它始终为 false。
 
-## Key Bindings
+<a id="key-bindings"></a>
 
-Use the <Link type="KeyBinding" label="KeyBinding element"/> inside a `FocusScope` to declare key bindings (or keyboard shortcuts).
-The `KeyBinding`'s `keys` property takes an instance of the <Link label="keys type" type="keys"/> and invokes the `activated` callback when the key combination is detected.
+## 按键绑定
 
-The `keys` type represents a key, combined with modifiers and is constructed with the `@keys` macro.
+在 `FocusScope` 内使用 <Link type="KeyBinding" label="KeyBinding 元素"/> 来声明按键绑定（或键盘快捷键）。
+`KeyBinding` 的 `keys` 属性接受 <Link label="keys 类型" type="keys"/> 的实例，并在检测到该键组合时调用 `activated` 回调。
 
-Key bindings in Slint are based on **logical keys** — the character a keypress produces on the current keyboard layout — not the physical position of a key.
-This means, for example, that `@keys(Control + Z)` activates when the user presses the key that produces `z` on their layout, regardless of where that key sits on the keyboard.
-As a consequence, numpad digit keys are not distinguished from the main row digit keys, and `AltGr` isn't available as a modifier (it is consumed by the OS to produce characters).
+`keys` 类型表示一个键与修饰键的组合，并使用 `@keys` 宏构造。
 
-The `@keys(..)` macro accepts a key from the [`Key` namespace](#key-namespace), combined with any of these modifiers:
+Slint 中的按键绑定基于**逻辑键**——按键在当前键盘布局上产生的字符——而不是键的物理位置。
+这意味着，例如 `@keys(Control + Z)` 在用户按下其布局上产生 `z` 的键时激活，无论该键位于键盘上的何处。
+因此，小键盘数字键与主行数字键不作区分，并且 `AltGr` 不能作为修饰键使用（它会被操作系统消耗以产生字符）。
 
-- `Meta` (⌃ control on macOS and Windows key on PC)
-- `Control` (⌘ command on macOS)
+`@keys(..)` 宏接受来自 [`Key` 命名空间](#key-namespace) 的键，并结合以下任一修饰键：
+
+- `Meta`（macOS 上为 ⌃ control，PC 上为 Windows 键）
+- `Control`（macOS 上为 ⌘ command）
 - `Shift`
-- `Alt` (⌥ option on macOS)
+- `Alt`（macOS 上为 ⌥ option）
 
 ```slint playground
 export component Example inherits Window {
@@ -65,50 +67,52 @@ export component Example inherits Window {
 }
 ```
 
-:::caution[Caution]
-The behavior of ambiguous KeyBinding elements is currently undefined,
-for example when two or more KeyBindings declare the same `keys`.
+:::caution[注意]
+歧义 KeyBinding 元素的行为目前未定义，
+例如当两个或多个 KeyBinding 声明相同的 `keys` 时。
 
-If possible, conflicts are detected at compile-time. Ambiguous key bindings that are detected at runtime will log a warning.
+如果可能，冲突会在编译时检测到。在运行时检测到的歧义按键绑定会记录警告。
 :::
 
-### Different Keyboard Layouts
+### 不同的键盘布局
 
-Different keyboard layouts are handled automatically by the `@keys(..)` macro for keys from the [`Key` namespace](#key-namespace).
-For example, `@keys(Control + Plus)` fires whenever the user presses the key that produces `+` on their layout — on a US layout that requires `Shift` + `=`, while on a German layout `+` has its own key and no `Shift` is needed.
+对于来自 [`Key` 命名空间](#key-namespace) 的键，`@keys(..)` 宏会自动处理不同的键盘布局。
+例如，`@keys(Control + Plus)` 在用户按下其布局上产生 `+` 的键时触发——在 US 布局上这需要 `Shift` + `=`，而在 German 布局上 `+` 有自己的键，无需 `Shift`。
 
-Named keys inside `@keys(..)` are logical: `A` represents the character `a`, not a specific physical key location. This means `@keys(Control + A)` will activate on whichever key produces `a` on the user's layout, regardless of where that key sits on the keyboard.
+`@keys(..)` 内的命名键是逻辑的：`A` 表示字符 `a`，而不是特定的物理键位置。这意味着 `@keys(Control + A)` 会在用户布局上产生 `a` 的键上激活，无论该键位于键盘上的何处。
 
-If you need to define a key binding that involves a key outside of the [`Key` namespace](#key-namespace), continue reading the next section which covers advanced key definitions.
+如果你需要定义涉及 [`Key` 命名空间](#key-namespace) 之外键的按键绑定，请继续阅读下一节，其中介绍了高级键定义。
 
-### Advanced Key Bindings
+### 高级按键绑定
 
-If possible, prefer to use a key from the [`Key` namespace](#key-namespace) inside `@keys(..)`.
-If you absolutely need to define a binding to a different key, you can use a string literal inside the `@keys(..)` macro.
-For example: `@keys(Control + "ä")`.
+如果可能，优先在 `@keys(..)` 内使用来自 [`Key` 命名空间](#key-namespace) 的键。
+如果你确实需要定义到其他键的绑定，可以在 `@keys(..)` 宏内使用字符串字面量。
+例如：`@keys(Control + "ä")`。
 
-Note though that the `@keys(..)` macro no longer automatically handles different keyboard layouts and Shift behavior in this case.
-The provided string is simply matched against the **lowercased** `text`, plus the modifiers of the given `KeyEvent`
+但请注意，在这种情况下，`@keys(..)` 宏不再自动处理不同的键盘布局和 Shift 行为。
+提供的字符串只会与**小写化**的 `text` 以及给定 `KeyEvent` 的修饰键进行匹配
 
-To prevent issues with characters that entirely change their keycode when `Shift` (or sometimes `Alt` on macOS) is applied, you can mark these modifiers as optional with a trailing `?`, e.g.:
+为避免在应用 `Shift`（有时在 macOS 上是 `Alt`）时完全改变键码的字符出现问题，你可以用尾随的 `?` 将这些修饰键标记为可选，例如：
 
 - `Shift?`
 - `Alt?`
 
-When a modifier is marked as optional, the `keys` will ignore the state of the corresponding modifier when matching.
+当修饰键被标记为可选时，`keys` 在匹配时会忽略相应修饰键的状态。
 
-For example, to support key bindings that produce a Euro-Sign (€), add both `Shift?` and `Alt?`: `@keys(Control + Shift? + Alt? + "€")`.
-This will allow your users to reach the binding on almost all keyboard layouts that have a key with this label.
+例如，要支持产生欧元符号 (€) 的按键绑定，同时添加 `Shift?` 和 `Alt?`：`@keys(Control + Shift? + Alt? + "€")`。
+这将允许你的用户在几乎所有带有此标签键的键盘布局上使用该绑定。
 
-As another example, `@keys(Control + Plus)` is equivalent to `@keys(Control + Shift? + "+")`.
+再举一个例子，`@keys(Control + Plus)` 等价于 `@keys(Control + Shift? + "+")`。
 
-## Key Namespace
+<a id="key-namespace"></a>
 
-The `Key` namespace contains a list of well-known logical key codes (including any non-printable characters).
-Key names in this namespace identify keys by the **character they produce**, not by their physical position on the keyboard.
-For example, `Key.A` represents the character `a`, not the top-left letter key of a QWERTY keyboard.
+## Key 命名空间
 
-Note that alphabetic keys (e.g. Key.A-Key.Z) are represented as lowercase (e.g. "a"-"z").
-Make sure to case-convert the [`KeyEvent`](#keyevent) `text` or the Key as necessary.
+`Key` 命名空间包含一个众所周知的逻辑键码列表（包括任何不可打印字符）。
+此命名空间中的键名根据**它们产生的字符**来标识键，而不是根据它们在键盘上的物理位置。
+例如，`Key.A` 表示字符 `a`，而不是 QWERTY 键盘左上角的字母键。
+
+请注意，字母键（例如 Key.A-Key.Z）以小写表示（例如 "a"-"z"）。
+确保根据需要转换 [`KeyEvent`](#keyevent) `text` 或 Key 的大小写。
 
 <SpecialKeys />

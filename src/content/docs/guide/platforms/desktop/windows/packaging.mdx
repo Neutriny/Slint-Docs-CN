@@ -7,29 +7,28 @@ description: 用 MSIX 把 Slint 桌面应用打包后分发到 Windows
 
 import { Aside } from '@astrojs/starlight/components';
 
-This guide gets your app ready for the [Microsoft Store](https://learn.microsoft.com/en-us/windows/apps/publish/),
-which lists your app, installs it for users, and delivers every update you publish.
-The Store accepts desktop apps in a single format, [MSIX](https://learn.microsoft.com/en-us/windows/msix/overview):
-an archive holding your executable, its assets, and a manifest describing the app to Windows.
+本指南让你的应用为 [Microsoft Store](https://learn.microsoft.com/en-us/windows/apps/publish/) 做好准备，
+它会列出你的应用、为用户安装它，并分发你发布的每一次更新。
+Store 只接受一种格式的桌面应用，即 [MSIX](https://learn.microsoft.com/en-us/windows/msix/overview)：
+一个包含你的可执行文件、其资源，以及向 Windows 描述该应用的清单的归档包。
 
 <Aside type="note">
-  MSIX also works outside the Store, but it isn't the only option.
-  [WiX](https://wixtoolset.org/) and other MSI authoring tools, installers such
-  as [Inno Setup](https://jrsoftware.org/isinfo.php) and
-  [NSIS](https://nsis.sourceforge.io/), and a plain `.zip` all distribute a
-  Windows app. Packaging your application in these formats is outside the scope
-  of this documentation.
+  MSIX 在 Store 之外也能使用，但它并不是唯一的选择。
+  [WiX](https://wixtoolset.org/) 和其他 MSI 制作工具，诸如 [Inno
+  Setup](https://jrsoftware.org/isinfo.php) 和
+  [NSIS](https://nsis.sourceforge.io/) 之类的安装程序，以及普通的 `.zip`
+  都能分发 Windows 应用。以这些格式打包你的应用不在本文档的范围内。
 </Aside>
 
-## Prerequisites
+## 先决条件
 
-Install the [Windows SDK](https://developer.microsoft.com/windows/downloads/windows-sdk/).
-It comes with `makeappx`, which builds the package, and `makepri`, which builds the resource index it needs.
+安装 [Windows SDK](https://developer.microsoft.com/windows/downloads/windows-sdk/)。
+它附带 `makeappx`（用于构建包）和 `makepri`（用于构建包所需的资源索引）。
 
-## The Manifest
+## 清单
 
-An `AppxManifest.xml` at the root of the package describes it.
-This is the smallest manifest that you need for a Slint app:
+包根目录下的 `AppxManifest.xml` 描述了该包。
+这是 Slint 应用所需的最小清单：
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -79,34 +78,34 @@ This is the smallest manifest that you need for a Slint app:
 </Package>
 ```
 
-### Full Trust
+### 完全信任
 
-A packaged app runs in an app container by default, in a sandbox,
-with its own storage and all of its capabilities.
-In contrast, a full trust app runs on a user level, with the same access as an unpackaged app.
+打包的应用默认运行在应用容器中，处于沙箱内，
+拥有自己的存储和全部能力。
+相比之下，完全信任（full trust）应用以用户级别运行，与未打包的应用拥有相同的访问权限。
 
-Slint apps need full trust so that they can access files that the user selects, access the GPU to render,
-and call Win32 APIs.
+Slint 应用需要完全信任，以便访问用户选择的文件、访问 GPU 进行渲染，
+以及调用 Win32 API。
 
-In your manifest, the following three parts are necessary to declare full trust:
+在你的清单中，声明完全信任需要以下三个部分：
 
-- `EntryPoint="Windows.FullTrustApplication"` marks the app as an ordinary executable.
-- `uap10:TrustLevel="mediumIL"` runs the process as the user.
-- `runFullTrust` is the required capability.
+- `EntryPoint="Windows.FullTrustApplication"` 将应用标记为普通的可执行文件。
+- `uap10:TrustLevel="mediumIL"` 以用户身份运行进程。
+- `runFullTrust` 是所需的能力。
 
-### Asset Paths
+### 资源路径
 
-Every path in the manifest is relative within the package.
+清单中的每个路径都是包内的相对路径。
 
-## The Visual C++ Runtime
+## Visual C++ 运行时
 
-Binaries built with the MSVC toolchain link the C runtime dynamically,
-and the Skia renderer adds the C++ standard library on top.
-Both ship with the [Visual C++ redistributable](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist).
-If you are working with a fresh Windows installation, make sure that you have the Visual C++ runtime installed.
+用 MSVC 工具链构建的二进制文件会动态链接 C 运行时，
+而 Skia 渲染器还会额外用到 C++ 标准库。
+两者都随 [Visual C++ redistributable](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist) 一起提供。
+如果你使用的是全新的 Windows 安装，请确保已安装 Visual C++ 运行时。
 
-Declare a dependency on the framework package that carries the libraries,
-and Windows installs the runtime alongside your app:
+声明对携带这些库的 framework 包（框架包）的依赖，
+Windows 就会随你的应用一起安装运行时：
 
 ```xml
 <Dependencies>
@@ -120,14 +119,14 @@ and Windows installs the runtime alongside your app:
 ```
 
 <Aside type="tip">
-  `dumpbin /dependents your-app.exe` lists everything your executable imports.
-  `MSVCP140.dll` and `VCRUNTIME140.dll` come from the redistributable, while the
-  `api-ms-win-crt-*` entries are part of Windows.
+  `dumpbin /dependents your-app.exe` 会列出你的可执行文件导入的所有内容。
+  `MSVCP140.dll` 和 `VCRUNTIME140.dll` 来自 redistributable，而
+  `api-ms-win-crt-*` 条目则属于 Windows 的一部分。
 </Aside>
 
-## Building the Package
+## 构建包
 
-Create a directory that has what your package needs, then pack it:
+创建一个包含你的包所需内容的目录，然后打包它：
 
 ```powershell
 # layout/
@@ -138,38 +137,37 @@ Create a directory that has what your package needs, then pack it:
 makeappx pack /d layout /p YourApp_1.0.0.0_x64.msix /o
 ```
 
-This completes a single architecture.
-The result is unsigned, as the Store requires, and can't be installed yet.
+这完成了单个架构的构建。
+结果是未签名的（这是 Store 所要求的），此时还无法安装。
 
-## Supporting Both x64 and arm64
+## 同时支持 x64 和 arm64
 
-Windows on Arm runs x64 binaries through emulation.
-A native arm64 build is faster and takes little effort.
-Build the executable for each architecture,
-assemble one layout per architecture with `ProcessorArchitecture` set accordingly in each manifest,
-pack each one, then combine them:
+Windows on Arm 通过仿真运行 x64 二进制文件。
+原生 arm64 构建更快，且几乎不费什么力气。
+为每个架构构建可执行文件，
+在每个清单中相应地设置 `ProcessorArchitecture`，为每个架构组装一个 layout，
+各自打包，然后合并它们：
 
 ```powershell
 makeappx bundle /d slices /p YourApp_1.0.0.0_arm64_x64.msixbundle /bv 1.0.0.0 /o
 ```
 
-Everything except `ProcessorArchitecture` must be identical between the slices;
-we recommend generating each manifest from one template.
+除了 `ProcessorArchitecture` 之外，各个 slice 之间的所有内容都必须相同；
+我们建议从一个模板生成每个清单。
 
-## Icons
+## 图标
 
-The manifest names one file per logo, and Windows selects among variants of that file
-by the size required and the context.
+清单为每个 logo 指定一个文件，Windows 会根据所需大小和上下文在该文件的变体中进行选择。
 
-To produce the icon variants, follow these steps:
+要生成图标的各个变体，请按以下步骤操作：
 
-1. Render the small logo at each size Windows uses: 16, 24, 32, 48, and 256.
-   Name each one with a `targetsize` qualifier.
+1. 按 Windows 使用的每种大小渲染小图标：16、24、32、48 和 256。
+   用 `targetsize` 限定符为每个文件命名。
 
-2. Add an unplated variant of every size.
-   These hold the bare mark on transparency, and Windows draws them without a plate:
-   [`altform-unplated`](https://learn.microsoft.com/en-us/windows/uwp/app-resources/tailor-resources-lang-scale-contrast#shell-light-theme-and-unplated-resources) on dark taskbars,
-   `altform-lightunplated` on light ones.
+2. 为每种大小添加一个 unplated 变体。
+   这些变体在透明背景上只保留标记本身，Windows 绘制它们时不带底板：
+   在深色任务栏上使用 [`altform-unplated`](https://learn.microsoft.com/en-us/windows/uwp/app-resources/tailor-resources-lang-scale-contrast#shell-light-theme-and-unplated-resources)，
+   在浅色任务栏上使用 `altform-lightunplated`。
 
 ```
 Assets/Square44x44Logo.png                                      # named in the manifest
@@ -178,10 +176,10 @@ Assets/Square44x44Logo.targetsize-48_altform-unplated.png       # dark backgroun
 Assets/Square44x44Logo.targetsize-48_altform-lightunplated.png  # light backgrounds
 ```
 
-Those suffixes are [resource qualifiers](https://learn.microsoft.com/en-us/windows/uwp/app-resources/tailor-resources-lang-scale-contrast):
-a `.` separates the file name from the first qualifier, and `_` separates any further ones.
+这些后缀是[资源限定符](https://learn.microsoft.com/en-us/windows/uwp/app-resources/tailor-resources-lang-scale-contrast)：
+`.` 将文件名与第一个限定符分隔开，`_` 分隔后续的限定符。
 
-3. Build a resource index, which is what resolves those qualifiers.
+3. 构建资源索引，正是它来解析这些限定符。
 
 ```powershell
 makepri createconfig /cf priconfig.xml /dq en-US /o
@@ -189,50 +187,50 @@ makepri new /pr layout /cf priconfig.xml /of resources.pri /o
 Copy-Item resources.pri layout\resources.pri
 ```
 
-Keep `priconfig.xml` outside the layout, otherwise it's indexed and packaged with everything else.
+把 `priconfig.xml` 放在 layout 之外，否则它会被编入索引并和其他所有内容一起打包。
 
-## Signing
+## 签名
 
-The Store re-signs your package with a Microsoft certificate,
-so leave a package destined for it **unsigned**.
-You don't need a code signing certificate to publish there.
+Store 会使用 Microsoft 证书为你的包重新签名，
+因此请把面向 Store 的包保持为**未签名**。
+在那里发布不需要代码签名证书。
 
-For distribution outside the Store, Windows won't install a package it doesn't trust,
-and the certificate's subject must match `Identity/Publisher` in your manifest exactly.
-For more information, see [signing a package with SignTool](https://learn.microsoft.com/en-us/windows/win32/appxpkg/how-to-sign-a-package-using-signtool).
+对于 Store 之外的分发，Windows 不会安装它不信任的包，
+而且证书的主题必须与清单中的 `Identity/Publisher` 完全匹配。
+更多信息请参见[使用 SignTool 对包签名](https://learn.microsoft.com/en-us/windows/win32/appxpkg/how-to-sign-a-package-using-signtool)。
 
-## Testing Without Signing
+## 不签名测试
 
-You don't need a certificate during development.
-With [Developer Mode](https://learn.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development) enabled,
-Windows registers a package directly from a directory:
+开发期间你不需要证书。
+启用[开发者模式](https://learn.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development)后，
+Windows 可以直接从目录注册包：
 
 ```powershell
 Add-AppxPackage -Register layout\AppxManifest.xml
 ```
 
-The app appears in the `Start` menu and runs with its real package identity.
-That matters for testing: framework dependencies such as the C++ runtime reach the DLL search path only when the app starts through its identity.
-Remove it again with:
+应用会出现在 `Start` 菜单中，并以它真实的包标识运行。
+这对测试很重要：诸如 C++ 运行时之类的 framework 依赖项，只有在应用通过其标识启动时才会进入 DLL 搜索路径。
+用以下命令再次移除它：
 
 ```powershell
 Get-AppxPackage YourOrganization.YourApp | Remove-AppxPackage
 ```
 
 <Aside type="tip">
-You may run into two types of issues.
+你可能会遇到两类问题。
 
-- `0x80070005` (access denied) usually means the deployment service can't read your layout.
-  Grant it access:
+- `0x80070005`（拒绝访问）通常意味着部署服务无法读取你的 layout。
+  授予它访问权限：
 
 ```powershell
 icacls layout /grant "*S-1-15-2-1:(OI)(CI)(RX)" /T
 ```
 
-- `0x80073D2C` means the publisher isn't in the unsigned namespace.
-  `Add-AppxPackage -AllowUnsigned` only accepts packages whose `Publisher` carries a
-  [special OID](https://learn.microsoft.com/en-us/windows/msix/package/unsigned-package) marking them as unsigned,
-  so you can't use it with a real publisher identity.
-  Register the layout as above, or sign the package.
+- `0x80073D2C` 意味着发布者不在未签名命名空间中。
+  `Add-AppxPackage -AllowUnsigned` 只接受其 `Publisher` 带有
+  [特殊 OID](https://learn.microsoft.com/en-us/windows/msix/package/unsigned-package)、标记为未签名的包，
+  因此你无法对真实发布者身份使用它。
+  像上面那样注册 layout，或者对包签名。
 
 </Aside>

@@ -8,23 +8,21 @@ import Link from '@slint/common-files/src/components/Link.astro';
 import { Image } from 'astro:assets';
 
 :::note[Note]
-Slint supports Rust and C++ for Android development. For iOS, only Rust is supported for now.
+Slint 支持用 Rust 和 C++ 进行 Android 开发。对于 iOS，目前仅支持 Rust。
 :::
 
-While Slint is used in the same way for mobile and desktop applications, there are a few things that have to be kept in
-mind during development. Mobile platforms usually feature a small screen and no hardware keyboard, which have direct
-consequences that can't be handled by the user interface framework, but are specific to the application. Touch
-interfaces also need special handling as opposed to mouse-based interaction.
+虽然 Slint 在移动端和桌面应用程序中的用法相同，但在开发过程中有几点需要注意。
+移动平台通常屏幕小且没有硬件键盘，这会带来直接的后果，这些后果无法由用户界面框架处理，
+而是特定于应用程序的。与基于鼠标的交互相比，触摸界面也需要特殊处理。
 
-This page describes considerations that apply to all mobile platforms. The next pages dive into platform-specific
-issues on top of these.
+本页描述适用于所有移动平台的注意事项。后续页面会在这些内容之上深入探讨特定于平台的问题。
 
-## Scrolling
+## 滚动
 
-By default, Slint <Link type="ScrollView"/>s only scroll by dragging the scrollbar or the mouse wheel. This is fine for desktop, but
-touch interfaces are expected to scroll while panning the whole view.
+默认情况下，Slint 的 <Link type="ScrollView"/> 只能通过拖动滚动条或鼠标滚轮来滚动。这对桌面来说没问题，
+但触摸界面在平移整个视图时应当滚动。
 
-Enable it in Slint like this:
+像这样在 Slint 中启用它：
 
 ```slint
 import { ScrollView } from "std-widgets.slint";
@@ -37,28 +35,25 @@ export component MyComponent {
 }
 ```
 
-Note that this also enables the behavior when a mouse is attached, which might not be desired. This will be fixed in
-a future version of Slint.
+注意，这也会在连接鼠标时启用该行为，而这可能不是你想要的。这会在 Slint 的未来版本中修复。
 
-## Safe Area
+## 安全区域
 
-Operating system developers for mobile devices try to improve the limitations of the small screen by reducing the amount
-of system-level overlays to a bare minimum. This means that applications usually have access to the entire screen, but
-there are a few system items overlaid, for example the cell tower reception and battery status. On Android, this also
-includes navigation buttons. Also, many cellphone devices embed the front-facing camera into the display, leaving only a
-small non-rectangular area inaccessible ("the notch").
+移动设备的操作系统开发者试图通过把系统级覆盖层的数量降到最低，来改善小屏幕的局限。
+这意味着应用程序通常可以访问整个屏幕，但会有一些系统项目叠加在上面，例如基站信号和电池状态。
+在 Android 上，这还包括导航按钮。此外，许多手机设备将前置摄像头嵌入显示屏，
+只留下一小块非矩形区域不可访问（即“刘海”）。
 
-Apps can usually draw onto the entire screen and underneath certain overlay areas, but user interaction is not allowed
-everywhere. For example, buttons drawn underneath the front-facing camera area can't be tapped. Therefore, Android and
-iOS describe what's called a "safe area": A rectangular region where an application can expect users to be able to
-interact with interface elements. It is defined by an inset, meaning that it defines the thickness of an invisible
-border inside the application's window which should only contain background elements (like background images, patterns,
-color). This safe area can also change in size at runtime, for example on Android when the navigation buttons at the
-bottom are shown and hidden.
+应用通常可以在整个屏幕上以及某些覆盖区域下方绘制，但并非所有地方都允许用户交互。
+例如，绘制在前置摄像头区域下方的按钮无法被点击。因此，Android 和
+iOS 描述了一个所谓的“安全区域（safe area）”：一个矩形区域，应用程序可以预期用户能够在其中
+与界面元素交互。它通过一个内边距（inset）来定义，即定义应用窗口内部一条不可见边框的厚度，
+该边框内应只包含背景元素（如背景图像、图案、颜色）。
+这个安全区域的大小也可能在运行时改变，例如在 Android 上底部导航按钮显示和隐藏时。
 
-In Slint, this area is exposed with the <Link type="Window.safe-area-insets"/> property on the <Link type="Window"/> element.
+在 Slint 中，该区域通过 <Link type="Window"/> 元素上的 <Link type="Window.safe-area-insets"/> 属性暴露出来。
 
-If you want to place a rectangle to visualize the safe area, for example for debugging, you can do it like this:
+如果你想放置一个矩形来可视化安全区域，例如用于调试，你可以这样做：
 
 ```slint
 export component MainWindow inherits Window {
@@ -72,62 +67,55 @@ export component MainWindow inherits Window {
 }
 ```
 
-## Keyboard Handling
+## 键盘处理
 
-Since the introduction of the iPhone, modern smartphones usually don't feature a hardware keyboard for text input. There are
-accessories like Bluetooth or USB keyboards and special phone cases that do provide such a feature, but there always has to
-be a software fallback, the "virtual keyboard".
+自 iPhone 问世以来，现代智能手机通常没有用于文本输入的硬件键盘。虽然有蓝牙或 USB 键盘
+以及特殊手机壳之类的配件提供这一功能，但始终必须有软件回退方案，即“虚拟键盘”。
 
-Note that the keyboard is not always comprised of rows of buttons, it can also be a handwriting recognition area, voice
-input, or a camera viewer for capturing text or bar codes that are then inserted. All of these are handled transparently
-though, so the application doesn't have to care about that, unless the application provides a virtual keyboard itself.
+注意，键盘并不总是由一排排按钮组成，它也可以是手写识别区域、语音输入，
+或用于捕获文本或条形码然后将其插入的摄像头取景器。不过，所有这些都被透明地处理，
+因此应用无需关心它们，除非应用自身提供虚拟键盘。
 
-The virtual keyboard is placed on top of the application that requires text input, reducing the already limited screen
-space even further. While there are split keyboards, floating keyboards, and more, operating systems always treat the
-virtual keyboard as a single rectangle overlaying the application window.
+虚拟键盘放置于需要文本输入的应用之上，从而进一步缩小本已有限的屏幕空间。
+虽然有分体键盘、浮动键盘等等，但操作系统始终把虚拟键盘当作覆盖在应用窗口上的一个矩形。
 
-The way Slint exposes this is by these two properties defining a rectangle on the <Link type="Window"/> element:
+Slint 通过 <Link type="Window"/> 元素上定义矩形的这两个属性来暴露它：
 
 - <Link type="Window.virtual-keyboard-position" />
 - <Link type="Window.virtual-keyboard-size" />
 
-Slint calls on the operating system to open and hide the virtual keyboard transparently when focusing a text input element.
-The operating system decides whether to actually show it, which depends on system settings and whether a hardware keyboard
-is detected. This might also change at runtime, for example if the user attaches a hardware keyboard while the virtual
-keyboard is visible (in this case, the operating system might hide the virtual keyboard by itself). In any case, if there
-is a non-floating virtual keyboard visible, Slint exposes this to the application.
+当聚焦文本输入元素时，Slint 会透明地调用操作系统来打开和隐藏虚拟键盘。
+操作系统会决定是否实际显示它，这取决于系统设置以及是否检测到硬件键盘。
+这也可能在运行时改变，例如当用户在虚拟键盘可见时连接硬件键盘（这种情况下，操作系统可能会自行隐藏虚拟键盘）。
+无论如何，如果存在可见的非浮动虚拟键盘，Slint 会将其暴露给应用。
 
-You can detect if the keyboard is shown by checking whether `virtual-keyboard-size.width * virtual-keyboard-size.height` is
-greater than 0.
+你可以通过检查 `virtual-keyboard-size.width * virtual-keyboard-size.height` 是否大于 0
+来判断键盘是否显示。
 
-Some virtual keyboards are translucent, which means that the area below the keyboard can be visible to some extend. So,
-the application can display basic visual elements like a solid color there to let the keyboard appear to be integrated
-into the visual style.
+有些虚拟键盘是半透明的，这意味着键盘下方的区域可以在一定程度上被看见。所以，
+应用可以在那里显示基本的视觉元素（如纯色），让键盘看起来融入了视觉风格。
 
-Usually, applications don't have to use these properties, due to the behavior explained in the next section.
+通常，应用不必使用这些属性，原因见下一节所述的行为。
 
 :::note[Note]
-The way the virtual keyboard overlay is defined differs between Android and iOS. Android defines an inset of the
-window (just like the safe area definition above) while iOS supplies a rectangle. Slint unifies this to behave the same
-on both platforms, but since these are not mathematically equivalent, there might be certain edge cases with custom
-virtual keyboards that might not be handled correctly. It is expected that most keyboards just take up a section of
-the bottom of the screen.
+虚拟键盘覆盖区域的定义方式在 Android 和 iOS 之间有所不同。Android 定义的是窗口的
+内边距（inset）（就像上面的安全区域定义一样），而 iOS 提供的是一个矩形。Slint 将其统一为在
+两个平台上行为一致，但由于这两者在数学上并不等价，对于自定义虚拟键盘，可能存在某些
+无法被正确处理的特例。预计大多数键盘只会占据屏幕底部的一部分。
 :::
 
-### Keeping the Editing Area Visible
+### 保持编辑区域可见
 
-A common issue is that the text field the user wants to edit ends up below the virtual keyboard, making it invisible.
-Slint can automatically handle this by scrolling, but the application has to be structured in a certain way for this to
-work.
+一个常见问题是，用户想要编辑的文本字段最终位于虚拟键盘下方，从而不可见。
+Slint 可以通过滚动自动处理这一点，但应用必须以某种方式组织，才能让它
+生效。
 
-When the keyboard is shown, the element currently in focus tries to stay visible. It does that by searching for a
-scrollable area (<Link type="Flickable"/>) in its parent element chain (up to the window). If it finds one, that area is
-instructed to scroll in a way that it doesn't overlap the keyboard with the minimal offset possible. The bounds check
-of the scroll area is reduced by the overlap with the keyboard, which means that the area can be scrolled further than
-normal. This overscroll is automatically fixed when the keyboard is hidden again.
+当键盘显示时，当前获得焦点的元素会尝试保持可见。它通过在父元素链中（直到窗口）搜索
+可滚动区域（<Link type="Flickable"/>）来实现这一点。如果找到，就会指示该区域以尽可能小的偏移
+滚动，使其不与键盘重叠。滚动区域的边界检查会因与键盘的重叠而缩小，这意味着该区域可以比
+正常情况滚得更远。当键盘再次隐藏时，这种过度滚动会自动修正。
 
-So to summarize, if you want to keep a text field in view while the virtual keyboard is shown, put it inside a scroll
-area like this:
+因此总结一下，如果你想在虚拟键盘显示时让文本字段保持可见，请把它放在像这样的滚动区域内：
 
 ```slint
 import { LineEdit, ScrollView } from "std-widgets.slint";
@@ -151,18 +139,17 @@ export component MyView {
 }
 ```
 
-As you can see, the <Link type="ScrollView"/> doesn't need to be the direct parent of the <Link type="LineEdit"/>.
+如你所见，<Link type="ScrollView"/> 不必是 <Link type="LineEdit"/> 的直接父元素。
 
-## Application Layout Considerations
+## 应用程序布局注意事项
 
-While stylus and mouse input can be pixel-accurate, touch input is not, especially with capacitive touch screens. So,
-touch-ready applications have to take care to make interactive areas as large as possible and there has to be
-enough spacing between touch areas. Also, certain parts of the screen are more easily accessible with the thumb of
-the hand that holds the device than others.
+触控笔和鼠标输入可以是像素级精确的，而触摸输入则不是，尤其是对于电容式触摸屏。因此，
+面向触摸的应用必须注意让交互区域尽可能大，并且触摸区域之间要有
+足够的间距。此外，屏幕上某些部分用握持设备那只手的拇指操作起来比其他部分更容易。
 
-Slint is not able to provide any help with this aspect, so you as the application developers have to keep this in
-mind, especially while developing using a device simulator or in a UI design application like Figma.
+Slint 无法在这方面提供任何帮助，因此作为应用开发者的你必须记住
+这一点，尤其是在使用设备模拟器或像 Figma 这样的 UI 设计应用进行开发时。
 
-We highly recommend reading Apple's
-[Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines/) and Google's
-[Design for Android](https://developer.android.com/design/ui) page.
+我们强烈建议阅读 Apple 的
+[Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines/) 和 Google 的
+[Design for Android](https://developer.android.com/design/ui) 页面。

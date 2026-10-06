@@ -5,11 +5,11 @@ description: 用全局单例在整个工程中共享状态
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-Declare a global singleton with `global Name { /* .. properties or callbacks .. */ }` to
-make properties and callbacks available throughout the entire project.
-Access them using `Name.property`.
+用 `global Name { /* .. properties or callbacks .. */ }` 声明一个全局单例，
+即可让属性和回调在整个项目中可用。
+用 `Name.property` 访问它们。
 
-For example, this can be useful for a common color palette:
+例如，这对通用的调色板很有用：
 
 ```slint
 global Palette  {
@@ -24,10 +24,9 @@ export component Example inherits Rectangle {
 }
 ```
 
-Export a global to make it accessible from other files.
-To reach a global from your business logic in Rust, C++, JavaScript, or Python —
-setting its properties and implementing its callbacks — re-export it from the file
-that also exports your main application component:
+导出全局对象，使其可从其他文件访问。
+要从 Rust、C++、JavaScript 或 Python 的业务逻辑中访问某个全局对象——
+设置其属性并实现其回调——请从同时导出主应用程序组件的文件中重新导出它：
 
 ```slint
 export global Logic  {
@@ -113,10 +112,10 @@ app.Logic.the_value = 42
 </TabItem>
 </Tabs>
 
-To re-expose global properties on a component with two-way bindings, see the
-[Globals](../../../../reference/language/globals/) chapter of the language reference.
+要用双向绑定在组件上重新暴露全局属性，参见语言参考中的
+[全局对象](../../../../reference/language/globals/)章节。
 
-:::note[Note]
-Global singletons aren't shared between separate windows.
-You may need to initialize the global callbacks and properties for each instance you create.
+:::note[注意]
+全局单例不在独立窗口之间共享。
+你可能需要为你创建的每个实例初始化全局回调和属性。
 :::

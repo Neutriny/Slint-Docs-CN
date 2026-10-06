@@ -3,10 +3,10 @@ title: 表达式与语句
 description: 声明属性之间的关系，并在回调里响应
 ---
 
-Expressions are a powerful way to declare relationships and connections in your user interface.
-Use them to combine basic arithmetic with access to properties of other elements.
-When these properties change, the expression is automatically re-evaluated
-and a new value is assigned to the property the expression is associated with:
+表达式是在用户界面中声明关系和连接的强大方式。
+用它们把基本算术与对其他元素属性的访问结合起来。
+当这些属性变化时，表达式会自动重新求值，
+并把新值赋给与该表达式关联的属性：
 
 ```slint
 export component Example {
@@ -19,9 +19,9 @@ export component Example {
 }
 ```
 
-When `my-property` changes, the width changes automatically, too.
+当 `my-property` 变化时，宽度也会自动变化。
 
-Access an element's properties by using its name, followed by a `.` and the property name:
+通过元素的名字，后跟 `.` 和属性名来访问元素的属性：
 
 ```slint
 export component Example {
@@ -32,8 +32,8 @@ export component Example {
 }
 ```
 
-Expressions support the arithmetic, comparison, and logical operators you know from other languages,
-string concatenation with `+`, and the ternary operator `... ? ... : ...`:
+表达式支持你从其他语言中熟知的算术、比较和逻辑运算符，
+用 `+` 进行字符串拼接，以及三元运算符 `... ? ... : ...`：
 
 ```slint
 export component Example inherits Window {
@@ -51,15 +51,13 @@ export component Example inherits Window {
 }
 ```
 
-See the [Operators](../../../../reference/language/operators/) chapter of the language reference
-for all of them and their exact semantics.
+关于全部运算符及其确切语义，参见语言参考中的[运算符](../../../../reference/language/operators/)章节。
 
-## Statements
+## 语句
 
-Inside callback handlers and functions you write _statements_ that run when invoked —
-this is where imperative code lives.
-Assign to properties, declare local variables with `let`, branch with `if`/`else`,
-and call callbacks or functions:
+在回调处理程序和函数内部，你编写在被调用时运行的*语句*——
+命令式代码就在这里。给属性赋值、用 `let` 声明局部变量、用 `if`/`else` 分支，
+以及调用回调或函数：
 
 ```slint no-test
 clicked => {
@@ -72,5 +70,4 @@ clicked => {
 }
 ```
 
-See [Statements](../../../../reference/language/statements/) in the language reference
-for every statement form.
+关于每种语句形式，参见语言参考中的[语句](../../../../reference/language/statements/)。

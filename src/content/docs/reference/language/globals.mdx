@@ -1,11 +1,11 @@
 ---
 title: 全局对象
-description: Global singletons for properties and callbacks shared across the project.
+description: 在整个项目间共享的属性和回调的全局单例。
 ---
 
-A _global_ is a singleton declared at the top level of a `.slint` file with the `global` keyword.
-It holds properties, callbacks, and functions that are shared across the whole project
-rather than belonging to an element:
+_全局对象_ 是使用 `global` 关键字在 `.slint` 文件顶层声明的单例。
+它持有在整个项目中共享的属性、回调和函数，
+而不是属于某个元素：
 
 ```slint no-test
 global Name {
@@ -13,29 +13,29 @@ global Name {
 }
 ```
 
-A global is declared once and referred to by name.
-It is never instantiated as an element; writing `Name { }` in an element tree is an error.
+全局对象声明一次并通过名字引用。
+它永远不会作为元素实例化；在元素树中写 `Name { }` 是一个错误。
 
-## Contents
+## 内容
 
-The body of a global may contain:
+全局对象的主体可以包含：
 
-- _Property declarations_ — `in`, `out`, `in-out`, or private, each with an optional binding (see [Properties](../properties/)).
-- _Callback declarations_ — optionally `pure` (see [Callbacks](../callbacks/)).
-- _Function declarations_ — optionally `pure`, and `private`, `protected`, or `public` (see [Functions](../functions/)).
+- _属性声明_ —— `in`、`out`、`in-out` 或私有，每个都可以有可选的绑定（见[属性](../properties/)）。
+- _回调声明_ —— 可选为 `pure`（见[回调](../callbacks/)）。
+- _函数声明_ —— 可选为 `pure`，以及 `private`、`protected` 或 `public`（见[函数](../functions/)）。
 
-Nothing else is allowed.
-A global cannot contain elements or child components, `@children`, an `animate` block,
-`states`, `transitions`, or an `init` callback; each is a compile error.
+不允许其他内容。
+全局对象不能包含元素或子组件、`@children`、`animate` 块、
+`states`、`transitions` 或 `init` 回调；每一种都会构成编译错误。
 
-A global exists independently of any window, so it has no scale factor and no default font size.
-Expressions inside a global therefore cannot convert between logical (`px`) and physical (`phx`) lengths,
-nor between `rem` and logical lengths.
+全局对象独立于任何窗口存在，因此它没有缩放因子，也没有默认字体大小。
+因此，全局对象内部的表达式不能在逻辑（`px`）和物理（`phx`）长度之间转换，
+也不能在 `rem` 和逻辑长度之间转换。
 
-## Accessing members
+## 访问成员
 
-Reach a global's members through its name, from any binding, callback, or function in the project,
-and from other globals:
+通过全局对象的名字，从项目中的任何绑定、回调或函数，
+以及从其他全局对象访问其成员：
 
 ```slint no-test
 Name.property
@@ -43,11 +43,11 @@ Name.callback(arguments)
 Name.function(arguments)
 ```
 
-As with all identifiers, `-` and `_` are interchangeable.
+与所有标识符一样，`-` 和 `_` 可以互换。
 
-A global is a singleton: one instance is shared by every component in a component tree.
-Separate windows — and a window and a `SystemTrayIcon` exported alongside it — each hold their own
-instance, so their globals are initialized independently.
+全局对象是单例：组件树中的每个组件共享同一个实例。
+不同的窗口——以及与某个窗口一起导出的 `SystemTrayIcon`——各自持有自己的
+实例，因此它们的全局对象独立初始化。
 
 ```slint
 global Palette {
@@ -62,12 +62,12 @@ export component Example inherits Rectangle {
 }
 ```
 
-## Exporting
+## 导出
 
-An [exported](../exports/) global can be imported into other files.
-A global re-exported from the file that also exports the application's root component is additionally
-exposed to the native API, where the business logic reads and writes its properties and sets its callbacks.
-The [Globals](../../../guide/language/coding/globals/) guide shows this for each language.
+[导出的](../exports/)全局对象可以导入到其他文件中。
+从同时导出应用根组件的文件重新导出的全局对象还会
+暴露给原生 API，业务逻辑在其中读取和写入其属性并设置其回调。
+[全局对象](../../../guide/language/coding/globals/)指南展示了各语言的用法。
 
-A global's property or callback can be the target of a [two-way binding](../two-way-bindings/),
-which re-exposes it on a component.
+全局对象的属性或回调可以是[双向绑定](../two-way-bindings/)的目标，
+从而在组件上重新暴露它。

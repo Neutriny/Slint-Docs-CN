@@ -1,31 +1,31 @@
 ---
 title: 类型转换
-description: Implicit and explicit conversions between Slint types.
+description: Slint 类型之间的隐式和显式转换。
 ---
 
 import Link from '@slint/common-files/src/components/Link.astro';
 
-Slint supports conversions between different types. Explicit
-conversions are required to make the UI description more robust, but implicit
-conversions are allowed between some types for convenience.
+Slint 支持不同类型之间的转换。显式
+转换是必需的，以使 UI 描述更健壮，但为方便起见，
+某些类型之间允许隐式转换。
 
-The following conversions are possible:
+可以进行以下转换：
 
-- `int` can be converted implicitly to `float` and vice-versa.
-  When converting from `float` to `int`, the value is truncated.
-- `int` and `float` can be converted implicitly to `string`,
-  and `string` can be converted to `float` with the `to-float()` member function.
-  See [Converting Between Numbers and Strings](#converting-between-numbers-and-strings).
-- `physical-length`, `relative-font-size`, and `length` can be converted implicitly to each other only in
-  context where the pixel ratio is known.
-- the units type (`length`, `physical-length`, `duration`, ...) can't be converted to numbers (`float` or `int`)
-  but they can be divided by themselves to result in a number. Similarly, a number can be multiplied by one of
-  these unit. The idea is that one would multiply by `1px` or divide by `1px` to do such conversions
-- The literal `0` can be converted to any of these types that have associated unit.
-- Struct types convert to another struct type when the fields they have in common convert.
-  A missing field takes its default value, and an extra field is discarded with a warning.
-  Having both at once is an error, because it is likely a typo.
-- Arrays generally don't convert between each other. Array literals can be converted if the element types are convertible.
+- `int` 可以隐式转换为 `float`，反之亦然。
+  从 `float` 转换为 `int` 时，值会被截断。
+- `int` 和 `float` 可以隐式转换为 `string`，
+  而 `string` 可以通过 `to-float()` 成员函数转换为 `float`。
+  参见[数字与字符串之间的转换](#converting-between-numbers-and-strings)。
+- `physical-length`、`relative-font-size` 和 `length` 只有在已知像素比的情况下
+  才能隐式地相互转换。
+- 单位类型（`length`、`physical-length`、`duration`、……）不能转换为数字（`float` 或 `int`），
+  但它们可以除以自身而得到数字。类似地，数字可以乘以其中一种
+  单位。其思路是通过乘以 `1px` 或除以 `1px` 来进行此类转换
+- 字面量 `0` 可以转换为任何这些带关联单位的类型。
+- 当结构体类型共有的字段可以转换时，结构体类型会转换为另一种结构体类型。
+  缺失的字段取其默认值，多余的字段会被丢弃并发出警告。
+  同时出现两者是一个错误，因为这很可能是笔误。
+- 数组通常不相互转换。如果元素类型可转换，则数组字面量可以转换。
 
 ```slint
 export component Example {
@@ -47,24 +47,27 @@ export component Example {
 }
 ```
 
-## Converting Between Numbers and Strings
+<a id="converting-between-numbers-and-strings"></a>
 
-`int` and `float` convert implicitly to `string`.
-To control how many digits appear in the result, use the [`to-fixed()` and `to-precision()`](../../property-types/numeric-types/#to-fixeddigits-int---string)
-member functions instead of the implicit conversion.
-To always use a dot as decimal separator regardless of the locale, use [`to-string-unlocalized()`](../../property-types/numeric-types/#to-string-unlocalized---string).
+## 数字与字符串之间的转换
 
-For the other direction, convert a `string` to a number with the [`to-float()`](../../property-types/strings/#to-float---float) member function,
-and check whether a string holds a valid number with `is-float()`.
+`int` 和 `float` 隐式转换为 `string`。
+要控制结果中出现多少位数字，请使用
+[`to-fixed()` 和 `to-precision()`](../../property-types/numeric-types/#to-fixeddigits-int---string)
+成员函数，而不是隐式转换。
+要不考虑区域设置而始终使用点作为小数分隔符，请使用 [`to-string-unlocalized()`](../../property-types/numeric-types/#to-string-unlocalized---string)。
 
-All these conversions use the decimal separator of the current locale,
-which is exposed as <Link type="Platform.decimal-separator" /> and defaults to the dot (`.`).
-For example, in a German locale the decimal separator is the comma (`,`):
+对于另一个方向，使用 [`to-float()`](../../property-types/strings/#to-float---float) 成员函数将 `string` 转换为数字，
+并使用 `is-float()` 检查字符串是否持有有效数字。
 
-- The `float` value `1.5` converts to the string `"1,5"`.
-- `"1,5".to-float()` returns `1.5`.
-- `"1.5".is-float()` returns `false` and `"1.5".to-float()` returns `0`:
-  only the locale's decimal separator is recognized when parsing.
+所有这些转换都使用当前区域设置的小数分隔符，
+它通过 <Link type="Platform.decimal-separator" /> 暴露，默认为点（`.`）。
+例如，在德语区域设置中，小数分隔符是逗号（`,`）：
 
-Number literals in `.slint` files always use the dot, regardless of the locale.
-See the <Link type="translations" label="translations guide"/> for how the decimal separator is determined.
+- `float` 值 `1.5` 转换为字符串 `"1,5"`。
+- `"1,5".to-float()` 返回 `1.5`。
+- `"1.5".is-float()` 返回 `false`，而 `"1.5".to-float()` 返回 `0`：
+  解析时只识别区域设置的小数分隔符。
+
+`.slint` 文件中的数字字面量始终使用点，无论区域设置如何。
+关于小数分隔符如何确定，请参见 <Link type="translations" label="翻译指南"/>。

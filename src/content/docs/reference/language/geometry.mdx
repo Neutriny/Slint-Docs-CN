@@ -1,6 +1,6 @@
 ---
 title: 几何
-description: Position and size of elements.
+description: 元素的位置和大小。
 SC: true
 ---
 
@@ -8,45 +8,45 @@ import SC from '@slint/common-files/src/components/SC.astro';
 import OnlyInSC from '@slint/common-files/src/components/OnlyInSC.astro';
 
 <SC>
-## Properties
+## 属性
 
-Every element has the four geometry properties `x`, `y`, `width`, and `height`, of type `length`. \{#sls.geom.properties}
+每个元素都有四个几何属性 `x`、`y`、`width` 和 `height`，其类型为 `length`。 \{#sls.geom.properties}
 
-`x` and `y` are the offsets from the element's parent's top-left corner to the element's top-left corner.
-`width` and `height` are the element's size, extending to the right and downwards from that corner. \{#sls.geom.relative}
+`x` 和 `y` 是从元素父元素左上角到元素左上角的偏移量。
+`width` 和 `height` 是元素的大小，从该角向右和向下延伸。 \{#sls.geom.relative}
 
-The `x` and `y` properties of the root element are meaningless and shall not be used. \{#sls.geom.window.root}
+根元素的 `x` 和 `y` 属性没有意义，不得使用。 \{#sls.geom.window.root}
 
 <OnlyInSC>
-The `width` and `height` of the root element are the size of the window, which the application gives the
-component when it creates it. \{#sls.geom.window.size}
+根元素的 `width` 和 `height` 是窗口的大小，由应用在创建组件时
+赋予组件。 \{#sls.geom.window.size}
 
-An expression may read them, so an element sizes itself against the window.
-Binding any geometry property of the root element is an error: the size is the application's to give,
-not the file's to set. \{#sls.geom.window}
+表达式可以读取它们，因此元素可以相对于窗口来确定自身大小。
+绑定根元素的任何几何属性都是一个错误：大小应由应用给出，
+而不是由文件设置。 \{#sls.geom.window}
 
 </OnlyInSC>
 </SC>
 
-Binding `x` or `y` of the root element is deprecated.
-The window size can be set through `width` and `height`.
+绑定根元素的 `x` 或 `y` 已废弃。
+窗口大小可以通过 `width` 和 `height` 设置。
 
 <SC>
-## Defaults
+## 默认值
 
-When `x` has no binding, it defaults to `(parent.width - self.width) / 2`,
-and `y` to `(parent.height - self.height) / 2`:
-the value that centers the element within its parent along that axis. \{#sls.geom.default-position}
+当 `x` 没有绑定时，它默认为 `(parent.width - self.width) / 2`，
+`y` 默认为 `(parent.height - self.height) / 2`：
+即沿该轴将元素在其父元素中居中的值。 \{#sls.geom.default-position}
 
-When `width` or `height` has no binding, the default depends on the element type:
-a `Rectangle` has the same width or height as its parent. \{#sls.geom.default-size}
+当 `width` 或 `height` 没有绑定时，默认值取决于元素类型：
+`Rectangle` 的宽度或高度与其父元素相同。 \{#sls.geom.default-size}
 
 </SC>
 
-Elements inside a layout are positioned and sized by the layout instead of these defaults.
+布局内的元素由布局定位和确定大小，而不是使用这些默认值。
 
 <SC>
-In this example, both rectangles cover the whole window: \{#sls.geom.example.intro}
+在此示例中，两个矩形都覆盖整个窗口： \{#sls.geom.example.intro}
 
 ```slint
 export component Example inherits Window {
@@ -60,6 +60,6 @@ export component Example inherits Window {
 
 </SC>
 
-A binding of `width` or `height` that evaluates to a [percentage](../../property-types/numeric-types/#percent)
-is relative to the parent's property of the same name:
-`width: 50%;` is short for `width: parent.width * 50%;`.
+求值为[百分比](../../property-types/numeric-types/#percent)的 `width` 或 `height` 绑定
+相对于父元素的同名属性：
+`width: 50%;` 是 `width: parent.width * 50%;` 的简写。

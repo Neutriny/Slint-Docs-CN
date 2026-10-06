@@ -1,6 +1,6 @@
 ---
 title: ComboBox
-description: ComboBox api.
+description: ComboBox API。
 ---
 
 import SlintProperty from '@slint/common-files/src/components/SlintProperty.astro';
@@ -23,14 +23,14 @@ export component Example inherits Window {
 ```
 </CodeSnippetMD>
 
-A button that, when clicked, opens a popup to select a value.
+一个按钮，点击后会打开弹出窗口以选择值。
 
-## Properties
+## 属性
 
 ### current-index
 
 <SlintProperty propName="current-index" typeName="int" defaultValue="0" propertyVisibility="in-out">
-The index of the selected value.
+所选值的索引。
 ```slint "current-index: 1;"
 ComboBox {
     model: ["first", "second", "third"];
@@ -42,19 +42,19 @@ ComboBox {
 ### current-value
 
 <SlintProperty propName="current-value" typeName="string" defaultValue='""' propertyVisibility="in-out">
-The currently selected text.
+当前选中的文本。
 
 :::note
-Writing to `current-value` — from host code (Rust, C++, JavaScript, Python), declaratively
-at instantiation (as in the example above), or imperatively from `.slint` code — looks up
-the written value in `model` and moves `current-index` to the first matching row. If the
-value isn't found in `model`, the selection is cleared (`current-index` becomes `-1`
-and `current-value` becomes `""`), the same as setting `current-index` out of range.
-Prefer writing `current-index` directly when the row's position is already known.
+向 `current-value` 写入 —— 来自宿主代码（Rust、C++、JavaScript、Python）、在实例化时以声明方式
+（如上面的示例），或从 `.slint` 代码中以命令方式 —— 会在 `model` 中查找
+写入的值，并将 `current-index` 移动到第一个匹配的行。如果在 `model` 中
+找不到该值，则清除选择（`current-index` 变为 `-1`，
+`current-value` 变为 `""`），这等同于将 `current-index` 设置为超出范围。
+当行的位置已知时，建议直接写入 `current-index`。
 
-This lookup only runs when the write actually changes `current-value`. Writing the
-value it already holds — including when the model has duplicate entries and a later
-one is currently selected — is a no-op and does not move the selection.
+此查找仅在写入实际更改 `current-value` 时运行。写入它已持有的值 ——
+包括当模型包含重复条目且当前选中靠后的一个时 —— 是空操作，
+不会移动选择。
 :::
 
 </SlintProperty>
@@ -62,37 +62,37 @@ one is currently selected — is a no-op and does not move the selection.
 ### enabled
 
 <SlintProperty propName="enabled" typeName="bool" defaultValue="true">
-  Defaults to true. When false, the combobox can't be interacted with
+  默认为 true。当为 false 时，无法与组合框交互
 </SlintProperty>
 
 ### has-focus
 
 <SlintProperty propName="has-focus" typeName="bool" propertyVisibility="out">
-  Set to true when the combobox has keyboard focus.
+  当组合框具有键盘焦点时设置为 true。
 </SlintProperty>
 
 ### model
 
 <SlintProperty propName="model" typeName="[string]" defaultValue="[]">
-The list of possible values
+可能值的列表
 ```slint 'model: ["first", "second", "third"];'
 ComboBox {
     model: ["first", "second", "third"];
 }
 ```
 
-:::note[Note]
-When setting this property, the `ComboBox` will try to preserve the `current-index`.
-If the `current-index` is larger than the new model length, it is set to the last item in the model.
+:::note[注意]
+设置此属性时，`ComboBox` 会尝试保留 `current-index`。
+如果 `current-index` 大于新模型的长度，则将其设置为模型中的最后一项。
 :::
 
 </SlintProperty>
 
-## Callbacks
+## 回调
 
 ### selected(string)
 
-A value was selected from the combo box by the user. The argument is the currently selected value.
+用户从组合框中选择了值。参数为当前选中的值。
 
 ```slint {3-5}
 ComboBox {

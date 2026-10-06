@@ -6,15 +6,15 @@ description: Slint 应用开发的最佳实践
 import Link from '@slint/common-files/src/components/Link.astro';
 import { Aside } from '@astrojs/starlight/components';
 
-In the following sections, we provide you with lessons we've learned of the years. This will help you avoid some pitfalls, tricky situations, and improve maintainability of your UI code.
+在以下章节中，我们分享多年来积累的经验教训。这将帮助你避免一些陷阱和棘手情况，并提升 UI 代码的可维护性。
 
-## Accessibility
+## 无障碍
 
-When designing custom components, consider early on to declare <Link type="AccessibleProperties" label="accessibility properties" />. At least a role, possibly a label, as well as actions.
+设计自定义组件时，应尽早考虑声明 <Link type="AccessibleProperties" label="无障碍属性" />。至少包含 role，可能还包括 label，以及各种 actions。
 
-If you're developing on Windows, then [Accessibility Insights](https://accessibilityinsights.io/docs/windows/overview/) tool for windows is a great tool to help you find and fix accessibility issues.
+如果你在 Windows 上开发，那么 [Accessibility Insights](https://accessibilityinsights.io/docs/windows/overview/) 这款 Windows 工具可以帮助你发现并修复无障碍问题。
 
-If you're developing on macOS, the [Accessibility Inspector](https://developer.apple.com/documentation/accessibility/accessibility-inspector) offers similar functionality. Note that it requires the application to be built as bundle.
+如果你在 macOS 上开发，[Accessibility Inspector](https://developer.apple.com/documentation/accessibility/accessibility-inspector) 提供了类似功能。注意，它要求应用以 bundle 形式构建。
 
 ```slint
 component CustomButton {
@@ -27,9 +27,9 @@ component CustomButton {
 }
 ```
 
-## Separate Code, UI, and Assets
+## 分离代码、UI 与资源
 
-Many projects start out small, with just a few files. But before you know it, your team grows, files get added, and it becomes harder to see forest for the trees. We recommend starting with the following basic directory structure:
+许多项目起步时规模很小，只有几个文件。但不知不觉间，团队壮大、文件增多，就越来越难看清全局。我们建议从以下基本目录结构开始：
 
 ```
 my-project
@@ -46,10 +46,10 @@ my-project
 
 ```
 
-## Translations
+## 翻译
 
-- When adding user-visible strings to your UI, consider early on to mark them as <Link type="translations" label="translatable" /> by wrapping them in `@tr("...")`.
-- Avoid `+` for concatenating strings, prefer `{}` substitutions. This gives translators the option of re-ordering the arguments for the most natural translation.
+- 在向 UI 添加用户可见的字符串时，应尽早用 `@tr("...")` 包裹，将其标记为 <Link type="translations" label="可翻译" />。
+- 避免使用 `+` 拼接字符串，优先使用 `{}` 替换。这样译者就能重新排列参数顺序，得到最自然的译文。
 
 <Aside type="caution">
 

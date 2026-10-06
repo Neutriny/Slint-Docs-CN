@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://neutriny.github.io/Slint-Docs-CN/sitemap-index.xml

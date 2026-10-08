@@ -34,10 +34,7 @@ import LineHighlight from '/src/assets/getting-started/line-highlight.webp';
 </div>
 
 <div style="display: flex; justify-content: center; margin: 1.5rem 0;">
-  <LinkButton
-    href={`${import.meta.env.BASE_URL}/guide/getting-started/`}
-    icon="right-arrow"
-  >
+  <LinkButton href="/guide/getting-started/" icon="right-arrow">
     开始使用
   </LinkButton>
 </div>
@@ -50,7 +47,7 @@ import LineHighlight from '/src/assets/getting-started/line-highlight.webp';
   description="配置 Slint 开发的工具链，包括通过 Slint 语言服务器(LSP)接入 IDE，以及使用 Slint Viewer 实时预览界面。
   <br/><br/>
   学习 Slint 的全部关键概念，理解并使用 Slint 语言。"
-  href={`${import.meta.env.BASE_URL}`}
+  href="/"
 >
 </LinkCard>
 
@@ -58,19 +55,19 @@ import LineHighlight from '/src/assets/getting-started/line-highlight.webp';
   title="参考"
   description="浏览 Slint 语言的 API 参考：元素、属性、函数、回调、命名空间，以及
 用于构建桌面应用的跨平台 std-widgets 组件库。"
-  href={`${import.meta.env.BASE_URL}/reference/overview`}
+  href="/reference/overview"
 ></LinkCard>
 
 <LinkCard
   title="教程"
   description="通过示例学习，跟着分步教程一步步搭建一个简单的记忆游戏示例应用。"
-  href={`${import.meta.env.BASE_URL}/tutorial/quickstart/`}
+  href="/tutorial/quickstart/"
 ></LinkCard>
 
 <LinkCard
   title="语言集成"
   description="Slint 在 Rust、C++、JavaScript 与 Python 版本下的 API 参考。"
-  href={`${import.meta.env.BASE_URL}/language-integrations/`}
+  href="/language-integrations/"
 >
 </LinkCard>
 </CardGrid>

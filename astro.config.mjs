@@ -31,12 +31,11 @@ const sidebarHref = (/** @type {string} */ url) =>
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://neutriny.github.io/',
-  base: 'Slint-Docs-CN',
+  site: 'https://slintcn.neutriny.dev/',
   redirects: {
-    '/guide': '/Slint-Docs-CN/',
-    '/reference': '/Slint-Docs-CN/reference/overview/',
-    '/tutorial': '/Slint-Docs-CN/tutorial/quickstart/',
+    '/guide': '/',
+    '/reference': '/reference/overview/',
+    '/tutorial': '/tutorial/quickstart/',
   },
   integrations: [
     starlight({

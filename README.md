@@ -6,7 +6,7 @@
 [Slint](https://slint.dev) 官方文档的中文翻译与整理，使用 [Astro](https://astro.build) +
 [Starlight](https://starlight.astro.build) 构建。
 
-在线预览：<https://neutriny.github.io/Slint-Docs-CN/>
+在线预览：<https://slintcn.neutriny.dev/>
 
 > 本项目是非官方社区翻译，与 SixtyFPS GmbH 无隶属或背书关系。
 > 文档内容会滞后于上游，最新、最权威的内容请以 [官方文档](https://docs.slint.dev) 为准。

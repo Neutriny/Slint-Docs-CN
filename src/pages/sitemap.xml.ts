@@ -7,7 +7,7 @@ export const GET: APIRoute = ({ site }) => {
   const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
   const sitemapUrl = new URL(
     `${base}sitemap-0.xml`,
-    site ?? 'https://neutriny.github.io/',
+    site ?? 'https://slintcn.neutriny.dev/',
   );
   const body = `<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

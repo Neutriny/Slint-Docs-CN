@@ -47,6 +47,6 @@
     "starlight-sidebar-topics": "^0.9.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.69.0",
-    "vite": "^7.3.6"
+    "vite": "^7.3.7"
   }
 }
